@@ -1,0 +1,12 @@
+doctype
+html
+  head
+    meta(charset="utf-8")
+    title #{title}
+    block css
+    include includes/head
+  body
+    input(id="INITIAL_STATE_MES",type="hidden",value=messagesStr)
+    if user
+      input(id="INITIAL_STATE_LOG",type="hidden",value=user.name)
+    block content

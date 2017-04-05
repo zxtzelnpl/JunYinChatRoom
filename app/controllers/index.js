@@ -1,12 +1,14 @@
 const Message = require('../models/message');
+const PageSize = 30;
 
 exports.index = function (req, res) {
     let messagesStr;
     Message
-        .find({})
+        .find({check:true})
         .sort({_id: -1})
+        .select('from content meta')
         .skip(0)
-        .limit(30)
+        .limit(PageSize)
         .populate('from', 'name')
         .exec(function (err, messages) {
             if (err) {
