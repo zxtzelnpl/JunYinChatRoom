@@ -1,0 +1,13 @@
+extends ../admin/layout
+
+block css
+    link(rel="stylesheet",href="/css/normalize.css")
+    link(rel="stylesheet",href="/css/admin/picture.css")
+
+block content
+    div(id="content" class="content")
+
+block js
+    script(src="/socket.io/socket.io.js")
+    script(src="/admin/js/vendor.js")
+    script(src="/admin/js/picture.js")
