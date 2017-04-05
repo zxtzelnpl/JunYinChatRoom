@@ -4,16 +4,17 @@ const bcrypt = require('bcryptjs');
 const SALT_WORK_FACTOR = 10;
 let UserSchema = new mongoose.Schema({
     name: {
-        unique:true
-        ,type:String
+        unique: true
+        , type: String
     }
+    , nickName: String
     , password: String
     , phone: Number
     , email: String
     , sex: String
     , level: {
-        type:Number
-        ,default:0
+        type: Number
+        , default: 0
     }
     , meta: {
         createAt: {
@@ -26,8 +27,8 @@ let UserSchema = new mongoose.Schema({
         }
     }
     , forbidden: {
-        type:Boolean
-        ,default:false
+        type: Boolean
+        , default: false
     }
     , belong: String
 });
@@ -59,13 +60,13 @@ UserSchema.method = {
             if (err) {
                 return cb(err)
             }
-            cb(null,isMatch)
+            cb(null, isMatch)
         })
     }
 };
 
-UserSchema.statics={
-    fetch:function(cb){
+UserSchema.statics = {
+    fetch: function (cb) {
         return this
             .find({})
             .sort('meta.updateAt')
@@ -73,4 +74,4 @@ UserSchema.statics={
     }
 };
 
-module.exports=UserSchema;
+module.exports = UserSchema;

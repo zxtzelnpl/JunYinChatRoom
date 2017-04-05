@@ -17,17 +17,18 @@ module.exports = function(app,io){
 
 
     /*User*/
-
+    app.post('/user/signup',Admin.adminRequired,User.signUp);
+    app.get('/user/signin',Admin.adminRequired,User.signIn);
 
     /*Message*/
 
 
     /*Admin*/
-    app.get('/admin',Admin.admin);
-    app.get('/admin/signin/',Admin.signin);
-    app.get('/admin/signup/',Admin.signup);
-    app.get('/admin/room/',Admin.room);
-    app.get('/admin/user/',Admin.user);
-    app.get('/admin/message/',Admin.message);
-    app.get('/admin/picture/',Admin.picture);
+    app.get('/admin/signin',Admin.signIn);
+    app.get('/admin',Admin.adminRequired,Admin.admin);
+    app.get('/admin/signup',Admin.adminRequired,Admin.signUp);
+    app.get('/admin/room',Admin.adminRequired,Admin.room);
+    app.get('/admin/user',Admin.adminRequired,Admin.user);
+    app.get('/admin/message',Admin.adminRequired,Admin.message);
+    app.get('/admin/picture',Admin.adminRequired,Admin.picture);
 };

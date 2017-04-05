@@ -23,7 +23,7 @@ const reload = browserSync.reload;
 
 const production = process.env.NODE_ENV === 'production';
 const paths = {
-    srcJs: ['src/*.js', 'src/**/*.js']
+    srcJs: ['src/*.js', 'src/**/*.js','admin/js/*.js']
     , index: 'src/index.js'
     , js: 'public/js'
     , less: ['src/less/*.less', 'src/less/**/*.less','!src/less/normalize/*']
