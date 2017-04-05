@@ -15,33 +15,41 @@ let MessageSchema = new Schema({
             type: Date
             , default: Date.now
         }
-        , createTime: {
-            type: Number
+        , updateAt: {
+            type: Date
             , default: Date.now
         }
     }
-    , pass: {
-        check: {
-            type: Boolean
-            , default: false
-        }
-        , verifier: {
-            type: ObjectId
-            , ref: 'User'
-        }
+    ,check: {
+        type: Boolean
+        , default: false
+    }
+    , verifier: {
+        type: ObjectId
+        , ref: 'User'
     }
 });
 
-MessageSchema.statics={
-    fetch:function(cb){
+MessageSchema.pre('save', function (next) {
+    const user = this;
+    if (user.isNew) {
+        user.meta.createAt = this.meta.updateAt = Date.now()
+    } else {
+        user.meta.updateAt = Date.now();
+    }
+    next();
+});
+
+MessageSchema.statics = {
+    fetch: function (cb) {
         return this
             .find({})
-            .sort('meta.createTime')
+            .sort('meta.createAt')
             .exec(cb);
     },
-    findById:function(id,cb){
+    findById: function (id, cb) {
         return this
-            .findOne({_id:id})
+            .findOne({_id: id})
             .exec(cb);
     }
 };
