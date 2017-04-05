@@ -4,7 +4,7 @@ const PageSize = 30;
 exports.index = function (req, res) {
     let messagesStr;
     Message
-        .find({check:true})
+        .find({check: true})
         .sort({_id: -1})
         .select('from content meta')
         .skip(0)
@@ -20,3 +20,6 @@ exports.index = function (req, res) {
             });
         });
 };
+
+
+

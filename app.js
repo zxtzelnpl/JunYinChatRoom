@@ -72,7 +72,7 @@ sio.use(function(socket, next) {
 /**6.中间件end*/
 
 /**7.路由文件start*/
-routes(app, sio,sessionStore);
+routes(app, sio);
 /**7.路由文件end*/
 
 /**8.服务器端口监听start*/
