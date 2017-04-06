@@ -16,15 +16,13 @@ let UserSchema = new mongoose.Schema({
         type: Number
         , default: 0
     }
-    , meta: {
-        createAt: {
-            type: Date
-            , default: Date.now
-        }
-        , updateAt: {
-            type: Date
-            , default: Date.now
-        }
+    , createAt: {
+        type: Date
+        , default: Date.now
+    }
+    , updateAt: {
+        type: Date
+        , default: Date.now
     }
     , forbidden: {
         type: Boolean
@@ -36,9 +34,9 @@ let UserSchema = new mongoose.Schema({
 UserSchema.pre('save', function (next) {
     const user = this;
     if (user.isNew) {
-        user.meta.createAt = this.meta.updateAt = Date.now()
+        user.createAt = this.updateAt = Date.now()
     } else {
-        user.meta.updateAt = Date.now();
+        user.updateAt = Date.now();
     }
     bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
         if (err) {
@@ -54,7 +52,7 @@ UserSchema.pre('save', function (next) {
     })
 });
 
-UserSchema.method = {
+UserSchema.methods = {
     comparePassword: function (_password, cb) {
         bcrypt.compare(_password, this.password, function (err, isMatch) {
             if (err) {
@@ -69,7 +67,7 @@ UserSchema.statics = {
     fetch: function (cb) {
         return this
             .find({})
-            .sort('meta.updateAt')
+            .sort('meta.createAt')
             .exec(cb);
     }
 };

@@ -3,7 +3,19 @@ html
     head
         meta(charset="utf-8")
         title #{title}
+        link(rel="stylesheet",href="/admin/css/bootstrap.min.css")
+        script(src="/admin/js/vendor.js")
         block css
     body
+        header
+            if user
+                p(id="userName") #{user.name}
+                p(id="userLevel") #{user.level}
+                p(id="userBelong") #{user.belong}
+                p
+                    a(class='btn' id='signOut') 登出
+            else
+                p
+                    a(class='btn' id='') 登录
         block content
     block js

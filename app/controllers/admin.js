@@ -1,9 +1,6 @@
+const UserModel = require('../models/user.js');
 exports.admin = function (req, res) {
     res.render('admin', {});
-};
-
-exports.signIn = function (req, res) {
-    res.render('signin', {});
 };
 
 exports.signUp = function (req, res) {
@@ -11,8 +8,7 @@ exports.signUp = function (req, res) {
 };
 
 exports.logout = function (req, res) {
-    delete req.session.user;
-    return res.redirect('/');
+
 };
 
 exports.room = function (req, res) {
@@ -20,7 +16,24 @@ exports.room = function (req, res) {
 };
 
 exports.user = function (req, res) {
-    res.render('user', {});
+    UserModel.fetch(function(err,users){
+        if(err){
+            console.log(err);
+        }
+        res.render('user', {
+            title:'管理用户列表'
+            ,users:users
+        });
+    });
+};
+
+exports.userUpdate = function (req, res) {
+    let id = req.params.id;
+    UserModel.findById(id, function (err, userDetail) {
+        res.render('userUpdate', {
+            userDetail
+        });
+    });
 };
 
 exports.message = function (req, res) {
@@ -38,4 +51,11 @@ exports.adminRequired=function(req,res,next){
     //     return res.redirect('/signin')
     // }
     next()
+};
+
+exports.information=function(req,res){
+    let information=req.params.information;
+    res.render('information',{
+        information
+    })
 };

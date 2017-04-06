@@ -34,7 +34,8 @@ const paths = {
 };
 
 const adminDependencies = [
-    'jquery'
+    'bootstrap'
+    ,'jquery'
 ];
 const dependencies = [
     'jquery'
@@ -148,6 +149,23 @@ gulp.task('normalize', function () {
 
 /**
  |--------------------------------------------------------------------------
+ | Compile bootstrap stylesheets.
+ |--------------------------------------------------------------------------
+ */
+gulp.task('bootstrap', function () {
+    return gulp.src([
+        'node_modules/bootstrap/dist/**/**.css'
+        ,'node_modules/bootstrap/dist/**/**.eot'
+        ,'node_modules/bootstrap/dist/**/**.svg'
+        ,'node_modules/bootstrap/dist/**/**.ttf'
+        ,'node_modules/bootstrap/dist/**/**.woff'
+        ,'node_modules/bootstrap/dist/**/**.woff2'
+    ])
+        .pipe(gulp.dest('public/admin'));
+});
+
+/**
+ |--------------------------------------------------------------------------
  | Compile images.
  |--------------------------------------------------------------------------
  */
@@ -239,6 +257,7 @@ gulp.task('default', [
     'browserify-vendor'
     , 'admin-vendor'
     , 'normalize'
+    , 'bootstrap'
     , 'images'
     , 'favicon'
     , 'watch'
@@ -254,6 +273,7 @@ gulp.task('produce', [
     'browserify-vendor'
     , 'admin-vendor'
     , 'normalize'
+    , 'bootstrap'
     , 'images'
     , 'favicon'
     , 'less'

@@ -13,6 +13,7 @@ const bodyParser = require('body-parser');
 const connectMongo=require('connect-mongo');
 const http = require('http');
 const io=require('socket.io');
+const moment=require('moment');
 
 /**引如内部路由**/
 const routes = require('./config/routes');
@@ -74,6 +75,8 @@ sio.use(function(socket, next) {
 /**7.路由文件start*/
 routes(app, sio);
 /**7.路由文件end*/
+
+app.locals.moment=moment;
 
 /**8.服务器端口监听start*/
 server.listen(port, function () {

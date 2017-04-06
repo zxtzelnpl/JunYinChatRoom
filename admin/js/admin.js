@@ -1,4 +1,36 @@
-var $=require('jquery');
-console.log($);
-var text='admin';
-console.log(text);
+import $ from 'jquery';
+
+$('#submit').click(function(e){
+    e.preventDefault();
+    let name=$('#signInName').val();
+    let password=$('#signInPassword').val();
+    console.log(name,password);
+    $.ajax({
+        url:'/user/signin'
+        ,method:'POST'
+        ,data:{
+            name
+            ,password
+        }
+        ,success:function(data){
+            console.log(data)
+        }
+        ,error:function(data){
+            console.log(data)
+        }
+    })
+});
+
+$('#signOut').click(function(e){
+    e.preventDefault();
+    $.ajax({
+        url:'/user/signout'
+        ,method:'GET'
+        ,success:function(data){
+            console.log(data);
+        }
+        ,error:function(data){
+            console.log(data)
+        }
+    })
+});

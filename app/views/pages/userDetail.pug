@@ -1,0 +1,40 @@
+extends ../admin/layout
+
+block css
+    link(rel="stylesheet",href="/css/admin/userDetail.css")
+
+block content
+    div(id="content" class="content")
+    div
+        span 用户名：
+        span #{userDetail.name}
+    div
+        span 昵称：
+        span #{userDetail.nickName}
+    div
+        span 手机：
+        span #{userDetail.phone}
+    div
+        span 邮箱：
+        span #{userDetail.email}
+    div
+        span 性别：
+        span #{userDetail.sex}
+    div
+        span 所属公司：
+        span #{userDetail.belong}
+    div
+        span 是否被禁用：
+        span #{userDetail.forbidden}
+    div
+        span 创建时间：
+        span #{userDetail.updateAt}
+    div
+        span 上次修改时间：
+        span #{userDetail.createAt}
+    div
+        span 是否在线：
+        span 否
+
+block js
+    script(src="/admin/js/userDetail.js")

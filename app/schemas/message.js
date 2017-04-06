@@ -10,15 +10,13 @@ let MessageSchema = new Schema({
         , ref: 'User'
     }
     , content: String
-    , meta: {
-        createAt: {
-            type: Date
-            , default: Date.now
-        }
-        , updateAt: {
-            type: Date
-            , default: Date.now
-        }
+    ,createAt: {
+        type: Date
+        , default: Date.now
+    }
+    , updateAt: {
+        type: Date
+        , default: Date.now
     }
     ,check: {
         type: Boolean
