@@ -83,7 +83,37 @@ exports.signOut = function (req, res) {
 
 /**修改start*/
 exports.update = function (req, res) {
-
+    console.log(req.body.user);
+    let _user=req.body.user;
+    let id=_user._id;
+    delete _user._id;
+    console.log(_user);
+    UserModel.find({"$or": [{'name': _user.name}, {'phone': _user.phone}]}, function (err, users) {
+        if (err) {
+            console.log(err);
+        }
+        if (users.length === 0) {
+            user = new UserModel(_user);
+            user.save(function (err, user) {
+                if (err) {
+                    console.log(err)
+                }
+                res.redirect('/admin/user/' + user._id)
+            })
+        } else {
+            if (users[0].name === _user.name) {
+                res.redirect('/admin/information/name')
+            } else if (users[0].phone == _user.phone) {
+                res.redirect('/admin/information/phone')
+            }
+        }
+    });
+    UserModel.findByIdAndUpdate(id,{$set:_user},function(err){
+        if(err){
+            console.log(err);
+        }
+        res.redirect('/admin/user/' + id)
+    });
 };
 /**修改end*/
 
