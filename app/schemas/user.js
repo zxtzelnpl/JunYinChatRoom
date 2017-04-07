@@ -9,11 +9,11 @@ let UserSchema = new mongoose.Schema({
     }
     , nickName: String
     , password: String
-    , phone: Number
+    , phone: String
     , email: String
     , sex: String
     , level: {
-        type: Number
+        type: String
         , default: 0
     }
     , createAt: {

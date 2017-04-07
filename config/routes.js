@@ -33,7 +33,8 @@ module.exports = function(app,io){
 
     app.get('/admin/room',Admin.adminRequired,Admin.room);
 
-    app.get('/admin/user',Admin.adminRequired,Admin.user);
+    app.get('/admin/user',Admin.adminRequired,User.userList);
+    app.get('/admin/user/search',Admin.adminRequired,User.search);
     app.get('/admin/user/:id',Admin.adminRequired,User.userDetail);
     app.get('/admin/user/update/:id',Admin.adminRequired,Admin.userUpdate);
     app.get('/admin/signup',Admin.adminRequired,Admin.signUp);

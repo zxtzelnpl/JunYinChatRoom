@@ -1,0 +1,39 @@
+extends ../admin/layout
+
+block css
+    link(rel="stylesheet",href="/css/admin/search.css")
+
+block content
+    .container
+        .row
+            form(method="POST" action="/admin/user/query" target="_blank")
+                div
+                    label(for="searchName") 用户名:
+                    input(id="searchName" name="search[name]" type="text")
+                div
+                    label(for="searchNickName") 昵称:
+                    input(id="searchNickName" name="search[nickName]" type="text")
+                div
+                    label(for="searchPhone") 手机:
+                    input(id="searchPhone" name="search[phone]" type="text")
+                div
+                    label(for="searchEmail") 邮箱:
+                    input(id="searchEmail" name="search[email]" type="text")
+                div
+                    label(for="searchSex") 性别:
+                    input(id="searchSex" name="search[sex]" type="text")
+                div
+                    label(for="searchBelong") 所属公司:
+                    input(id="searchBelong" name="search[belong]" type="text")
+                div
+                    label(for="searchForbidden") 是否被禁用:
+                    input(id="searchForbidden" name="search[forbidden]" type="text")
+                div
+                    label(for="searchOnline") 是否在线:
+                    input(id="searchOnline" name="search[online]" type="text")
+                div
+                    button.btn.btn-primary(type="submit") 查询
+
+block js
+    script(src="/socket.io/socket.io.js")
+    script(src="/admin/js/search.js")
