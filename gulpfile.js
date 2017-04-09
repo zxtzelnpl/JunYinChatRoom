@@ -233,11 +233,7 @@ gulp.task('server', ['nodemon'], function () {
  */
 gulp.task('watch', ['browserify-index', 'admin-js','less'], function () {
 
-    gulp.watch(paths.srcJs, ['browserify-index']).on('change', function (event) {
-        console.log('File ' + event.path + ' was ' + event.type + ', running tasks...')
-    });
-
-    gulp.watch('./admin/js/**.js', ['admin-js']).on('change', function (event) {
+    gulp.watch(paths.srcJs, ['browserify-index','admin-js']).on('change', function (event) {
         console.log('File ' + event.path + ' was ' + event.type + ', running tasks...')
     });
 

@@ -15,7 +15,7 @@ exports.signUp = function (req, res) {
                 if (err) {
                     console.log(err)
                 }
-                res.redirect('/admin/user/' + user._id)
+                res.redirect('/admin/user/detail/' + user._id)
             })
         } else {
             if (users[0].name === _user.name) {
@@ -116,20 +116,20 @@ exports.update = function (req, res) {
 
 /**列表start*/
 exports.userList = function (req, res) {
-    let pageNum = req.query.pageNum || 0;
+    let pageNum = req.params.page || 1;
     let totalPageNum;
     let query = UserModel.find({});
     query.count(function (err, count) {
         totalPageNum = Math.ceil(count / pageSize);
-        console.log(totalPageNum);
+        console.log(pageNum);
         UserModel.find({})
-            .skip(pageNum * pageSize)
+            .skip((pageNum - 1) * pageSize)
             .limit(pageSize)
             .exec(function (err, users) {
                 if (err) {
                     console.log(err);
                 }
-                res.render('user', {
+                res.render('userlist', {
                     title: '管理用户列表'
                     , users: users
                     , pageCount: totalPageNum
@@ -155,7 +155,7 @@ exports.userDetail = function (req, res) {
 /**查询首页start*/
 exports.search = function (req, res) {
     res.render('search', {
-            title:'查询'
+            title: '查询'
         }
     )
 };
@@ -179,10 +179,9 @@ exports.query = function (req, res) {
         if (err) {
             console.log(err);
         }
-        res.render('user', {
+        res.render('userquery', {
             title: '管理用户列表-查询结果'
             , users: users
-            , search:_search
         });
     });
 
@@ -212,12 +211,10 @@ exports.query = function (req, res) {
 /**删除start*/
 exports.delete = function (req, res) {
     let id = req.query.id;
-    console.log(id);
     UserModel.findByIdAndRemove(id, function (err, back) {
         if (err) {
             console.log(err)
         }
-        console.log(back);
         res.json({
             state: 'success'
         })

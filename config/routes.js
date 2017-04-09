@@ -33,15 +33,15 @@ module.exports = function(app,io){
 
     app.get('/admin/room',Admin.adminRequired,Admin.room);
 
-    app.get('/admin/user',Admin.adminRequired,User.userList);
+    app.get('/admin/user/list/:page',Admin.adminRequired,User.userList);
     app.get('/admin/user/search',Admin.adminRequired,User.search);
-    app.get('/admin/user/:id',Admin.adminRequired,User.userDetail);
+    app.get('/admin/user/detail/:id',Admin.adminRequired,User.userDetail);
     app.get('/admin/user/update/:id',Admin.adminRequired,Admin.userUpdate);
-    app.get('/admin/signup',Admin.adminRequired,Admin.signUp);
+    app.get('/admin/user/signup',Admin.adminRequired,Admin.signUp);
 
-    app.get('/admin/message',Admin.adminRequired,Admin.message);
+    app.get('/admin/message/list',Admin.adminRequired,Admin.message);
 
-    app.get('/admin/picture',Admin.adminRequired,Admin.picture);
+    app.get('/admin/picture/list',Admin.adminRequired,Admin.picture);
 
     app.get('/admin/information/:information',Admin.adminRequired,Admin.information);
 };

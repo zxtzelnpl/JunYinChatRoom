@@ -33,11 +33,6 @@ exports.picture = function (req, res) {
 };
 
 exports.adminRequired=function(req,res,next){
-    // let user = req.session.user;
-    //
-    // if(!user.role || user.role <=100){
-    //     return res.redirect('/signin')
-    // }
     next()
 };
 
