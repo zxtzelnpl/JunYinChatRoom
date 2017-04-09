@@ -24,7 +24,7 @@ module.exports = function(app,io){
     app.post('/user/signup',Admin.adminRequired,User.signUp);
     app.delete('/admin/user/delete',User.delete);
     app.post('/admin/user/update',Admin.adminRequired,User.update);
-    app.post('/admin/user/query',Admin.adminRequired,User.query);
+    app.post('/admin/user/query/:page',Admin.adminRequired,User.query);
     /*Message*/
 
 

@@ -121,7 +121,6 @@ exports.userList = function (req, res) {
     let query = UserModel.find({});
     query.count(function (err, count) {
         totalPageNum = Math.ceil(count / pageSize);
-        console.log(pageNum);
         UserModel.find({})
             .skip((pageNum - 1) * pageSize)
             .limit(pageSize)
@@ -154,7 +153,7 @@ exports.userDetail = function (req, res) {
 
 /**查询首页start*/
 exports.search = function (req, res) {
-    res.render('search', {
+    res.render('usersearch', {
             title: '查询'
         }
     )
@@ -165,6 +164,8 @@ exports.search = function (req, res) {
 exports.query = function (req, res) {
     let search = {};
     let _search = req.body.search;
+    let totalPageNum;
+    let pageNum=req.params.page;
     for (let key in _search) {
         if (_search[key] !== '') {
             if (key === 'name' || key === 'nickName') {
@@ -175,15 +176,24 @@ exports.query = function (req, res) {
         }
     }
 
-    UserModel.find(search, function (err, users) {
-        if (err) {
-            console.log(err);
-        }
-        res.render('userquery', {
-            title: '管理用户列表-查询结果'
-            , users: users
-        });
+    UserModel.count(search, function (err, count) {
+        totalPageNum = Math.ceil(count / pageSize);
+        UserModel.find(search)
+            .skip((pageNum - 1) * pageSize)
+            .limit(pageSize)
+            .exec(function (err, users) {
+                if (err) {
+                    console.log(err);
+                }
+                res.render('userquery', {
+                    title: '管理用户列表-查询结果'
+                    , users: users
+                    , search: _search
+                    , pageCount: totalPageNum
+                });
+            });
     });
+
 
     // UserModel
     //     .where('name').ne('zxt')
