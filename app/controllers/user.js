@@ -47,8 +47,6 @@ exports.signIn = function (req, res) {
             })
         }
 
-        console.log(user);
-
         user.comparePassword(password, function (err, isMatch) {
             if (err) {
                 console.log(err)

@@ -5,6 +5,7 @@ const Admin = require('../app/controllers/admin');
 
 module.exports = function(app,io){
     let users=[];
+    let userNum=0;
 
     /*pre handle user*/
     app.use(function(req,res,next){
@@ -44,4 +45,38 @@ module.exports = function(app,io){
     app.get('/admin/picture/list',Admin.adminRequired,Admin.pictureList);
 
     app.get('/admin/information/:information',Admin.adminRequired,Admin.information);
+
+
+    io.on('connection',function(socket){
+        let user;
+        let delNum;
+        userNum++;
+        io.emit('online',userNum);
+        console.log('##socket-connection##',userNum);
+        if(socket.request.session.user){
+            user=socket.request.session.user;
+            users.push(user);
+            console.log('##socket-signin##');
+            console.log(users);
+            console.log('##socket-signin##');
+        }
+        socket.on('disconnect',function(){
+            console.log('##socket-disconnect1##');
+            console.log(users);
+            console.log('##socket-disconnect1##');
+            if(user){
+                users.forEach(function(_user,index){
+                    if(_user._id==user._id){
+                        delNum=index;
+                    }
+                });
+                users.splice(delNum,1);
+            }
+            userNum--;
+            io.emit('online',userNum);
+            console.log('##socket-disconnect2##');
+            console.log(users);
+            console.log('##socket-disconnect2##');
+        });
+    })
 };
