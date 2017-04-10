@@ -4,7 +4,7 @@ const Message = require('../app/controllers/message');
 const Admin = require('../app/controllers/admin');
 
 module.exports = function(app,io){
-    let users=[];
+    let ids=[];
     let userNum=0;
 
     /*pre handle user*/
@@ -52,31 +52,25 @@ module.exports = function(app,io){
         let delNum;
         userNum++;
         io.emit('online',userNum);
-        console.log('##socket-connection##',userNum);
         if(socket.request.session.user){
             user=socket.request.session.user;
-            users.push(user);
-            console.log('##socket-signin##');
-            console.log(users);
-            console.log('##socket-signin##');
+            ids.push(user._id);
+            io.emit('usersAdd',ids)
         }
         socket.on('disconnect',function(){
-            console.log('##socket-disconnect1##');
-            console.log(users);
-            console.log('##socket-disconnect1##');
             if(user){
-                users.forEach(function(_user,index){
-                    if(_user._id==user._id){
+                ids.forEach(function(id,index){
+                    if(id===user._id){
                         delNum=index;
                     }
                 });
-                users.splice(delNum,1);
+                ids.splice(delNum,1);
+                if(ids.indexOf(user._id)===-1){
+                    io.emit('usersMinus',user._id)
+                }
             }
             userNum--;
             io.emit('online',userNum);
-            console.log('##socket-disconnect2##');
-            console.log(users);
-            console.log('##socket-disconnect2##');
         });
     })
 };
