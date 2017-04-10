@@ -164,6 +164,7 @@ exports.query = function (req, res) {
     let _search = req.body.search;
     let totalPageNum;
     let pageNum=req.params.page;
+    console.log(_search);
     for (let key in _search) {
         if (_search[key] !== '') {
             if (key === 'name' || key === 'nickName') {

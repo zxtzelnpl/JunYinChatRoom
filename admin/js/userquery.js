@@ -1,5 +1,8 @@
 import $ from 'jquery'
 
+const socket=io();
+let trs=$('[class^=item-id]');
+
 $('.del').click(function (e) {
     let target = $(e.target);
     let id = target.data('id');
@@ -18,6 +21,23 @@ $('.del').click(function (e) {
         })
 });
 
+socket.on('usersAdd',function(ids){
+    trs.each(function(index,tr){
+        let id=tr.className.slice(8);
+        console.log(id);
+        if(ids.indexOf(id)>-1){
+            $(tr).children().eq(9).html('在线')
+        }
+    })
+});
+
+socket.on('usersMinus',function(id){
+    let queryClass=".item-id-"+id;
+    $(queryClass).children().eq(9).html('离线');
+});
+
+
+
 
 $('#page').find('a').click(function (e) {
     let page = e.target.innerHTML;
@@ -28,3 +48,6 @@ $('#page').find('a').click(function (e) {
     });
     form.submit()
 });
+
+
+

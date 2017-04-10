@@ -8,32 +8,47 @@ block content
         .row
             form(method="POST" action="/admin/user/query/1" target="_blank")
                 div
-                    label(for="searchName") 用户名:
+                    label(for="searchName") 用户名
                     input(id="searchName" name="search[name]" type="text")
                 div
-                    label(for="searchNickName") 昵称:
+                    label(for="searchNickName") 昵称
                     input(id="searchNickName" name="search[nickName]" type="text")
                 div
-                    label(for="searchPhone") 手机:
+                    label(for="searchPassword") 密码
+                    input(id="searchPassword" name="search[password]" type="text")
+                div
+                    label(for="searchPhone") 手机
                     input(id="searchPhone" name="search[phone]" type="text")
                 div
-                    label(for="searchEmail") 邮箱:
+                    label(for="searchEmail") 邮箱
                     input(id="searchEmail" name="search[email]" type="text")
                 div
-                    label(for="searchSex") 性别:
-                    input(id="searchSex" name="search[sex]" type="text")
+                    label(for="searchSexMale") 男
+                    input(id="searchSexMale" name="search[sex]" type="radio" value="male")
+                    label(for="searchSexFemale") 女
+                    input(id="searchSexFemale" name="search[sex]" type="radio" value="female")
                 div
-                    label(for="searchBelong") 所属公司:
-                    input(id="searchBelong" name="search[belong]" type="text")
+                    label(for="searchOn") 男
+                    input(id="searchOn" name="search[online]" type="radio" value="on")
+                    label(for="searchOff") 女
+                    input(id="searchOff" name="search[online]" type="radio" value="off")
                 div
-                    label(for="searchForbidden") 是否被禁用:
-                    input(id="searchForbidden" name="search[forbidden]" type="text")
+                    label(for="searchLevel") 等级
+                    input(id="searchLevel" name="search[level]" type="number")
                 div
-                    label(for="searchOnline") 是否在线:
-                    input(id="searchOnline" name="search[online]" type="text")
+                    label(for="searchBelong") 所属公司
+                    select(id="searchBelong" name="search[belong]")
+                        option(value="main") 总部
+                        option(value="shanghai") 上海分公司
+                        option(value="wuhan") 武汉分公司
+                        option(value="changsha") 长沙分公司
+                        option(value="shenzhen") 深圳分公司
+                        option(value="hunan") 湖南分公司
+                        option(value="he-fei") 合肥分公司
+                        option(value="guangzhou") 广州分公司
                 div
                     button.btn.btn-primary(type="submit") 查询
 
 block js
     script(src="/socket.io/socket.io.js")
-    script(src="/admin/js/search.js")
+    script(src="/admin/js/usersearch.js")
