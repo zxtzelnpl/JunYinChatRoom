@@ -1,18 +1,12 @@
 const UserModel = require('../models/user.js');
+
+
 exports.admin = function (req, res) {
     res.render('admin', {});
 };
 
 exports.signUp = function (req, res) {
     res.render('signup', {});
-};
-
-exports.logout = function (req, res) {
-
-};
-
-exports.room = function (req, res) {
-    res.render('room', {});
 };
 
 exports.userUpdate = function (req, res) {
@@ -24,11 +18,15 @@ exports.userUpdate = function (req, res) {
     });
 };
 
-exports.message = function (req, res) {
+exports.room = function (req, res) {
+    res.render('room', {});
+};
+
+exports.messageList = function (req, res) {
     res.render('message', {});
 };
 
-exports.picture = function (req, res) {
+exports.pictureList = function (req, res) {
     res.render('picture', {});
 };
 

@@ -39,9 +39,9 @@ module.exports = function(app,io){
     app.get('/admin/user/update/:id',Admin.adminRequired,Admin.userUpdate);
     app.get('/admin/user/signup',Admin.adminRequired,Admin.signUp);
 
-    app.get('/admin/message/list',Admin.adminRequired,Admin.message);
+    app.get('/admin/message/list',Admin.adminRequired,Admin.messageList);
 
-    app.get('/admin/picture/list',Admin.adminRequired,Admin.picture);
+    app.get('/admin/picture/list',Admin.adminRequired,Admin.pictureList);
 
     app.get('/admin/information/:information',Admin.adminRequired,Admin.information);
 };
