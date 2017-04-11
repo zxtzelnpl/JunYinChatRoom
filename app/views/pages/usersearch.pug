@@ -28,16 +28,17 @@ block content
                     label(for="searchSexFemale") 女
                     input(id="searchSexFemale" name="search[sex]" type="radio" value="female")
                 div
-                    label(for="searchOn") 男
-                    input(id="searchOn" name="search[online]" type="radio" value="on")
-                    label(for="searchOff") 女
-                    input(id="searchOff" name="search[online]" type="radio" value="off")
+                    label(for="searchOn") 在线
+                    input(id="searchOn" name="search[online]" type="radio" value="true")
+                    label(for="searchOff") 离线
+                    input(id="searchOff" name="search[online]" type="radio" value="false")
                 div
                     label(for="searchLevel") 等级
                     input(id="searchLevel" name="search[level]" type="number")
                 div
                     label(for="searchBelong") 所属公司
                     select(id="searchBelong" name="search[belong]")
+                        option(value="") 请选择
                         option(value="main") 总部
                         option(value="shanghai") 上海分公司
                         option(value="wuhan") 武汉分公司

@@ -167,13 +167,20 @@ exports.query = function (req, res) {
     console.log(_search);
     for (let key in _search) {
         if (_search[key] !== '') {
-            if (key === 'name' || key === 'nickName') {
+            if(key === 'online'){
+                if(_search[key]==='true'){
+                    search[key]=true
+                }else{
+                    search[key]=false
+                }
+            }else if(key === 'name' || key === 'nickName') {
                 search[key] = new RegExp(_search[key], 'gi')
             } else {
                 search[key] = _search[key]
             }
         }
     }
+    console.log(search);
 
     UserModel.count(search, function (err, count) {
         totalPageNum = Math.ceil(count / pageSize);

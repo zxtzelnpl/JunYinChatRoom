@@ -1,6 +1,5 @@
 import React from 'react';
 import $ from 'jquery';
-import socket from './../socket/socket'
 
 class Sign extends React.Component {
     constructor(props) {

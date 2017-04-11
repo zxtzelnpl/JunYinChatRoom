@@ -21,14 +21,9 @@ $('.del').click(function (e) {
         })
 });
 
-socket.on('usersAdd',function(ids){
-    trs.each(function(index,tr){
-        let id=tr.className.slice(8);
-        console.log(id);
-        if(ids.indexOf(id)>-1){
-            $(tr).children().eq(9).html('在线')
-        }
-    })
+socket.on('usersAdd',function(id){
+    let queryClass=".item-id-"+id;
+    $(queryClass).children().eq(9).html('在线');
 });
 
 socket.on('usersMinus',function(id){

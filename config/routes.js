@@ -3,74 +3,81 @@ const User = require('../app/controllers/user');
 const Message = require('../app/controllers/message');
 const Admin = require('../app/controllers/admin');
 
-module.exports = function(app,io){
-    let ids=[];
-    let userNum=0;
+const UserModule = require('../app/models/user.js');
+
+module.exports = function (app, io) {
+    let ids = [];
+    let userNum = 0;
 
     /*pre handle user*/
-    app.use(function(req,res,next){
-        app.locals.user=req.session.user;
+    app.use(function (req, res, next) {
+        app.locals.user = req.session.user;
         next();
     });
 
     /*Index*/
-    app.get('/',Index.index);
+    app.get('/', Index.index);
 
 
     /*User*/
-    app.post('/user/signin',User.signIn);
-    app.get('/user/signout',User.signOut);
+    app.post('/user/signin', User.signIn);
+    app.get('/user/signout', User.signOut);
 
 
-    app.post('/user/signup',Admin.adminRequired,User.signUp);
-    app.delete('/admin/user/delete',User.delete);
-    app.post('/admin/user/update',Admin.adminRequired,User.update);
-    app.post('/admin/user/query/:page',Admin.adminRequired,User.query);
+    app.post('/user/signup', Admin.adminRequired, User.signUp);
+    app.delete('/admin/user/delete', User.delete);
+    app.post('/admin/user/update', Admin.adminRequired, User.update);
+    app.post('/admin/user/query/:page', Admin.adminRequired, User.query);
     /*Message*/
 
 
     /*Admin*/
-    app.get('/admin',Admin.adminRequired,Admin.admin);
+    app.get('/admin', Admin.adminRequired, Admin.admin);
 
-    app.get('/admin/room',Admin.adminRequired,Admin.room);
+    app.get('/admin/room', Admin.adminRequired, Admin.room);
 
-    app.get('/admin/user/list/:page',Admin.adminRequired,User.userList);
-    app.get('/admin/user/search',Admin.adminRequired,User.search);
-    app.get('/admin/user/detail/:id',Admin.adminRequired,User.userDetail);
-    app.get('/admin/user/update/:id',Admin.adminRequired,Admin.userUpdate);
-    app.get('/admin/user/signup',Admin.adminRequired,Admin.signUp);
+    app.get('/admin/user/list/:page', Admin.adminRequired, User.userList);
+    app.get('/admin/user/search', Admin.adminRequired, User.search);
+    app.get('/admin/user/detail/:id', Admin.adminRequired, User.userDetail);
+    app.get('/admin/user/update/:id', Admin.adminRequired, Admin.userUpdate);
+    app.get('/admin/user/signup', Admin.adminRequired, Admin.signUp);
 
-    app.get('/admin/message/list',Admin.adminRequired,Admin.messageList);
+    app.get('/admin/message/list', Admin.adminRequired, Admin.messageList);
 
-    app.get('/admin/picture/list',Admin.adminRequired,Admin.pictureList);
+    app.get('/admin/picture/list', Admin.adminRequired, Admin.pictureList);
 
-    app.get('/admin/information/:information',Admin.adminRequired,Admin.information);
+    app.get('/admin/information/:information', Admin.adminRequired, Admin.information);
 
 
-    io.on('connection',function(socket){
+    io.on('connection', function (socket) {
         let user;
         let delNum;
         userNum++;
-        io.emit('online',userNum);
-        if(socket.request.session.user){
-            user=socket.request.session.user;
-            ids.push(user._id);
-            io.emit('usersAdd',ids)
+        io.emit('online', userNum);
+        if (socket.request.session.user) {
+            user = socket.request.session.user;
+
+            UserModule.findByIdAndUpdate(user._id, {$set: {online: true}}, function () {
+                ids.push(user._id);
+                io.emit('usersAdd', user._id);
+            });
         }
-        socket.on('disconnect',function(){
-            if(user){
-                ids.forEach(function(id,index){
-                    if(id===user._id){
-                        delNum=index;
+        socket.on('disconnect', function () {
+            if (user) {
+                ids.forEach(function (id, index) {
+                    if (id === user._id) {
+                        delNum = index;
                     }
                 });
-                ids.splice(delNum,1);
-                if(ids.indexOf(user._id)===-1){
-                    io.emit('usersMinus',user._id)
+                ids.splice(delNum, 1);
+                if (ids.indexOf(user._id) === -1) {
+                    UserModule.findByIdAndUpdate(user._id, {$set: {online: false}}, function () {
+                        io.emit('usersMinus', user._id)
+                    });
                 }
             }
             userNum--;
-            io.emit('online',userNum);
+            io.emit('online', userNum);
         });
     })
 };

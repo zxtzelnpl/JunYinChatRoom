@@ -16,6 +16,10 @@ let UserSchema = new mongoose.Schema({
         type: String
         , default: 0
     }
+    ,online:{
+        type:Boolean
+        ,default:false
+    }
     , createAt: {
         type: Date
         , default: Date.now
