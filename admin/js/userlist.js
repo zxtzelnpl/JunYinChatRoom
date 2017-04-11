@@ -23,10 +23,10 @@ $('.del').click(function(e){
 
 socket.on('usersAdd',function(id){
     let queryClass=".item-id-"+id;
-    $(queryClass).children().eq(9).html('在线');
+    $(queryClass).children().eq(10).html('在线');
 });
 
 socket.on('usersMinus',function(id){
     let queryClass=".item-id-"+id;
-    $(queryClass).children().eq(9).html('离线');
+    $(queryClass).children().eq(10).html('离线');
 });
