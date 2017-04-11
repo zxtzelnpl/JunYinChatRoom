@@ -33,6 +33,7 @@ module.exports = function (app, io) {
 
     /*Message*/
     app.get('/getmessage',Message.getMessage);
+    app.get('/updatemessage',Message.getMessage);
 
     /*Admin*/
     app.get('/admin', Admin.adminRequired, Admin.admin);
@@ -70,6 +71,12 @@ module.exports = function (app, io) {
             Message.save(msg,user, function (message) {
                 io.emit('chat message', message);
             });
+        });
+
+        socket.on('checkMessage',function(msg){
+            Message.checkMessage(msg,user,function(message){
+                io.emit('chat message',message);
+            })
         });
 
         socket.on('disconnect', function () {

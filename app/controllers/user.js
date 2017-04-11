@@ -99,7 +99,7 @@ exports.update = function (req, res) {
                     if (err) {
                         console.log(err);
                     }
-                    res.redirect('/admin/user/' + id)
+                    res.redirect('/admin/user/detail/' + id)
                 });
             } else {
                 if (users[0].name === _user.name) {

@@ -22,14 +22,14 @@ block content
                             tr(class="item-id-" + message._id)
                                 td #{message.from.name}
                                 td #{message.content}
-                                td #{moment(message.createAt).format('MM/DD/YYYY')}
+                                td #{moment(message.createAt).format('HH:MM-MM/DD/YYYY')}
                                 if message.verifier
                                     td #{message.verifier.name}
                                     td #{moment(message.updateAt).format('MM/DD/YYYY-HH:MM')}
                                 else
                                     td 暂未审核
                                     td 暂未审核
-                                td: a(target="_blank", href= "/admin/user/update/" + message._id) 审核
+                                td: a(target="_blank", href= "/admin/message/check/" + message._id) 审核
                                 td: button.btn.btn-danger.del(type="button", data-id=message._id) 删除
 
 block js
