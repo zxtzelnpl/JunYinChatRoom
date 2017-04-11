@@ -10,7 +10,7 @@ let MessageSchema = new Schema({
         , ref: 'User'
     }
     , content: String
-    ,createAt: {
+    , createAt: {
         type: Date
         , default: Date.now
     }
@@ -29,11 +29,11 @@ let MessageSchema = new Schema({
 });
 
 MessageSchema.pre('save', function (next) {
-    const user = this;
-    if (user.isNew) {
-        user.meta.createAt = this.meta.updateAt = Date.now()
+    const message = this;
+    if (message.isNew) {
+        message.createAt = message.updateAt = Date.now
     } else {
-        user.meta.updateAt = Date.now();
+        message.updateAt = Date.now;
     }
     next();
 });

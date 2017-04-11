@@ -1,12 +1,12 @@
-const Message = require('../models/message');
+const MessageModel = require('../models/message');
 const PageSize = 30;
 
 exports.index = function (req, res) {
     let messagesStr;
-    Message
-        .find({check: true})
+    let title='君银直播室';
+    MessageModel
+        .find({/*check: false*/},['from','content','createAt'])
         .sort({_id: -1})
-        .select('from content meta')
         .skip(0)
         .limit(PageSize)
         .populate('from', 'name')
@@ -16,7 +16,8 @@ exports.index = function (req, res) {
             }
             messagesStr = JSON.stringify(messages);
             res.render('index', {
-                messagesStr
+                messagesStr,
+                title
             });
         });
 };

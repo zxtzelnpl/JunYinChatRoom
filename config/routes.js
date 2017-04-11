@@ -4,6 +4,7 @@ const Message = require('../app/controllers/message');
 const Admin = require('../app/controllers/admin');
 
 const UserModule = require('../app/models/user.js');
+const MessageModule = require('../app/models/message.js');
 
 module.exports = function (app, io) {
     let ids = [];
@@ -28,8 +29,10 @@ module.exports = function (app, io) {
     app.delete('/admin/user/delete', User.delete);
     app.post('/admin/user/update', Admin.adminRequired, User.update);
     app.post('/admin/user/query/:page', Admin.adminRequired, User.query);
-    /*Message*/
 
+
+    /*Message*/
+    app.get('/getmessage',Message.getMessage);
 
     /*Admin*/
     app.get('/admin', Admin.adminRequired, Admin.admin);
@@ -42,7 +45,7 @@ module.exports = function (app, io) {
     app.get('/admin/user/update/:id', Admin.adminRequired, Admin.userUpdate);
     app.get('/admin/user/signup', Admin.adminRequired, Admin.signUp);
 
-    app.get('/admin/message/list', Admin.adminRequired, Admin.messageList);
+    app.get('/admin/message/list', Admin.adminRequired, Message.messageList);
 
     app.get('/admin/picture/list', Admin.adminRequired, Admin.pictureList);
 
@@ -62,6 +65,13 @@ module.exports = function (app, io) {
                 io.emit('usersAdd', user._id);
             });
         }
+
+        socket.on('chat message', function (msg) {
+            Message.save(msg,user, function (message) {
+                io.emit('chat message', message);
+            });
+        });
+
         socket.on('disconnect', function () {
             if (user) {
                 ids.forEach(function (id, index) {

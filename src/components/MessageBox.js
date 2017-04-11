@@ -6,7 +6,7 @@ function Message({message}) {
   return (
     <li className="message">
       <div className="name">{message.from.name}:</div>
-      <div className="time">{new Date(message.meta.createAt).toLocaleString()}</div>
+      <div className="time">{new Date(message.createAt).toLocaleString()}</div>
       <div className="content">{message.content}</div>
     </li>
   )
@@ -105,7 +105,7 @@ class MessageBox extends React.Component {
   }
 
   render() {
-    let messages = this.props.messages.sort(function(a,b){return new Date(a.meta.createAt).getTime()-new Date(b.meta.createAt).getTime()});
+    let messages = this.props.messages.sort(function(a,b){return new Date(a.createAt).getTime()-new Date(b.createAt).getTime()});
 
     let messagesBox = messages.map((message, index) => (
       <Message key={index} message={message}/>

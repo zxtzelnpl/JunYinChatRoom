@@ -6,12 +6,11 @@ const PageSize = 30;
 exports.getMessage = function (req, res) {
     let page = req.query.page;
     MessageModel
-        .find({check: true})
+        .find({},['from','content','createAt'])
         .sort({_id: -1})
         .skip(page * PageSize)
         .limit(PageSize)
         .populate('from', 'name')
-        .populate('verifier', 'name')
         .exec(function (err, messages) {
             if (err) {
                 console.log(err)
@@ -21,22 +20,52 @@ exports.getMessage = function (req, res) {
 };
 /**get聊天信息end*/
 
+/**get聊天信息start*/
+exports.messageList = function (req, res) {
+    let page = req.query.page;
+    MessageModel
+        .find({})
+        .sort({_id: -1})
+        // .skip(page * PageSize)
+        // .limit(PageSize)
+        .populate('from', 'name')
+        .populate('verifier', 'name')
+        .exec(function (err, messages) {
+            if (err) {
+                console.log(err)
+            }
+            console.log(messages);
+            res.render('messagelist',{
+                title:'聊天列表'
+                ,messages
+            });
+        })
+};
+/**get聊天信息end*/
+
 
 /**save聊天信息start*/
-exports.saveMessage = function (req, res) {
-    let _message, message;
-    _message = req.query;
-    _message.from = req.session.user._id;
-    message = new MessageModel(_message);
+exports.save = function (msg, user, next) {
+    let _message = {
+        from:{}
+    };
+    _message.from = user._id;
+    _message.content = msg;
+
+    let message = new MessageModel(_message);
     message.save(function (err, message) {
         if (err) {
-            console.log(err)
+            console.log(err);
         }
-        res.json({
-            state: 'success'
+        next({
+            from:{
+                name:user.name
+            }
+            ,content:msg
+            ,createAt:message.createAt
         })
     })
-};
+}
 /**save聊天信息end*/
 
 
@@ -62,7 +91,7 @@ exports.checkMessage = function (req, res) {
 /**update聊天信息start*/
 exports.upateMessage = function (req, res) {
     let message_id, user_id;
-    message_id=req.query._id;
+    message_id = req.query._id;
     user_id = req.session.user._id;
     MessageModel.findById(message_id, function (err, message) {
         if (err) {
@@ -85,13 +114,13 @@ exports.upateMessage = function (req, res) {
 /**delete聊天信息start*/
 exports.deleteMessage = function (req, res) {
     let message_id;
-    message_id=req.query._id;
-    MessageModel.findByIdAndRemove(message_id,function(err){
-        if(err){
+    message_id = req.query._id;
+    MessageModel.findByIdAndRemove(message_id, function (err) {
+        if (err) {
             console.log(err);
         }
         res.json({
-            state:'success'
+            state: 'success'
         })
     })
 };
