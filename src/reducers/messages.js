@@ -5,7 +5,7 @@ const messages = (state = INITIAL_STATE_MES, action) => {
     }
     switch (action.type) {
         case 'ADD':
-            if(typeof action.messages==='array'){
+            if(action.messages.length){
                 action.messages.forEach(function(message){
                     newState.set(message);
                 });

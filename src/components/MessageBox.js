@@ -72,8 +72,12 @@ class MessageBox extends React.Component {
             }
             , success: (messages) => {
                 me.pageLoad = true;
-                me.props.getAll(messages);
-                me.page++;
+                if(messages.length>0){
+                    me.props.getAll(messages);
+                    me.page++;
+                }else{
+                    alert('已经加载完所有数据')
+                }
             }
             , error: () => {
                 console.log('连接失败，请稍后再试')

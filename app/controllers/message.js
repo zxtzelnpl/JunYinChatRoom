@@ -17,6 +17,7 @@ exports.getMessage = function (req, res) {
                 if (err) {
                     console.log(err)
                 }
+                console.log(messages);
                 res.json(messages);
             })
     } else {
