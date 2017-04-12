@@ -1,13 +1,14 @@
 const MessageModel = require('../models/message.js');
+const UserModel = require('../models/user.js');
 const PageSize = 30;
 
 
 /**get聊天信息start*/
 exports.getMessage = function (req, res) {
     let page = req.query.page;
-    if(req.session.user&&parseInt(req.session.user.level>999)){
+    if (req.session.user && parseInt(req.session.user.level) > 999) {
         MessageModel
-            .find({},['from','content','createAt','check'])
+            .find({}, ['_id', 'from', 'content', 'createAt', 'check'])
             .sort({_id: -1})
             .skip(page * PageSize)
             .limit(PageSize)
@@ -18,9 +19,9 @@ exports.getMessage = function (req, res) {
                 }
                 res.json(messages);
             })
-    }else{
+    } else {
         MessageModel
-            .find({'check':true},['from','content','createAt'])
+            .find({'check': true}, ['_id', 'from', 'content', 'createAt'])
             .sort({_id: -1})
             .skip(page * PageSize)
             .limit(PageSize)
@@ -49,10 +50,9 @@ exports.messageList = function (req, res) {
             if (err) {
                 console.log(err)
             }
-            console.log(messages);
-            res.render('messagelist',{
-                title:'聊天列表'
-                ,messages
+            res.render('messagelist', {
+                title: '聊天列表'
+                , messages
             });
         })
 };
@@ -62,7 +62,7 @@ exports.messageList = function (req, res) {
 /**save聊天信息start*/
 exports.save = function (msg, user, next) {
     let _message = {
-        from:{}
+        from: {}
     };
     _message.from = user._id;
     _message.content = msg;
@@ -72,38 +72,71 @@ exports.save = function (msg, user, next) {
         if (err) {
             console.log(err);
         }
-        next({
-            from:{
-                name:user.name
+        next(
+            {
+                _id: message._id
+                , from: {
+                name: user.name
             }
-            ,content:msg
-            ,createAt:message.createAt
-        })
+                , content: msg
+                , createAt: message.createAt
+            }
+        )
     })
-}
+};
 /**save聊天信息end*/
 
 
 /**check聊天信息start*/
-exports.checkMessage = function (msg, user,next) {
-    let message_id =msg;
-    let verifier=user._id;
-    MessageModel.findByIdAndUpdate(message_id,{'#set':{'check':true,'verifier':verifier}},function(err,message){
-        next(message)
-    })
+exports.checkMessage = function (id, user, next) {
+    let _id = id;
+    let verifier = user._id;
+    // MessageModel.findByIdAndUpdate(_id, {$set: {check: true, verifier: verifier}}, function (err, message) {
+    //     if (err) {
+    //         console.log(err)
+    //     }
+    //     console.log('getCheckMessage2');
+    //     console.log(message);
+    //     next(message)
+    // })
+    MessageModel.findOne({_id:id})
+        .populate('from','name')
+        .exec(function(err,message){
+            if(err){console.log(err)}
+            message.check=true;
+            message.verifier=user._id;
+            message.save(function(err){
+                if(err){
+                    console.log(err);
+                }
+                console.log(message);
+                next(message)
+            })
+        });
+    // MessageModel.findOne({_id:id})
+    //     .populate('from', 'name')
+    //     .exec(function (err, message) {
+    //         message.check = true;
+    //         message.verifier = user._id;
+    //         message.save(function (err) {
+    //             if (err) {
+    //                 console.log(err);
+    //             }
+    //             console.log(message);
+    //             next(message)
+    //         })
+    //     })
 };
 /**check聊天信息end*/
 
 /**delete聊天信息start*/
-exports.deleteMessage = function (req, res) {
-    let message_id= req.query.id;
-    MessageModel.findByIdAndRemove(message_id, function (err) {
+exports.delMessage = function (id, user, next) {
+    let _id = id;
+    MessageModel.findByIdAndRemove(_id, function (err) {
         if (err) {
             console.log(err);
         }
-        res.json({
-            state: 'success'
-        })
+        next(id)
     })
 };
 /**delete聊天信息end*/

@@ -67,15 +67,22 @@ module.exports = function (app, io) {
             });
         }
 
-        socket.on('chat message', function (msg) {
+        socket.on('message', function (msg) {
             Message.save(msg,user, function (message) {
-                io.emit('chat message', message);
+                io.emit('message', message);
+                socket.emit('selfBack',message);
             });
         });
 
         socket.on('checkMessage',function(msg){
             Message.checkMessage(msg,user,function(message){
-                io.emit('chat message',message);
+                io.emit('checkedMessage',message);
+            })
+        });
+
+        socket.on('delMessage',function(msg){
+            Message.delMessage(msg,user,function(message){
+                io.emit('delMessage',message)
             })
         });
 

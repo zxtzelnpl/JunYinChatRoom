@@ -18,10 +18,26 @@ import socket from './socket/socket';
 
 const store = createStore(reducer);
 
-socket.on('chat message',function(msg){
-  console.log(msg);
-  store.dispatch(messages(msg));
-});
+
+if(iUser.level<999){
+    socket.on('checkedMessage',function(msg){
+        store.dispatch(messages(msg,'CHECK'));
+    });
+    socket.on('selfBack',function(msg){
+        store.dispatch(messages(msg,'BACK'));
+    })
+}else{
+    socket.on('message',function(msg){
+        store.dispatch(messages(msg,'ADD'));
+    });
+    socket.on('checkedMessage',function(id){
+        store.dispatch(messages(id,'CHECK'))
+    });
+    socket.on('delMessage',function(id){
+        store.dispatch(messages({_id:id},'DEL'))
+    })
+}
+
 
 socket.on('online',function(msg){
   store.dispatch(onlines(msg))

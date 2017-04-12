@@ -8,7 +8,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   getAll: (datas) => {
-    dispatch(messages(datas))
+    dispatch(messages(datas,'ADD'))
   }
 });
 

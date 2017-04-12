@@ -10,7 +10,7 @@ exports.index = function (req, res) {
     }
     if(rank>999){
         MessageModel
-            .find({/*check: false*/},['from','content','createAt','check'])
+            .find({/*check: false*/},['_id','from','content','createAt','check'])
             .sort({_id: -1})
             .skip(0)
             .limit(PageSize)
@@ -21,13 +21,13 @@ exports.index = function (req, res) {
                 }
                 messagesStr = JSON.stringify(messages);
                 res.render('index', {
-                    messagesStr,
+                    messages:messagesStr,
                     title
                 });
             });
     }else{
         MessageModel
-            .find({check: true},['from','content','createAt'])
+            .find({check: true},['_id','from','content','createAt'])
             .sort({_id: -1})
             .skip(0)
             .limit(PageSize)

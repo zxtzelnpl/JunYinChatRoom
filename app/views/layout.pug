@@ -6,19 +6,66 @@ html
         block css
         include includes/head
     body
-        input(id="INITIAL_STATE_MES",type="hidden",value=messagesStr)
         if user
             input(id="INITIAL_STATE_LOG",type="hidden",value=user.name)
+            script.
+                var iUser = {
+                    name: "#{user.name}",
+                    level: #{user.level}
+                };
+        else
+            script.
+                var iUser = {
+                    name: "游客",
+                    level: 0
+                };
+
         script.
-            var iUser={
-                name:"#{user.name}",
-                level:#{user.level}
-            };
-
-            //var iInfo={};
-            //
-            //iInfo.messageHeader = "#{messagesStr}".replace(/&quot;/gi,'\"');
-            //console.log(iInfo.messageHeader);
-
+            function iMap() {
+                Object.defineProperty(this, 'length', {
+                    enumerable: false,
+                    configurable: false,
+                    writable: true,
+                    value: 0
+                })
+            }
+            Object.defineProperties(iMap.prototype, {
+                'set': {
+                    enumerable: false,
+                    configurable: false,
+                    writable: false,
+                    value: function (obj) {
+                        if (this[obj._id] === undefined) {
+                            this.length++;
+                        }
+                        this[obj._id] = obj;
+                    }
+                },
+                'del': {
+                    enumerable: false,
+                    configurable: false,
+                    writable: false,
+                    value: function (obj) {
+                        if (this[obj._id]) {
+                            this[obj._id] = undefined;
+                            delete this[obj._id];
+                            this.length--;
+                        }
+                    }
+                }
+            });
+            var INITIAL_STATE_MES_ORIGN = JSON.parse("#{messages}".replace(/&quot;/ig, '\"'));
+            var INITIAL_STATE_MES = new iMap()
+            INITIAL_STATE_MES_ORIGN.forEach(function(message,index){
+                INITIAL_STATE_MES.set(message);
+            })
+            console.log(INITIAL_STATE_MES)
 
         block content
+
+
+            //var INITIAL_STATE_MES = new iMap();
+            //INITIAL_STATE_MES_ORIGN.forEach(function (message) {
+            //INITIAL_STATE_MES.set(message);
+            //})
+            //console.log(INITIAL_STATE_MES)

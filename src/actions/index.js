@@ -8,8 +8,8 @@ export const log = (name) =>({
     name
 });
 
-export const messages = (messages) => ({
-  type:'MESS',
+export const messages = (messages,type) => ({
+  type,
   messages
 });
 

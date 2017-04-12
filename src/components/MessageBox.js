@@ -1,19 +1,25 @@
 import React from 'react';
 import $ from 'jquery';
 import IScroll from 'iscroll';
+import socket from '../socket/socket';
 
-function Message({message}) {
+function Message({message,check,del}) {
     let DOMStr;
     let DOMcheck;
+    let ClassStr='item-'+message._id;
     if(iUser.level>999){
-        if(iUser.check){
-            DOMcheck=(<hr/>);
+        if(message.check){
+            DOMcheck=(
+                <div className="manage">
+                    <a className="del" onClick={del.bind(null,message._id)}>删除</a>
+                </div>
+            );
         }else{
             DOMcheck=
                 (
                     <div className="manage">
-                        <a className="check">审核</a>
-                        <a className="del">删除</a>
+                        <a className="check" onClick={check.bind(null,message._id)}>审核</a>
+                        <a className="del" onClick={del.bind(null,message._id)}>删除</a>
                     </div>
                 )
         }
@@ -46,10 +52,15 @@ class MessageBox extends React.Component {
         this.canMove = 0;
         this.page = 1;
         this.pageLoad = false;
+        this.check=function(id){
+            socket.emit('checkMessage',id)
+        };
+        this.del=function(id){
+            socket.emit('delMessage',id)
+        };
     }
 
     getMoreMessages() {
-        console.log('getMoreMessages');
         let me = this;
         let page = me.page;
 
@@ -133,12 +144,18 @@ class MessageBox extends React.Component {
     }
 
     render() {
-        let messages = this.props.messages.sort(function (a, b) {
+        let me=this;
+        console.log(this.props.messages);
+        let messages=[];
+        for(let key in this.props.messages){
+            messages.push(this.props.messages[key])
+        }
+        messages.sort(function (a, b) {
             return new Date(a.createAt).getTime() - new Date(b.createAt).getTime()
         });
 
         let messagesBox = messages.map((message, index) => (
-            <Message key={index} message={message}/>
+            <Message key={index} message={message} check={me.check} del={me.del}/>
         ));
 
         return (

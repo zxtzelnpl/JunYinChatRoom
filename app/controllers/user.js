@@ -82,11 +82,9 @@ exports.signOut = function (req, res) {
 
 /**修改start*/
 exports.update = function (req, res) {
-    console.log(req.body.user);
     let _user = req.body.user;
     let id = _user._id;
     delete _user._id;
-    console.log(_user);
     UserModel
         .where('_id').ne(id)
         .or([{'name': _user.name}, {'phone': _user.phone}])
