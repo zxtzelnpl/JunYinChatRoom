@@ -89,16 +89,6 @@ exports.save = function (msg, user, next) {
 
 /**check聊天信息start*/
 exports.checkMessage = function (id, user, next) {
-    let _id = id;
-    let verifier = user._id;
-    // MessageModel.findByIdAndUpdate(_id, {$set: {check: true, verifier: verifier}}, function (err, message) {
-    //     if (err) {
-    //         console.log(err)
-    //     }
-    //     console.log('getCheckMessage2');
-    //     console.log(message);
-    //     next(message)
-    // })
     MessageModel.findOne({_id:id})
         .populate('from','name')
         .exec(function(err,message){
@@ -109,34 +99,21 @@ exports.checkMessage = function (id, user, next) {
                 if(err){
                     console.log(err);
                 }
-                console.log(message);
                 next(message)
             })
         });
-    // MessageModel.findOne({_id:id})
-    //     .populate('from', 'name')
-    //     .exec(function (err, message) {
-    //         message.check = true;
-    //         message.verifier = user._id;
-    //         message.save(function (err) {
-    //             if (err) {
-    //                 console.log(err);
-    //             }
-    //             console.log(message);
-    //             next(message)
-    //         })
-    //     })
 };
 /**check聊天信息end*/
 
 /**delete聊天信息start*/
 exports.delMessage = function (id, user, next) {
-    let _id = id;
-    MessageModel.findByIdAndRemove(_id, function (err) {
+    MessageModel.findByIdAndRemove(id, function (err) {
         if (err) {
             console.log(err);
         }
-        next(id)
+        next({
+            _id:id
+        })
     })
 };
 /**delete聊天信息end*/

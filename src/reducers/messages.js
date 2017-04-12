@@ -1,32 +1,27 @@
 const messages = (state = INITIAL_STATE_MES, action) => {
     let newState=new iMap();
+    for(let key in state){
+        newState.set(state[key])
+    }
     switch (action.type) {
         case 'ADD':
-            for(let key in state){
-                newState.set(state[key])
+            if(typeof action.messages==='array'){
+                action.messages.forEach(function(message){
+                    newState.set(message);
+                });
+            }else{
+                newState.set(action.messages);
             }
-            action.messages.forEach(function(message){
-                newState.set(message);
-            });
-            console.log(newState);
             return newState;
         case 'CHECK':
-            for(let i=0;i<state.length;i++){
-                if(state[i]._id===action.messages._id){
-                    state[i].check=true;
-                }
-                newState[i]=state[i];
-            }
+            newState.set(action.messages);
             return newState;
         case 'DEL':
-            for(let i=0;i<state.length;i++){
-                if(state[i]._id!==action.messages._id){
-                    newState.push(state[i]);
-                }
-            }
+            newState.del(action.messages);
             return newState;
         case 'BACK':
-            return state.concat(action.messages);
+            newState.set(action.messages);
+            return newState;
         default:
             return state
     }

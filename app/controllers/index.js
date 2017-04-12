@@ -38,7 +38,7 @@ exports.index = function (req, res) {
                 }
                 messagesStr = JSON.stringify(messages);
                 res.render('index', {
-                    messagesStr,
+                    messages:messagesStr,
                     title
                 });
             });
