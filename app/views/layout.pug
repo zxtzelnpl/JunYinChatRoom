@@ -55,7 +55,7 @@ html
                     }
                 }
             });
-            var INITIAL_STATE_MES_ORIGN = "#{messages}"?JSON.parse("#{messages}".replace(/&quot;/ig, '\"')):[];
+            var INITIAL_STATE_MES_ORIGN = ("#{messages}")?JSON.parse(("#{messages}".replace(/&quot;/ig, '\"'))):[];
             var INITIAL_STATE_MES = new iMap()
             INITIAL_STATE_MES_ORIGN.forEach(function(message){
                 INITIAL_STATE_MES.set(message);

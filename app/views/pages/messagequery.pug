@@ -1,7 +1,7 @@
 extends ../admin/layout
 
 block css
-    link(rel="stylesheet",href="/css/admin/message.css")
+    link(rel="stylesheet" href="/css/admin/user.css")
 
 block content
     .container
@@ -33,12 +33,16 @@ block content
                                     td: button.btn.btn-success.success(type="button", data-id=message._id) 审核
                                 td: button.btn.btn-danger.del(type="button", data-id=message._id) 删除
         .row
+            form(method="POST" action="/admin/message/query/" id="search")
+                each val,key in search
+                    input(type="hidden" value=val name="search["+key+"]")
+            - var n=1
             div
                 ul#page
-                    - var n=1
                     while n <= totalPageNum
-                        li: a(href="/admin/message/list/" + n)=n++
+                        li: a(href="javascript:void(0)")=n++
+
 
 block js
     script(src="/socket.io/socket.io.js")
-    script(src="/admin/js/messagelist.js")
+    script(src="/admin/js/messagequery.js")

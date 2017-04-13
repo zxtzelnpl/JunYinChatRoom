@@ -112,7 +112,7 @@ exports.update = function (req, res) {
 
 /**列表start*/
 exports.userList = function (req, res) {
-    let pageNum = req.params.page || 1;
+    let pageNum = req.params.page;
     let totalPageNum;
     let query = UserModel.find({});
     query.count(function (err, count) {
@@ -198,26 +198,6 @@ exports.query = function (req, res) {
             });
     });
 
-
-    // UserModel
-    //     .where('name').ne('zxt')
-    //     .where('phone').nin(['1111','111'])
-    //     .exec(function(err,users){
-    //         res.render('user', {
-    //             title:'管理用户列表-查询结果'
-    //             ,users:users
-    //         });
-    //     });
-
-    // UserModel
-    //     .where('_id').ne('58e75319ae03d7400c7d8403')
-    //     .or([{'name':'z'},{'phone':'11'}])
-    //     .exec(function(err,users){
-    //         res.render('user', {
-    //             title:'管理用户列表-查询结果'
-    //             ,users:users
-    //         });
-    //     });
 };
 /**查询结果end*/
 

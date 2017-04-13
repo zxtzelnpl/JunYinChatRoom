@@ -25,7 +25,7 @@ class Input extends React.Component {
         e.preventDefault();
         let name = document.querySelector('.signIn>span') ? document.querySelector('.signIn>span').innerHTML : undefined;
         if (name) {
-            let content = this.textarea.value;
+            let content = this.textarea.value.replace(/\s/g, "");
             socket.emit('message', content);
         } else {
             alert('登录后可发送信息');
@@ -39,7 +39,7 @@ class Input extends React.Component {
         if (e.keyCode === 13&&e.ctrlKey) {
             let name = document.querySelector('.signIn>span') ? document.querySelector('.signIn>span').innerHTML : undefined;
             if (name) {
-                let content = this.textarea.value;
+                let content = this.textarea.value.replace(/\s/g, "");
                 socket.emit('message', content);
             } else {
                 alert('登录后可发送信息');

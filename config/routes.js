@@ -24,16 +24,13 @@ module.exports = function (app, io) {
     app.post('/user/signin', User.signIn);
     app.get('/user/signout', User.signOut);
 
-
     app.post('/user/signup', Admin.adminRequired, User.signUp);
-    app.delete('/admin/user/delete', User.delete);
-    app.post('/admin/user/update', Admin.adminRequired, User.update);
-    app.post('/admin/user/query/:page', Admin.adminRequired, User.query);
+
 
 
     /*Message*/
     app.get('/getmessage',Message.getMessage);
-    app.get('/updatemessage',Message.getMessage);
+
 
     /*Admin*/
     app.get('/admin', Admin.adminRequired, Admin.admin);
@@ -45,8 +42,13 @@ module.exports = function (app, io) {
     app.get('/admin/user/detail/:id', Admin.adminRequired, User.userDetail);
     app.get('/admin/user/update/:id', Admin.adminRequired, Admin.userUpdate);
     app.get('/admin/user/signup', Admin.adminRequired, Admin.signUp);
+    app.delete('/admin/user/delete', User.delete);
+    app.post('/admin/user/update', Admin.adminRequired, User.update);
+    app.post('/admin/user/query/:page', Admin.adminRequired, User.query);
 
-    app.get('/admin/message/list', Admin.adminRequired, Message.messageList);
+    app.get('/admin/message/list/:page', Admin.adminRequired, Message.messageList);
+    app.get('/admin/message/search', Admin.adminRequired,Message.search);
+    app.post('/admin/message/query/:page', Admin.adminRequired, Message.query);
 
     app.get('/admin/picture/list', Admin.adminRequired, Admin.pictureList);
 
@@ -75,8 +77,8 @@ module.exports = function (app, io) {
         });
 
         socket.on('checkMessage',function(msg){
-            Message.checkMessage(msg,user,function(message){
-                io.emit('checkedMessage',message);
+            Message.checkMessage(msg,user,function(message,checker){
+                io.emit('checkedMessage',message,checker);
             })
         });
 
