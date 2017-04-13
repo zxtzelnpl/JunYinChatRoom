@@ -35,3 +35,8 @@ socket.on('checkedMessage', function (message,checker) {
     tds.eq(3).html(checker);
     tds.eq(4).html(time);
 });
+
+socket.emit('test','aaaaaa');
+socket.on('test',function(msg){
+    console.log(msg);
+});

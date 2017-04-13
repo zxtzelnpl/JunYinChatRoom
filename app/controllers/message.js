@@ -158,6 +158,7 @@ exports.query = function (req, res) {
                 search[key] = new RegExp(_search[key], 'gi')
             }
             else if(key === 'timeStart'){
+                _search[key]+=' 00:01';
                 search['createAt']={
                     '$gte': new Date(_search[key])
                 }
@@ -180,6 +181,7 @@ exports.query = function (req, res) {
             }
         }
     }
+    console.log(search);
     if (_search['name'] !== '') {
         UserModel.findOne({name: _search['name']}, function (err, user) {
             if (err) {
@@ -242,7 +244,10 @@ exports.query = function (req, res) {
 
 /**test聊天信息start*/
 exports.test = function (msg) {
+    console.log('##########');
     console.log(msg);
-    console.log(this)
+    console.log(this.request.session.user);
+    this.emit('test','bbbbbbb');
+    console.log('##########')
 };
 /**test聊天信息end*/

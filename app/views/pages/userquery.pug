@@ -47,7 +47,7 @@ block content
                     input(type="hidden" value=val name="search["+key+"]")
             - var n=1
             div
-                ul#page
+                ul#page.pagination
                     while n <= pageCount
                         li: a(href="javascript:void(0)")=n++
 

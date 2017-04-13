@@ -43,7 +43,7 @@ block content
                                 td: button.btn.btn-danger.del(type="button", data-id=item._id) 删除
         .row
             div
-                ul#page
+                ul#page.pagination
                     - var n=1
                     while n <= pageCount
                         li: a(href="/admin/user/list/"+n)=n++

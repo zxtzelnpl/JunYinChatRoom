@@ -105,5 +105,7 @@ module.exports = function (app, io) {
             userNum--;
             io.emit('online', userNum);
         });
+
+        socket.on('test',Message.test)
     })
 };

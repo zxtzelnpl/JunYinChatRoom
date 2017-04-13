@@ -150,7 +150,7 @@ exports.userDetail = function (req, res) {
 /**查询首页start*/
 exports.search = function (req, res) {
     res.render('usersearch', {
-            title: '查询'
+            title: '用户查询'
         }
     )
 };
