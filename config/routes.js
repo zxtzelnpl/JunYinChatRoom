@@ -24,19 +24,15 @@ module.exports = function (app, io) {
     app.post('/user/signin', User.signIn);
     app.get('/user/signout', User.signOut);
 
-    app.post('/user/signup', Admin.adminRequired, User.signUp);
-
-
-
     /*Message*/
     app.get('/getmessage',Message.getMessage);
 
 
     /*Admin*/
     app.get('/admin', Admin.adminRequired, Admin.admin);
-
     app.get('/admin/room', Admin.adminRequired, Admin.room);
 
+    /*Admin-User*/
     app.get('/admin/user/list/:page', Admin.adminRequired, User.userList);
     app.get('/admin/user/search', Admin.adminRequired, User.search);
     app.get('/admin/user/detail/:id', Admin.adminRequired, User.userDetail);
@@ -45,16 +41,20 @@ module.exports = function (app, io) {
     app.delete('/admin/user/delete', User.delete);
     app.post('/admin/user/update', Admin.adminRequired, User.update);
     app.post('/admin/user/query/:page', Admin.adminRequired, User.query);
+    app.post('/user/signup', Admin.adminRequired, User.signUp);
 
+    /*Admin-Message*/
     app.get('/admin/message/list/:page', Admin.adminRequired, Message.messageList);
     app.get('/admin/message/search', Admin.adminRequired,Message.search);
     app.post('/admin/message/query/:page', Admin.adminRequired, Message.query);
 
+    /*Admin-Picture*/
     app.get('/admin/picture/list', Admin.adminRequired, Admin.pictureList);
 
+    /*Information*/
     app.get('/admin/information/:information', Admin.adminRequired, Admin.information);
 
-
+    /*socket.io*/
     io.on('connection', function (socket) {
         let user;
         let delNum;
@@ -106,6 +106,6 @@ module.exports = function (app, io) {
             io.emit('online', userNum);
         });
 
-        socket.on('test',Message.test)
+        // socket.on('test',Message.test)
     })
 };

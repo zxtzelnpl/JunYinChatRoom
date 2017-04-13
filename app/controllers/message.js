@@ -243,11 +243,11 @@ exports.query = function (req, res) {
 
 
 /**test聊天信息start*/
-exports.test = function (msg) {
-    console.log('##########');
-    console.log(msg);
-    console.log(this.request.session.user);
-    this.emit('test','bbbbbbb');
-    console.log('##########')
-};
+// exports.test = function (msg) {
+//     console.log('##########');
+//     console.log(msg);
+//     console.log(this.request.session.user);
+//     this.emit('test','bbbbbbb');
+//     console.log('##########')
+// };
 /**test聊天信息end*/

@@ -205,7 +205,7 @@ exports.query = function (req, res) {
 /**删除start*/
 exports.delete = function (req, res) {
     let id = req.query.id;
-    UserModel.findByIdAndRemove(id, function (err, back) {
+    UserModel.findByIdAndRemove(id, function (err) {
         if (err) {
             console.log(err)
         }
