@@ -87,7 +87,7 @@ class Banner extends React.Component {
     let Pics = images.map((value, index) =>
       <div
         className="carouselBox"
-        key={value.position+index}
+        key={index}
       >
         <img
           src={value.src}

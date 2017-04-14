@@ -17,6 +17,7 @@ exports.index = function (req, res) {
             .limit(PageSize)
             .populate('from', 'name')
             .exec(function (err, messages) {
+                let messagesStr=JSON.stringify(messages);
                 PictureModel
                     .find({room: 'shanghai'},['-_id','urlB','position','urlBack','rank','alt'])
                     .exec(function (err, pictures) {
@@ -39,6 +40,7 @@ exports.index = function (req, res) {
             .limit(PageSize)
             .populate('from', 'name')
             .exec(function (err, messages) {
+                let messagesStr=JSON.stringify(messages);
                 PictureModel
                     .find({room: 'shanghai'},['-_id','urlB','position','urlBack','rank','alt'])
                     .exec(function (err, pictures) {
