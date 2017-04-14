@@ -1,6 +1,9 @@
+const multiparty=require('connect-multiparty');
+
 const Index = require('../app/controllers/index');
 const User = require('../app/controllers/user');
 const Message = require('../app/controllers/message');
+const Picture = require('../app/controllers/picture');
 const Admin = require('../app/controllers/admin');
 
 const UserModule = require('../app/models/user.js');
@@ -49,7 +52,9 @@ module.exports = function (app, io) {
     app.post('/admin/message/query/:page', Admin.adminRequired, Message.query);
 
     /*Admin-Picture*/
-    app.get('/admin/picture/list/:room', Admin.adminRequired, Admin.pictureList);
+    app.get('/admin/picture/room/:room', Admin.adminRequired, Picture.pictureList);
+    app.get('/admin/picture/upload', Admin.adminRequired, Picture.pictureUpload);
+    app.post('/picture/update', Admin.adminRequired, multiparty(),Picture.savePic,Picture.update);
 
     /*Information*/
     app.get('/admin/information/:information', Admin.adminRequired, Admin.information);

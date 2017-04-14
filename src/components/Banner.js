@@ -3,19 +3,27 @@ import React from 'react';
 //let renderI=0;
 
 let images = [
-  {
-    src: '/images/video/carousel1.jpg'
-    , alt: 'carousel1'
-  }
-  , {
-    src: '/images/video/carousel2.jpg'
-    , alt: 'carousel2'
-  }
-  , {
-    src: '/images/video/carousel3.jpg'
-    , alt: 'carousel3'
-  }
+  // {
+  //   src: '/images/video/carousel1.jpg'
+  //   , alt: 'carousel1'
+  // }
+  // , {
+  //   src: '/images/video/carousel2.jpg'
+  //   , alt: 'carousel2'
+  // }
+  // , {
+  //   src: '/images/video/carousel3.jpg'
+  //   , alt: 'carousel3'
+  // }
 ];
+
+iRoom.pictures.forEach(function(pic){
+    if(pic.position==='carousel')
+    images.push({
+        src:'/upload/'+pic.urlBack,
+        alt:pic.alt
+    })
+});
 
 class Banner extends React.Component {
   constructor(props) {

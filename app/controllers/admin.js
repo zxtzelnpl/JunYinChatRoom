@@ -10,10 +10,6 @@ exports.messageList = function (req, res) {
     res.render('message', {});
 };
 
-exports.pictureList = function (req, res) {
-    res.render('picture', {});
-};
-
 exports.adminRequired=function(req,res,next){
     next()
 };

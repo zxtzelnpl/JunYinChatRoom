@@ -12,6 +12,7 @@ let PictureSchema = new Schema({
         type: String
     },
     alt: String,
+    content: String,
     url: String,
     urlBack: String,
     rank: Number,
@@ -38,3 +39,5 @@ PictureSchema.pre('save',function(next){
    }
    next();
 });
+
+module.exports = PictureSchema;
