@@ -18,16 +18,15 @@ exports.index = function (req, res) {
             .populate('from', 'name')
             .exec(function (err, messages) {
                 PictureModel
-                    .find({room: 'shanghai'},['-_id','urlB','position','urlBack','rank'])
+                    .find({room: 'shanghai'},['-_id','urlB','position','urlBack','rank','alt'])
                     .exec(function (err, pictures) {
                         if (err) {
                             console.log(err)
                         }
-                        messagesStr = JSON.stringify(messages);
                         res.render('index', {
                             messages: messagesStr,
                             title,
-                            pictures:JSON.stringify(pictures)
+                            pictures:pictures,
                         });
                     });
 
@@ -41,16 +40,15 @@ exports.index = function (req, res) {
             .populate('from', 'name')
             .exec(function (err, messages) {
                 PictureModel
-                    .find({room: 'shanghai'},['-_id','urlB','position','urlBack','rank'])
+                    .find({room: 'shanghai'},['-_id','urlB','position','urlBack','rank','alt'])
                     .exec(function (err, pictures) {
                         if (err) {
                             console.log(err)
                         }
-                        messagesStr = JSON.stringify(messages);
                         res.render('index', {
                             messages: messagesStr,
                             title,
-                            pictures:JSON.stringify(pictures)
+                            pictures:pictures,
                         });
                     });
 
