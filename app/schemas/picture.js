@@ -32,7 +32,7 @@ let PictureSchema = new Schema({
 PictureSchema.pre('save',function(next){
    const picture = this;
    if(picture.isNew){
-       picture.createAt = message.updateAt = Date.now;
+       picture.createAt = picture.updateAt = Date.now;
    }else{
        picture.updateAt = Date.now;
    }
