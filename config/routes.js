@@ -4,7 +4,6 @@ const Message = require('../app/controllers/message');
 const Admin = require('../app/controllers/admin');
 
 const UserModule = require('../app/models/user.js');
-const MessageModule = require('../app/models/message.js');
 
 module.exports = function (app, io) {
     let ids = [];
@@ -19,7 +18,6 @@ module.exports = function (app, io) {
     /*Index*/
     app.get('/', Index.index);
 
-
     /*User*/
     app.post('/user/signin', User.signIn);
     app.get('/user/signout', User.signOut);
@@ -29,27 +27,29 @@ module.exports = function (app, io) {
 
 
     /*Admin*/
-    app.get('/admin', Admin.adminRequired, Admin.admin);
+    app.get('/admin', Admin.admin);
+
+    /*Admin-Room*/
     app.get('/admin/room', Admin.adminRequired, Admin.room);
 
     /*Admin-User*/
+    app.get('/admin/user/search', Admin.adminRequired, User.userSearch);
     app.get('/admin/user/list/:page', Admin.adminRequired, User.userList);
-    app.get('/admin/user/search', Admin.adminRequired, User.search);
     app.get('/admin/user/detail/:id', Admin.adminRequired, User.userDetail);
-    app.get('/admin/user/update/:id', Admin.adminRequired, Admin.userUpdate);
-    app.get('/admin/user/signup', Admin.adminRequired, Admin.signUp);
-    app.delete('/admin/user/delete', User.delete);
+    app.get('/admin/user/update/:id', Admin.adminRequired, User.userUpdate);
+    app.get('/admin/user/signup', Admin.adminRequired, User.userSignUp);
+    app.delete('/admin/user/delete', Admin.adminRequired, User.delete);
     app.post('/admin/user/update', Admin.adminRequired, User.update);
     app.post('/admin/user/query/:page', Admin.adminRequired, User.query);
     app.post('/user/signup', Admin.adminRequired, User.signUp);
 
     /*Admin-Message*/
     app.get('/admin/message/list/:page', Admin.adminRequired, Message.messageList);
-    app.get('/admin/message/search', Admin.adminRequired,Message.search);
+    app.get('/admin/message/search', Admin.adminRequired,Message.messageSearch);
     app.post('/admin/message/query/:page', Admin.adminRequired, Message.query);
 
     /*Admin-Picture*/
-    app.get('/admin/picture/list', Admin.adminRequired, Admin.pictureList);
+    app.get('/admin/picture/list/:room', Admin.adminRequired, Admin.pictureList);
 
     /*Information*/
     app.get('/admin/information/:information', Admin.adminRequired, Admin.information);

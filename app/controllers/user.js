@@ -1,6 +1,12 @@
 const UserModel = require('../models/user.js');
 const pageSize = 10;
 
+/**注册首页start*/
+exports.userSignUp = function (req, res) {
+    res.render('signup', {});
+};
+/**注册首页end*/
+
 /**注册start*/
 exports.signUp = function (req, res) {
     let user;
@@ -79,6 +85,18 @@ exports.signOut = function (req, res) {
 };
 /**登出end*/
 
+/**修改主页start*/
+exports.userUpdate = function (req, res) {
+    let id = req.params.id;
+    UserModel.findById(id, function (err, userDetail) {
+        res.render('userUpdate', {
+            userDetail
+        });
+    });
+};
+/**修改主页end*/
+
+
 
 /**修改start*/
 exports.update = function (req, res) {
@@ -141,14 +159,15 @@ exports.userDetail = function (req, res) {
     let id = req.params.id;
     UserModel.findById(id, function (err, userDetail) {
         res.render('userDetail', {
-            userDetail
+            userDetail,
+            title:userDetail.name+'的用户信息'
         });
     });
 };
 /**详情end*/
 
 /**查询首页start*/
-exports.search = function (req, res) {
+exports.userSearch = function (req, res) {
     res.render('usersearch', {
             title: '用户查询'
         }

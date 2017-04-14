@@ -4,45 +4,58 @@ block css
     link(rel="stylesheet" href="/css/admin/signin.css")
 
 block content
-    div(id="content" class="content")
-        form(method="POST" action="/user/signup")
-            div
-                label(for="signUpName") 用户名
-                input(id="signUpName" name="user[name]" type="text")
-            div
-                label(for="signUpNickName") 昵称
-                input(id="signUpNickName" name="user[nickName]" type="text")
-            div
-                label(for="signUpPassword") 密码
-                input(id="signUpPassword" name="user[password]" type="text")
-            div
-                label(for="signUpPhone") 手机
-                input(id="signUpPhone" name="user[phone]" type="text")
-            div
-                label(for="signUpEmail") 邮箱
-                input(id="signUpEmail" name="user[email]" type="text")
-            div
-                label(for="signUpSexMale") 男
-                input(id="signUpSexMale" name="user[sex]" type="radio" value="male")
-                label(for="signUpSexFemale") 女
-                input(id="signUpSexFemale" name="user[sex]" type="radio" value="female")
-            div
-                label(for="signUpLevel") 等级
-                input(id="signUpLevel" name="user[level]" type="number")
-            div
-                label(for="signUpBelong") 所属公司
-                select(id="signUpBelong" name="user[belong]")
-                    option(value="main") 总部
-                    option(value="shanghai") 上海分公司
-                    option(value="wuhan") 武汉分公司
-                    option(value="changsha") 长沙分公司
-                    option(value="shenzhen") 深圳分公司
-                    option(value="hunan") 湖南分公司
-                    option(value="he-fei") 合肥分公司
-                    option(value="guangzhou") 广州分公司
-            div
-                input(id="submit" type="submit" value="提交")
-                input(id="reset" type="reset" value="重置")
+    .row
+        form.form-horizontal(method="POST" action="/user/signup")
+            div.form-group
+                label.col-sm-2.col-sm-offset-3.control-label(for="signUpName") 用户名：
+                div.col-sm-4
+                    input.form-control(id="signUpName" name="user[name]" type="text")
+            div.form-group
+                label.col-sm-2.col-sm-offset-3.control-label(for="signUpNickName") 昵称：
+                div.col-sm-4
+                    input.form-control(id="signUpNickName" name="user[nickName]" type="text")
+            div.form-group
+                label.col-sm-2.col-sm-offset-3.control-label(for="signUpPassword") 密码：
+                div.col-sm-4
+                    input.form-control(id="signUpPassword" name="user[password]" type="text")
+            div.form-group
+                label.col-sm-2.col-sm-offset-3.control-label(for="signUpPhone") 手机：
+                div.col-sm-4
+                    input.form-control(id="signUpPhone" name="user[phone]" type="text")
+            div.form-group
+                label.col-sm-2.col-sm-offset-3.control-label(for="signUpEmail") 邮箱：
+                div.col-sm-4
+                    input.form-control(id="signUpEmail" name="user[email]" type="text")
+            div.form-group
+                label.col-sm-2.col-sm-offset-3.control-label 性别：
+                div.col-sm-4
+                    label.radio-inline(for="signUpSexMale")
+                        input(id="signUpSexMale" name="user[sex]" type="radio" value="male")
+                        | 男
+                    label.radio-inline(for="signUpSexFemale")
+                        input(id="signUpSexFemale" name="user[sex]" type="radio" value="female")
+                        | 女
+            div.form-group
+                label.col-sm-2.col-sm-offset-3.control-label(for="signUpLevel") 等级：
+                div.col-sm-4
+                    input.form-control(id="signUpLevel" name="user[level]" type="number")
+            div.form-group
+                label.col-sm-2.col-sm-offset-3.control-label(for="signUpBelong") 所属公司：
+                div.col-sm-4
+                    select.form-control(id="signUpBelong" name="user[belong]")
+                        option(value="main") 总部
+                        option(value="shanghai") 上海分公司
+                        option(value="wuhan") 武汉分公司
+                        option(value="changsha") 长沙分公司
+                        option(value="shenzhen") 深圳分公司
+                        option(value="hunan") 湖南分公司
+                        option(value="he-fei") 合肥分公司
+                        option(value="guangzhou") 广州分公司
+            div.form-group
+                div.col-sm-offset-5.col-sm-2.text-center
+                    input.btn.btn-success(id="submit" type="submit" value="提交")
+                div.col-sm-2.text-center
+                    input.btn.btn-warning(id="reset" type="reset" value="重置")
 
 block js
     script(src="/admin/js/signup.js")

@@ -5,15 +5,25 @@ block css
     link(rel="stylesheet",href="/css/admin/admin.css")
 
 block content
-    div.container
-        div
-            div
-                label(for="signInPassword") 登录名
-                input(id="signInName" type="text")
-            div
-                label(for="signInPassword") 密码
-                input(id="signInPassword" type="password")
-            div
+    if(user)
+        div.row
+            div.page-header
+                h1.container.text-center
+                    | #{user.name},您已经登录
+    else
+        div.row
+            div.page-header
+                h1.container.text-center
+                    | 君银直播室
+                    small 登录入口
+        div.row
+            div.form-group.col-sm-4.col-sm-offset-4
+                label(for="signInPassword") 登录名：
+                input.form-control(id="signInName" type="text")
+            div.form-group.col-sm-4.col-sm-offset-4
+                label(for="signInPassword") 密码：
+                input.form-control(id="signInPassword" type="password")
+            div.form-group.col-sm-4.col-sm-offset-4.text-center
                 a.btn.btn-success(id="submit") 提交
 
 block js

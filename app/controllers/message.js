@@ -131,7 +131,7 @@ exports.delMessage = function (id, user, next) {
 /**delete聊天信息end*/
 
 /**查询首页start*/
-exports.search = function (req, res) {
+exports.messageSearch = function (req, res) {
     res.render('messagesearch', {
             title: '聊天信息查询'
         }

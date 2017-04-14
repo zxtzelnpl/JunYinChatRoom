@@ -13,7 +13,8 @@ $('#submit').click(function(e){
             ,password
         }
         ,success:function(data){
-            console.log(data)
+            console.log(data);
+            location.reload();
         }
         ,error:function(data){
             console.log(data)
@@ -28,6 +29,7 @@ $('#signOut').click(function(e){
         ,method:'GET'
         ,success:function(data){
             console.log(data);
+            location.reload();
         }
         ,error:function(data){
             console.log(data)
