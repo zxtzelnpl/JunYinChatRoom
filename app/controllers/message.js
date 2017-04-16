@@ -1,6 +1,6 @@
 const MessageModel = require('../models/message.js');
 const UserModel = require('../models/user.js');
-const PageSize = 10;
+const PageSize = 30;
 
 
 /**get聊天信息start*/

@@ -1,6 +1,9 @@
 /**定义常量**/
 const port = process.env.PORT || 3000;
-const dbUrl = 'mongodb://localhost/junyin';
+// const dbUrl = 'mongodb://localhost:3883/junyin';
+// const dbUrl = 'mongodb://139.196.93.207:27017/junyin';
+// const dbUrl = 'mongodb://superuser:123@localhost:3883/junyin';
+const dbUrl = 'mongodb://zxt:123@localhost:3883/junyin';
 const secret='junyin';
 
 /**引如外部**/

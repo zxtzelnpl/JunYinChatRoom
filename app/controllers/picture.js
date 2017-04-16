@@ -19,6 +19,7 @@ exports.pictureList = function (req, res) {
 
 exports.pictureUpload = function (req, res) {
     let id = req.query.id;
+    let room = req.params.room;
     if(id){
         PictureModel.findById(id,function(err,picture){
             if(err){console.log(err)}
