@@ -23,29 +23,41 @@ const reload = browserSync.reload;
 
 const production = process.env.NODE_ENV === 'production';
 const paths = {
-    srcJs: ['src/*.js', 'src/**/*.js','admin/js/*.js']
+    srcJs: ['src/*.js', 'src/**/*.js']
     , index: 'src/index.js'
-    , js: 'public/js'
-    , less: ['src/less/*.less', 'src/less/**/*.less','!src/less/normalize/*']
+    , admin:'admin/js/*.js'
+    , jsTo: 'public/js'
+    , less: ['src/less/*.less', 'src/less/**/*.less', '!src/less/normalize/*']
     , normalize: 'node_modules/normalize.css/normalize.css'
-    , css: 'public/css'
+    , cssTo: 'public/css'
     , images: 'src/images/**/**'
     , imagesTo: 'public/images'
 };
 
-const adminDependencies = [
-    'bootstrap'
-    ,'jquery'
-];
 const dependencies = [
-    'jquery'
-    , 'react'
+    'react'
     , 'react-dom'
     , 'redux'
     , 'react-redux'
     , 'underscore'
     , 'iscroll'
 ];
+
+
+/**
+ |--------------------------------------------------------------------------
+ | Compile jquery.
+ |--------------------------------------------------------------------------
+ */
+gulp.task('jquery', function () {
+    return browserify()
+        .require('jquery')
+        .bundle()
+        .pipe(source('jquery.js'))
+        .pipe(buffer())
+        .pipe(gulpif(production, uglify({mangle: false})))
+        .pipe(gulp.dest(paths.jsTo));
+});
 
 /**
  |--------------------------------------------------------------------------
@@ -59,7 +71,7 @@ gulp.task('browserify-vendor', function () {
         .pipe(source('vendor.js'))
         .pipe(buffer())
         .pipe(gulpif(production, uglify({mangle: false})))
-        .pipe(gulp.dest(paths.js));
+        .pipe(gulp.dest(paths.jsTo));
 });
 
 
@@ -69,7 +81,7 @@ gulp.task('browserify-vendor', function () {
  |--------------------------------------------------------------------------
  */
 gulp.task('browserify-index', function () {
-    return browserify({entries: 'src/index.js', debug: true})
+    return browserify({entries: paths.index, debug: true})
         .external(dependencies)
         .transform(babelify, {presets: ['es2015', 'react']})
         .bundle()
@@ -78,22 +90,7 @@ gulp.task('browserify-index', function () {
         .pipe(sourcemaps.init({loadMaps: true}))
         .pipe(gulpif(production, uglify({mangle: false})))
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(paths.js));
-});
-
-/**
- |--------------------------------------------------------------------------
- | Compile third-party dependencies separately for faster performance.
- |--------------------------------------------------------------------------
- */
-gulp.task('admin-vendor', function () {
-    return browserify()
-        .require(adminDependencies)
-        .bundle()
-        .pipe(source('vendor.js'))
-        .pipe(buffer())
-        .pipe(gulpif(production, uglify({mangle: false})))
-        .pipe(gulp.dest('public/admin/js'));
+        .pipe(gulp.dest(paths.jsTo));
 });
 
 /**
@@ -102,8 +99,7 @@ gulp.task('admin-vendor', function () {
  |--------------------------------------------------------------------------
  */
 gulp.task('admin-js', function (cb) {
-
-    glob('./admin/js/**.js', function (err, files) {
+    glob(paths.admin, function (err, files) {
         if (err) cb(err);
 
         let tasks = files.map(function (entry) {
@@ -133,7 +129,7 @@ gulp.task('less', function () {
         .pipe(autoprefixer())
         .pipe(gulpif(production, cssmin()))
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(paths.css));
+        .pipe(gulp.dest(paths.cssTo));
 });
 
 /**
@@ -144,7 +140,7 @@ gulp.task('less', function () {
 gulp.task('normalize', function () {
     return gulp.src(paths.normalize)
         .pipe(gulpif(production, cssmin()))
-        .pipe(gulp.dest(paths.css));
+        .pipe(gulp.dest(paths.cssTo));
 });
 
 /**
@@ -155,11 +151,11 @@ gulp.task('normalize', function () {
 gulp.task('bootstrap', function () {
     return gulp.src([
         'node_modules/bootstrap/dist/**/**.css'
-        ,'node_modules/bootstrap/dist/**/**.eot'
-        ,'node_modules/bootstrap/dist/**/**.svg'
-        ,'node_modules/bootstrap/dist/**/**.ttf'
-        ,'node_modules/bootstrap/dist/**/**.woff'
-        ,'node_modules/bootstrap/dist/**/**.woff2'
+        , 'node_modules/bootstrap/dist/**/**.eot'
+        , 'node_modules/bootstrap/dist/**/**.svg'
+        , 'node_modules/bootstrap/dist/**/**.ttf'
+        , 'node_modules/bootstrap/dist/**/**.woff'
+        , 'node_modules/bootstrap/dist/**/**.woff2'
     ])
         .pipe(gulp.dest('public/admin'));
 });
@@ -176,7 +172,7 @@ gulp.task('images', function () {
 
 /**
  |--------------------------------------------------------------------------
- | Compile favicon.ico.
+ | Compile favicon.ico
  |--------------------------------------------------------------------------
  */
 gulp.task('favicon', function () {
@@ -225,40 +221,24 @@ gulp.task('server', ['nodemon'], function () {
 
 });
 
-
 /**
  |--------------------------------------------------------------------------
  | Watch for change.
  |--------------------------------------------------------------------------
  */
-gulp.task('watch', ['browserify-index', 'admin-js','less'], function () {
+gulp.task('watch', ['browserify-index', 'admin-js', 'less'], function () {
+    gulp.watch(paths.srcJs, ['browserify-index']).on('change', function (event) {
+        console.log('File ' + event.path + ' was ' + event.type + ', running tasks...')
+    });
 
-    gulp.watch(paths.srcJs, ['browserify-index','admin-js']).on('change', function (event) {
+    gulp.watch(paths.admin, ['admin-js']).on('change', function (event) {
         console.log('File ' + event.path + ' was ' + event.type + ', running tasks...')
     });
 
     gulp.watch(paths.less, ['less']).on('change', function (event) {
         console.log('File ' + event.path + ' was ' + event.type + ', running tasks...')
     });
-
 });
-
-
-/**
- |--------------------------------------------------------------------------
- | Default.
- |--------------------------------------------------------------------------
- */
-gulp.task('default', [
-    'browserify-vendor'
-    , 'admin-vendor'
-    , 'normalize'
-    , 'bootstrap'
-    , 'images'
-    , 'favicon'
-    , 'watch'
-    , 'server'
-]);
 
 /**
  |--------------------------------------------------------------------------
@@ -266,13 +246,13 @@ gulp.task('default', [
  |--------------------------------------------------------------------------
  */
 gulp.task('produce', [
-    'browserify-vendor'
-    , 'admin-vendor'
+    'jquery'
+    ,'browserify-vendor'
     , 'normalize'
     , 'bootstrap'
     , 'images'
     , 'favicon'
-    , 'less'
     , 'browserify-index'
     , 'admin-js'
+    , 'less'
 ]);

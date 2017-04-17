@@ -1,9 +1,12 @@
+const fs=require('fs');
+
 /**定义常量**/
 const port = process.env.PORT || 3000;
+const dbUrl = 'mongodb://localhost/junyin';
 // const dbUrl = 'mongodb://localhost:3883/junyin';
 // const dbUrl = 'mongodb://139.196.93.207:27017/junyin';
 // const dbUrl = 'mongodb://superuser:123@localhost:3883/junyin';
-const dbUrl = 'mongodb://zxt:123@localhost:3883/junyin';
+// const dbUrl = 'mongodb://zxt:123@localhost:3883/junyin';
 const secret='junyin';
 
 /**引如外部**/
@@ -58,7 +61,7 @@ const parseCookie = cookieParser(secret);
 
 
 /**5.模版文件start*/
-app.set('views', './app/views/pages');
+app.set('views', './views/pages');
 app.set('view engine', 'pug');
 /**5.模版文件end*/
 
@@ -86,3 +89,19 @@ server.listen(port, function () {
     console.log('Express server listening on port ' + port);
 });
 /**8..服务器端口监听start*/
+
+
+
+fs.exists('./public/upload',function(exists){
+    if(exists){
+        console.log("upload已经存在。");
+    }else{
+        fs.mkdir('./public/upload/', function(err){
+            if (err) {
+                return console.error(err);
+            }
+            console.log("upload目录创建成功。");
+        });
+    }
+});
+
