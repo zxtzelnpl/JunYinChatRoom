@@ -1,0 +1,46 @@
+extends ../admin/layout
+
+block css
+    link(rel="stylesheet",href="/css/admin/userDetail.css")
+
+block content
+    .row
+        .col-sm-4.col-sm-offset-4
+            table.table.table-hover.table-bordered
+                tbody
+                    tr
+                        td.text-right 用户名：
+                        td #{userDetail.name}
+                    tr
+                        td.text-right 昵称：
+                        td #{userDetail.nickName}
+                    tr
+                        td.text-right 手机：
+                        td #{userDetail.phone}
+                    tr
+                        td.text-right 邮箱：
+                        td #{userDetail.email}
+                    tr
+                        td.text-right 性别：
+                        td #{userDetail.sex}
+                    tr
+                        td.text-right 等级：
+                        td #{userDetail.level}
+                    tr
+                        td.text-right 所属公司：
+                        td #{userDetail.belong}
+                    tr
+                        td.text-right 是否被禁用：
+                        td #{userDetail.forbidden}
+
+                    tr
+                        td.text-right 创建时间：
+                        td #{moment(userDetail.createAt).format('MM/DD/YYYY')}
+                    tr
+                        td.text-right 修改时间：
+                        td #{moment(userDetail.updateAt).format('MM/DD/YYYY')}
+                    tr
+                        td.text-right 是否在线：
+                        td #{userDetail.online}
+block js
+    script(src="/admin/js/userDetail.js")

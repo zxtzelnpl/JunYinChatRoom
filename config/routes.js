@@ -4,6 +4,7 @@ const Index = require('../app/controllers/index');
 const User = require('../app/controllers/user');
 const Message = require('../app/controllers/message');
 const Picture = require('../app/controllers/picture');
+const Room=require('../app/controllers/room');
 const Admin = require('../app/controllers/admin');
 
 const UserModule = require('../app/models/user.js');
@@ -26,14 +27,16 @@ module.exports = function (app, io) {
     app.get('/user/signout', User.signOut);
 
     /*Message*/
-    app.get('/getmessage',Message.getMessage);
-
+    app.get('/message/getmessage',Message.getMessage);
 
     /*Admin*/
-    app.get('/admin', Admin.admin);
+    app.get('/admin/login', Admin.admin);
 
     /*Admin-Room*/
-    app.get('/admin/room', Admin.adminRequired, Admin.room);
+    app.get('/admin/roomlist', Admin.adminRequired, Room.roomList);
+    app.get('/admin/roomnew', Admin.adminRequired, Room.roomNew);
+    app.get('/admin/roomdetail/:room', Admin.adminRequired, Room.roomDetail);
+    app.get('/admin/roomupdate/:room', Admin.adminRequired, Room.roomUpdate);
 
     /*Admin-User*/
     app.get('/admin/user/search', Admin.adminRequired, User.userSearch);

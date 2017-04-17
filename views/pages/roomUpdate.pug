@@ -1,0 +1,44 @@
+extends ../admin/layout
+
+block css
+    link(rel="stylesheet",href="/css/admin/roomList.css")
+
+block content
+    .row
+        table.table.table-hover.table-bordered
+            thead
+                tr
+                    th 名称
+                    th 标题
+                    th QQ
+                    th 客服
+                    th 视频ID
+                    th 修改人
+                    th 修改时间
+                    th 创建时间
+                    th 修改
+                    th 删除
+            tbody
+                if items && items.length > 0
+                    each item in items
+                        tr(class="item-id-" + item._id)
+                            td #{item.name}
+                            td #{item.title}
+                            td #{item.QQ}
+                            td #{item.phone}
+                            td #{item.video.ownerId}
+                            td #{item.uploader.name}
+                            td #{moment(item.createAt).format('HH:MM-MM/DD/YYYY')}
+                            td #{moment(item..updateAt).format('MM/DD/YYYY-HH:MM')}
+                            td: a(target="_blank", href="admin/roomdetail/"+item._id) 查看
+                            td: a(target="_blank", href="admin/roomupdate/"+item._id) 修改
+                            td: button.btn.btn-danger.del(type="button", data-id=item._id) 删除
+    .row
+        div
+            ul#page.pagination
+                - var n=1
+                while n <= totalPageNum
+                    li: a(href="/admin/message/list/" + n)=n++
+
+block js
+    script(src="/admin/js/roomList.js")

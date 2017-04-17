@@ -66,7 +66,7 @@ class MessageBox extends React.Component {
 
         $.ajax({
             type: 'GET'
-            , url: '/getmessage'
+            , url: '/message/getmessage'
             , data: {
                 page
             }
