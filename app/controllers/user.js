@@ -9,8 +9,21 @@ exports.userSignUp = function (req, res) {
 
 /**注册start*/
 exports.signUp = function (req, res) {
+    console.log('######');
+    console.log('######');
+    console.log('######');
+    console.log('######');
+    console.log('######');
     let user;
     let _user = req.body.user;
+
+    console.log(_user);
+    console.log('######');
+    console.log('######');
+    console.log('######');
+    console.log('######');
+    console.log('######');
+
     UserModel.find({"$or": [{'name': _user.name}, {'phone': _user.phone}]}, function (err, users) {
         if (err) {
             console.log(err);

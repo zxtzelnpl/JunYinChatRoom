@@ -33,6 +33,7 @@ html
                                         ul#userlist.collapse
                                             li: a(role="button" href="/admin/user/list/1") 用户列表
                                             li: a(role="button" href="/admin/user/search") 用户查询
+                                            li: a(role="button" href="/admin/user/signup") 用户注册
                                     li(role="presentation")
                                         a.collapsed(data-toggle="collapse" href="#messagelist" role="button" aria-haspopup="true" aria-expanded="false")
                                             | 聊天管理
@@ -44,5 +45,5 @@ html
                     block content
     script(src="/js/jquery.js")
     script(src="/admin/js/bootstrap.js")
-    script(src="/admin/js/admin.js")
+    script(src="/admin/js/everyone.js")
     block js
