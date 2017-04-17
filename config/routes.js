@@ -53,7 +53,7 @@ module.exports = function (app, io) {
 
     /*Admin-Picture*/
     app.get('/admin/picture/room/:room', Admin.adminRequired, Picture.pictureList);
-    app.get('/admin/picture/upload/:room', Admin.adminRequired, Picture.pictureUpload);
+    app.get('/admin/picture/upload', Admin.adminRequired, Picture.pictureUpload);
     app.post('/picture/update', Admin.adminRequired, multiparty(),Picture.savePic,Picture.update);
 
     /*Information*/

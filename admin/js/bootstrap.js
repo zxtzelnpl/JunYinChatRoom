@@ -4,7 +4,7 @@
  * Licensed under the MIT license
  */
 
-import $ from 'jquery';
+import jQuery from 'jquery';
 
 if (typeof jQuery === 'undefined') {
     throw new Error('Bootstrap\'s JavaScript requires jQuery')

@@ -29,7 +29,7 @@ $('#signOut').click(function(e){
         ,method:'GET'
         ,success:function(data){
             console.log(data);
-            location.reload();
+            location.href='/admin';
         }
         ,error:function(data){
             console.log(data)

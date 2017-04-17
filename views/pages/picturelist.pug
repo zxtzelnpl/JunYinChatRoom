@@ -26,7 +26,7 @@ block content
                             td #{item.alt}
                             td #{item.content}
                             td #{item.rank}
-                            td: img(src="/upload/"+item.urlBack)
+                            td: img.img-responsive(src="/upload/"+item.urlBack)
                             td #{item.uploader.name}
                             td: a(target="_blank", href= "/admin/picture/upload/?id="+item._id) 修改
                             td: button.btn.btn-danger.del(type="button", data-id=item._id) 删除
