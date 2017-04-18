@@ -91,7 +91,7 @@ server.listen(port, function () {
 /**8..服务器端口监听start*/
 
 
-
+/**9.增加本地文件夹start*/
 fs.exists('./public/upload',function(exists){
     if(exists){
         console.log("upload已经存在。");
@@ -104,4 +104,5 @@ fs.exists('./public/upload',function(exists){
         });
     }
 });
+/**9..增加本地文件夹start*/
 

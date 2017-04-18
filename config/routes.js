@@ -58,9 +58,9 @@ module.exports = function (app, io) {
     app.post('/admin/messagequery/:page', Admin.adminRequired, Message.query);
 
     /*Admin-Picture*/
-    app.get('/admin/picture/room/:id', Admin.adminRequired, Picture.pictureList);
-    app.get('/admin/picture/upload', Admin.adminRequired, Picture.pictureUpload);
-    app.post('/picture/update', Admin.adminRequired, multiparty(),Picture.savePic,Picture.update);
+    app.get('/admin/pictureroom/:id', Admin.adminRequired, Picture.pictureList);
+    app.get('/admin/pictureupload', Admin.adminRequired, Picture.pictureUpload);
+    app.post('/admin/picture/update', Admin.adminRequired, multiparty(),Picture.savePic,Picture.update);
 
     /*Information*/
     app.get('/admin/information/:information', Admin.adminRequired, Admin.information);

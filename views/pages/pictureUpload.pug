@@ -4,7 +4,7 @@ block css
 
 block content
     .row
-        form.form-horizontal(method="post" action="/picture/update" enctype="multipart/form-data")
+        form.form-horizontal(method="post" action="/admin/picture/update" enctype="multipart/form-data")
             if(picture)
                 input(type="hidden" name="picture[_id]" value=picture._id)
                 .form-group
@@ -70,4 +70,4 @@ block content
             img.col-sm-10.img-thumbnail#img(src="")
 
 block js
-    script(src="/admin/js/pictureupload.js")
+    script(src="/admin/js/pictureUpload.js")

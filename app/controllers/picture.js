@@ -10,7 +10,7 @@ exports.pictureList = function (req, res) {
         .populate('uploader','name')
         .exec(function (err, pictures) {
             if(err){console.log(err)}
-            res.render('picturelist', {
+            res.render('pictureList', {
                 title: '图片列表-' + room
                 ,pictures:pictures
             });
@@ -23,17 +23,16 @@ exports.pictureUpload = function (req, res) {
     if(id){
         PictureModel.findById(id,function(err,picture){
             if(err){console.log(err)}
-            res.render('pictureupload',{
+            res.render('pictureUpload',{
                 title: '图片修改-' + id
                 ,picture
             })
         })
     }else{
-        res.render('pictureupload', {
+        res.render('pictureUpload', {
             title: '图片上传-' + room
         });
     }
-
 };
 
 exports.savePic = function (req, res, next) {
@@ -66,23 +65,21 @@ exports.savePic = function (req, res, next) {
 exports.update = function (req, res) {
     let picture = req.body.picture;
     picture.uploader = req.session.user._id;
-    console.log(picture);
     if (picture._id) {
         PictureModel.findByIdAndUpdate(picture._id, {$set: picture}, function (err) {
             if (err) {
                 console.log(err)
             }
-            res.redirect('/admin/picture/room/' + picture.room)
+            res.redirect('/admin/pictureroom/' + picture.room)
         })
     } else {
-        console.log(picture);
         let _picture = new PictureModel(picture);
         console.log(_picture);
         _picture.save(function (err, picture) {
             if (err) {
                 console.log(err)
             }
-            res.redirect('/admin/picture/room/' + picture.room)
+            res.redirect('/admin/pictureroom/' + picture.room)
         })
     }
 };
