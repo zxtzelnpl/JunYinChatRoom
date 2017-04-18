@@ -5,7 +5,7 @@ block css
 
 block content
     .row
-        form.form-horizontal(method="POST" action="/admin/user/query/1" target="_blank")
+        form.form-horizontal(method="POST" action="/admin/userquery/1" target="_blank")
             div.form-group
                 label.col-sm-2.col-sm-offset-3.control-label(for="searchName") 用户名：
                 div.col-sm-4
@@ -63,4 +63,3 @@ block content
 
 block js
     script(src="/socket.io/socket.io.js")
-    script(src="/admin/js/usersearch.js")

@@ -35,30 +35,30 @@ module.exports = function (app, io) {
     /*Admin-Room*/
     app.get('/admin/roomlist', Admin.adminRequired, Room.roomList);
     app.get('/admin/roomnew', Admin.adminRequired, Room.roomNew);
-    app.post('/admin/room/add', Admin.adminRequired, Room.Add);
-    app.post('/admin/room/update', Admin.adminRequired, Room.Update);
-    app.delete('/admin/room/delete', Admin.adminRequired, Room.Delete);
-    app.get('/admin/roomdetail/:room', Admin.adminRequired, Room.roomDetail);
-    app.get('/admin/roomupdate/:room', Admin.adminRequired, Room.roomUpdate);
+    app.get('/admin/roomdetail/:id', Admin.adminRequired, Room.roomDetail);
+    app.get('/admin/roomupdate/:id', Admin.adminRequired, Room.roomUpdate);
+    app.post('/admin/room/add', Admin.adminRequired, Room.add);
+    app.post('/admin/room/update', Admin.adminRequired, Room.update);
+    app.delete('/admin/room/delete', Admin.adminRequired, Room.delete);
 
     /*Admin-User*/
-    app.get('/admin/user/search', Admin.adminRequired, User.userSearch);
-    app.get('/admin/user/list/:page', Admin.adminRequired, User.userList);
-    app.get('/admin/user/detail/:id', Admin.adminRequired, User.userDetail);
-    app.get('/admin/user/update/:id', Admin.adminRequired, User.userUpdate);
-    app.get('/admin/user/signup', Admin.adminRequired, User.userSignUp);
-    app.delete('/admin/user/delete', Admin.adminRequired, User.delete);
+    app.get('/admin/userlist/:page', Admin.adminRequired, User.userList);
+    app.get('/admin/usersignup', Admin.adminRequired, User.userSignUp);
+    app.get('/admin/userdetail/:id', Admin.adminRequired, User.userDetail);
+    app.get('/admin/userupdate/:id', Admin.adminRequired, User.userUpdate);
+    app.get('/admin/usersearch', Admin.adminRequired, User.userSearch);
+    app.post('/admin/userquery/:page', Admin.adminRequired, User.userQuery);
+    app.post('/admin/user/signup', Admin.adminRequired, User.signUp);
     app.post('/admin/user/update', Admin.adminRequired, User.update);
-    app.post('/admin/user/query/:page', Admin.adminRequired, User.query);
-    app.post('/user/signup', Admin.adminRequired, User.signUp);
+    app.delete('/admin/user/delete', Admin.adminRequired, User.delete);
 
     /*Admin-Message*/
-    app.get('/admin/message/list/:page', Admin.adminRequired, Message.messageList);
-    app.get('/admin/message/search', Admin.adminRequired,Message.messageSearch);
-    app.post('/admin/message/query/:page', Admin.adminRequired, Message.query);
+    app.get('/admin/messagelist/:page', Admin.adminRequired, Message.messageList);
+    app.get('/admin/messagesearch', Admin.adminRequired,Message.messageSearch);
+    app.post('/admin/messagequery/:page', Admin.adminRequired, Message.query);
 
     /*Admin-Picture*/
-    app.get('/admin/picture/room/:room', Admin.adminRequired, Picture.pictureList);
+    app.get('/admin/picture/room/:id', Admin.adminRequired, Picture.pictureList);
     app.get('/admin/picture/upload', Admin.adminRequired, Picture.pictureUpload);
     app.post('/picture/update', Admin.adminRequired, multiparty(),Picture.savePic,Picture.update);
 

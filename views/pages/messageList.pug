@@ -1,7 +1,6 @@
 extends ../admin/layout
 
 block css
-    link(rel="stylesheet",href="/css/admin/message.css")
 
 block content
     .row
@@ -36,8 +35,8 @@ block content
             ul#page.pagination
                 - var n=1
                 while n <= totalPageNum
-                    li: a(href="/admin/message/list/" + n)=n++
+                    li: a(href="/admin/messagelist/" + n)=n++
 
 block js
     script(src="/socket.io/socket.io.js")
-    script(src="/admin/js/messagelist.js")
+    script(src="/admin/js/messageList.js")

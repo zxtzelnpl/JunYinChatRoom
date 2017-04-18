@@ -14,7 +14,7 @@ exports.roomList = function (req, res) {
 };
 
 exports.roomDetail = function (req, res) {
-    let _id=req.params.room;
+    let _id=req.params.id;
     RoomModel
         .findOne({_id:_id})
         .populate('uploader','name')
@@ -34,7 +34,7 @@ exports.roomNew = function (req, res) {
 };
 
 exports.roomUpdate = function (req, res) {
-    let _id=req.params.room;
+    let _id=req.params.id;
     RoomModel
         .findOne({_id:_id})
         .populate('uploader','name')
@@ -47,7 +47,7 @@ exports.roomUpdate = function (req, res) {
         })
 };
 
-exports.Add=function(req,res){
+exports.add=function(req,res){
     let room=req.body.room;
     let _room=new RoomModel(room);
     _room.uploader=req.session.user._id;
@@ -57,7 +57,7 @@ exports.Add=function(req,res){
     })
 };
 
-exports.Delete=function(req,res){
+exports.delete=function(req,res){
     let _id=req.query._id;
     RoomModel.findByIdAndRemove(_id,function(err){
         if(err){console.log(err)}
@@ -67,7 +67,7 @@ exports.Delete=function(req,res){
     })
 };
 
-exports.Update=function(req,res){
+exports.update=function(req,res){
     let room=req.body.room;
     console.log(room);
     let _id=room._id;

@@ -1,11 +1,10 @@
 extends ../admin/layout
 
 block css
-    link(rel="stylesheet" href="/css/admin/signin.css")
 
 block content
     .row
-        form.form-horizontal(method="POST" action="/user/signup")
+        form.form-horizontal(method="POST" action="/admin/user/signup")
             div.form-group
                 label.col-sm-2.col-sm-offset-3.control-label(for="signUpName") 用户名：
                 div.col-sm-4
@@ -58,4 +57,3 @@ block content
                     input.btn.btn-warning(id="reset" type="reset" value="重置")
 
 block js
-    script(src="/admin/js/signup.js")

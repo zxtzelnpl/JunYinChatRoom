@@ -1,7 +1,6 @@
 extends ../admin/layout
 
 block css
-    link(rel="stylesheet" href="/css/admin/user.css")
 
 block content
     .row
@@ -36,21 +35,18 @@ block content
                             td #{item.forbidden}
                             td #{moment(item.createAt).format('MM/DD/YYYY')}
                             td #{moment(item.updateAt).format('MM/DD/YYYY')}
-                            td #{item.online}
-                            td: a(target="_blank", href= "/admin/user/detail/"+item._id) 查看
-                            td: a(target="_blank", href= "/admin/user/update/"+item._id) 修改
+                            td 离线
+                            td: a(target="_blank", href= "/admin/userdetail/"+item._id) 查看
+                            td: a(target="_blank", href= "/admin/userupdate/"+item._id) 修改
                             td: button.btn.btn-danger.del(type="button", data-id=item._id) 删除
     .row
-        form(method="POST" action="/admin/user/query/" id="search")
-            each val,key in search
-                input(type="hidden" value=val name="search["+key+"]")
-        - var n=1
         div
             ul#page.pagination
+                - var n=1
                 while n <= pageCount
-                    li: a(href="javascript:void(0)")=n++
+                    li: a(href="/admin/userlist/"+n)=n++
 
 
 block js
     script(src="/socket.io/socket.io.js")
-    script(src="/admin/js/userquery.js")
+    script(src="/admin/js/userList.js")

@@ -4,7 +4,7 @@ const path = require('path');
 const PictureModel = require('../models/picture');
 
 exports.pictureList = function (req, res) {
-    let room = req.params.room;
+    let room = req.params.id;
     PictureModel
         .find({room: room})
         .populate('uploader','name')

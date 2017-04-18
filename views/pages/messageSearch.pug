@@ -1,11 +1,10 @@
 extends ../admin/layout
 
 block css
-    link(rel="stylesheet",href="/css/admin/search.css")
 
 block content
     .row
-        form.form-horizontal(method="POST" action="/admin/message/query/1" target="_blank")
+        form.form-horizontal(method="POST" action="/admin/messagequery/1" target="_blank")
             div.form-group
                 label.col-sm-2.col-sm-offset-3.control-label(for="searchName") 用户：
                 div.col-sm-4
@@ -36,5 +35,3 @@ block content
                     button.btn.btn-primary(type="submit") 查询
 
 block js
-    script(src="/socket.io/socket.io.js")
-    script(src="/admin/js/usersearch.js")

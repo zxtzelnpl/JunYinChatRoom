@@ -57,7 +57,7 @@ exports.messageList = function (req, res) {
                 if (err) {
                     console.log(err)
                 }
-                res.render('messagelist', {
+                res.render('messageList', {
                     title: '聊天列表'
                     , messages
                     , totalPageNum
@@ -132,7 +132,7 @@ exports.delMessage = function (id, user, next) {
 
 /**查询首页start*/
 exports.messageSearch = function (req, res) {
-    res.render('messagesearch', {
+    res.render('messageSearch', {
             title: '聊天信息查询'
         }
     )
@@ -207,7 +207,7 @@ exports.query = function (req, res) {
                         if (err) {
                             console.log(err)
                         }
-                        res.render('messagequery', {
+                        res.render('messageQuery', {
                             title: '聊天列表'
                             , messages
                             , totalPageNum
@@ -228,7 +228,7 @@ exports.query = function (req, res) {
                     if (err) {
                         console.log(err)
                     }
-                    res.render('messagequery', {
+                    res.render('messageQuery', {
                         title: '聊天列表'
                         , messages
                         , totalPageNum
@@ -241,13 +241,3 @@ exports.query = function (req, res) {
 };
 /**查询结果end*/
 
-
-/**test聊天信息start*/
-// exports.test = function (msg) {
-//     console.log('##########');
-//     console.log(msg);
-//     console.log(this.request.session.user);
-//     this.emit('test','bbbbbbb');
-//     console.log('##########')
-// };
-/**test聊天信息end*/
