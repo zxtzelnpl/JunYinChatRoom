@@ -35,6 +35,9 @@ module.exports = function (app, io) {
     /*Admin-Room*/
     app.get('/admin/roomlist', Admin.adminRequired, Room.roomList);
     app.get('/admin/roomnew', Admin.adminRequired, Room.roomNew);
+    app.post('/admin/room/add', Admin.adminRequired, Room.Add);
+    app.post('/admin/room/update', Admin.adminRequired, Room.Update);
+    app.delete('/admin/room/delete', Admin.adminRequired, Room.Delete);
     app.get('/admin/roomdetail/:room', Admin.adminRequired, Room.roomDetail);
     app.get('/admin/roomupdate/:room', Admin.adminRequired, Room.roomUpdate);
 

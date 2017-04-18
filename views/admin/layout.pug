@@ -20,6 +20,13 @@ html
                             .col-sm-12
                                 ul.nav.nav-pills.nav-stacked.text-center
                                     li(role="presentation")
+                                        a.collapsed(data-toggle="collapse" href="#roomlist" role="button" aria-haspopup="true" aria-expanded="false")
+                                            | 房间管理
+                                            span.caret
+                                        ul#roomlist.collapse
+                                            li: a(role="button" href="/admin/roomlist") 房间列表
+                                            li: a(role="button" href="/admin/roomnew") 新增房间
+                                    li(role="presentation")
                                         a.collapsed(data-toggle="collapse" href="#picturelist" role="button" aria-haspopup="true" aria-expanded="false")
                                             | 图片管理
                                             span.caret

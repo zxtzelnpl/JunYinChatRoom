@@ -1,7 +1,7 @@
 extends ../admin/layout
 
 block css
-    link(rel="stylesheet",href="/css/admin/userDetail.css")
+
 
 block content
     .row
@@ -9,38 +9,33 @@ block content
             table.table.table-hover.table-bordered
                 tbody
                     tr
-                        td.text-right 用户名：
-                        td #{userDetail.name}
+                        td.text-right 名称：
+                        td #{item.name}
                     tr
-                        td.text-right 昵称：
-                        td #{userDetail.nickName}
+                        td.text-right 标题：
+                        td #{item.title}
                     tr
-                        td.text-right 手机：
-                        td #{userDetail.phone}
+                        td.text-right QQ：
+                        td #{item.QQ}
                     tr
-                        td.text-right 邮箱：
-                        td #{userDetail.email}
+                        td.text-right 客服：
+                        td #{item.phone}
                     tr
-                        td.text-right 性别：
-                        td #{userDetail.sex}
+                        td.text-right 视频site：
+                        td #{item.video.site}
                     tr
-                        td.text-right 等级：
-                        td #{userDetail.level}
+                        td.text-right 视频ctx：
+                        td #{item.video.ctx}
                     tr
-                        td.text-right 所属公司：
-                        td #{userDetail.belong}
+                        td.text-right 视频ownerId：
+                        td #{item.video.ownerId}
                     tr
-                        td.text-right 是否被禁用：
-                        td #{userDetail.forbidden}
-
+                        td.text-right 修改人：
+                        td #{item.uploader.name}
                     tr
                         td.text-right 创建时间：
-                        td #{moment(userDetail.createAt).format('MM/DD/YYYY')}
+                        td #{moment(item.createAt).format('MM/DD/YYYY')}
                     tr
                         td.text-right 修改时间：
-                        td #{moment(userDetail.updateAt).format('MM/DD/YYYY')}
-                    tr
-                        td.text-right 是否在线：
-                        td #{userDetail.online}
+                        td #{moment(item.updateAt).format('MM/DD/YYYY')}
 block js
-    script(src="/admin/js/userDetail.js")

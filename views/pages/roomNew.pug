@@ -1,44 +1,46 @@
 extends ../admin/layout
 
 block css
-    link(rel="stylesheet",href="/css/admin/roomList.css")
+
 
 block content
     .row
-        table.table.table-hover.table-bordered
-            thead
-                tr
-                    th 名称
-                    th 标题
-                    th QQ
-                    th 客服
-                    th 视频ID
-                    th 修改人
-                    th 修改时间
-                    th 创建时间
-                    th 修改
-                    th 删除
-            tbody
-                if items && items.length > 0
-                    each item in items
-                        tr(class="item-id-" + item._id)
-                            td #{item.name}
-                            td #{item.title}
-                            td #{item.QQ}
-                            td #{item.phone}
-                            td #{item.video.ownerId}
-                            td #{item.uploader.name}
-                            td #{moment(item.createAt).format('HH:MM-MM/DD/YYYY')}
-                            td #{moment(item..updateAt).format('MM/DD/YYYY-HH:MM')}
-                            td: a(target="_blank", href="admin/roomdetail/"+message._id) 查看
-                            td: a(target="_blank", href="admin/roomupdate/"+message._id) 修改
-                            td: button.btn.btn-danger.del(type="button", data-id=message._id) 删除
-    .row
-        div
-            ul#page.pagination
-                - var n=1
-                while n <= totalPageNum
-                    li: a(href="/admin/message/list/" + n)=n++
+        form.form-horizontal(method="POST" action="/admin/room/add")
+            div.form-group
+                label.col-sm-2.col-sm-offset-3.control-label(for="name") 名称：
+                div.col-sm-4
+                    input.form-control(id="name" name="room[name]" type="text")
+            div.form-group
+                label.col-sm-2.col-sm-offset-3.control-label(for="title") 标题：
+                div.col-sm-4
+                    input.form-control(id="title" name="room[title]" type="text")
+            div.form-group
+                label.col-sm-2.col-sm-offset-3.control-label QQ：
+                div.col-sm-4
+                    input.form-control(id="QQ" name="room[QQ]" type="text")
+                div.col-sm-1
+                    a.btn.glyphicon.glyphicon-plus
+            div.form-group
+                label.col-sm-2.col-sm-offset-3.control-label(for="phone") 客服电话：
+                div.col-sm-4
+                    input.form-control(id="phone" name="room[phone]" type="text")
+            div.form-group
+                label.col-sm-2.col-sm-offset-3.control-label(for="site") 视频site：
+                div.col-sm-4
+                    input.form-control(id="site" name="room[video][site]" type="text")
+            div.form-group
+                label.col-sm-2.col-sm-offset-3.control-label(for="ctx") 视频ctx：
+                div.col-sm-4
+                    input.form-control(id="ctx" name="room[video][ctx]" type="text")
+            div.form-group
+                label.col-sm-2.col-sm-offset-3.control-label(for="ownerId") 视频ownerId：
+                div.col-sm-4
+                    input.form-control(id="ownerId" name="room[video][ownerId]" type="text")
+            div.form-group
+                div.col-sm-offset-5.col-sm-2.text-center
+                    input.btn.btn-success(id="submit" type="submit" value="提交")
+                div.col-sm-2.text-center
+                    input.btn.btn-warning(id="reset" type="reset" value="重置")
 
 block js
-    script(src="/admin/js/roomList.js")
+    script(src="/admin/js/roomNew.js")
