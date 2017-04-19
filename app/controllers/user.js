@@ -10,7 +10,7 @@ exports.userList = function (req, res) {
         UserModel.find({})
             .skip((pageNum - 1) * pageSize)
             .limit(pageSize)
-            .populate('room','title')
+            .populate('room', 'title')
             .exec(function (err, users) {
                 if (err) {
                     console.log(err);
@@ -22,31 +22,31 @@ exports.userList = function (req, res) {
                 });
             });
     });
-
-
 };
 
 exports.userSignUp = function (req, res) {
     RoomModel
         .find({})
         .select('name title')
-        .exec(function(err,rooms){
-            if(err){console.log(err)}
+        .exec(function (err, rooms) {
+            if (err) {
+                console.log(err)
+            }
             res.render('userSignUp', {
-                title:'用户注册',
-                rooms:rooms
+                title: '用户注册',
+                rooms: rooms
             });
         });
 };
 
 exports.userDetail = function (req, res) {
     let _id = req.params.id;
-    UserModel.findOne({_id:_id})
-        .populate('room','title')
+    UserModel.findOne({_id: _id})
+        .populate('room', 'title')
         .exec(function (err, user) {
             res.render('userDetail', {
-                user:user,
-                title:user.name+'的用户信息'
+                user: user,
+                title: user.name + '的用户信息'
             });
         })
 };
@@ -54,45 +54,57 @@ exports.userDetail = function (req, res) {
 exports.userUpdate = function (req, res) {
     let _id = req.params.id;
     UserModel
-        .findOne({_id:_id})
-        .populate('room','title')
+        .findOne({_id: _id})
+        .populate('room', 'title')
         .exec(function (err, user) {
             RoomModel
                 .find({})
                 .select('name title')
-                .exec(function(err,rooms){
-                    if(err){console.log(err)}
+                .exec(function (err, rooms) {
+                    if (err) {
+                        console.log(err)
+                    }
                     res.render('userUpdate', {
-                        title:user.name+'信息修改',
-                        user:user,
-                        rooms:rooms
+                        title: user.name + '信息修改',
+                        user: user,
+                        rooms: rooms
                     });
                 });
         });
 };
 
 exports.userSearch = function (req, res) {
-    res.render('userSearch', {
-            title: '用户查询'
-        }
-    )
+    RoomModel
+        .find({})
+        .select('name title')
+        .exec(function (err, rooms) {
+            if (err) {
+                console.log(err)
+            }
+            res.render('userSearch', {
+                    title: '用户查询',
+                    rooms: rooms
+                }
+            );
+        });
+
 };
 
 exports.userQuery = function (req, res) {
     let search = {};
     let _search = req.body.search;
     let totalPageNum;
-    let pageNum=req.params.page;
+    let pageNum = req.params.page;
     console.log(_search);
     for (let key in _search) {
         if (_search[key] !== '') {
-            if(key === 'online'){
-                if(_search[key]==='true'){
-                    search[key]=true
-                }else{
-                    search[key]=false
+            if (key === 'online') {
+                if (_search[key] === 'true') {
+                    search[key] = true
+                } else {
+                    search[key] = false
                 }
-            }else if(key === 'name' || key === 'nickName') {
+            } else if (key === 'name' || key === 'nickName') {
                 search[key] = new RegExp(_search[key], 'gi')
             } else {
                 search[key] = _search[key]
@@ -106,6 +118,7 @@ exports.userQuery = function (req, res) {
         UserModel.find(search)
             .skip((pageNum - 1) * pageSize)
             .limit(pageSize)
+            .populate('room', 'title')
             .exec(function (err, users) {
                 if (err) {
                     console.log(err);
@@ -176,14 +189,14 @@ exports.update = function (req, res) {
 exports.forbidden = function (req, res) {
     let _id = req.query.id;
     UserModel
-        .findOne({_id:_id})
-        .exec(function(err,user){
+        .findOne({_id: _id})
+        .exec(function (err, user) {
             console.log(user);
-            user.forbidden=!user.forbidden;
-            user.save(function(){
+            user.forbidden = !user.forbidden;
+            user.save(function () {
                 res.json({
-                    state:'success',
-                    forbidden:user.forbidden
+                    state: 'success',
+                    forbidden: user.forbidden
                 })
             })
         })

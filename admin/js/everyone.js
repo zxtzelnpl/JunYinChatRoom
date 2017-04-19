@@ -7,7 +7,7 @@ $('#signOut').click(function(e){
         ,method:'GET'
         ,success:function(data){
             console.log(data);
-            location.href='/admin';
+            location.href='/admin/login';
         }
         ,error:function(data){
             console.log(data)
