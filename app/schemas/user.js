@@ -1,8 +1,14 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
+
+const Schema = mongoose.Schema;
+const ObjectId = Schema.Types.ObjectId;
+
 const bcrypt = require('bcryptjs');
 const SALT_WORK_FACTOR = 10;
-let UserSchema = new mongoose.Schema({
+
+
+let UserSchema = new Schema({
     name: {
         unique: true
         , type: String
@@ -32,7 +38,10 @@ let UserSchema = new mongoose.Schema({
         type: Boolean
         , default: false
     }
-    , belong: String
+    , room:{
+        type:ObjectId,
+        ref:'Room'
+    }
 });
 
 UserSchema.pre('save', function (next) {
@@ -64,15 +73,6 @@ UserSchema.methods = {
             }
             cb(null, isMatch)
         })
-    }
-};
-
-UserSchema.statics = {
-    fetch: function (cb) {
-        return this
-            .find({})
-            .sort('meta.createAt')
-            .exec(cb);
     }
 };
 

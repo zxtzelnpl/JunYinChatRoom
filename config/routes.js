@@ -51,6 +51,7 @@ module.exports = function (app, io) {
     app.post('/admin/user/signup', Admin.adminRequired, User.signUp);
     app.post('/admin/user/update', Admin.adminRequired, User.update);
     app.delete('/admin/user/delete', Admin.adminRequired, User.delete);
+    app.get('/admin/user/forbidden', Admin.adminRequired, User.forbidden);
 
     /*Admin-Message*/
     app.get('/admin/messagelist/:page', Admin.adminRequired, Message.messageList);
@@ -117,6 +118,5 @@ module.exports = function (app, io) {
             io.emit('online', userNum);
         });
 
-        // socket.on('test',Message.test)
     })
 };

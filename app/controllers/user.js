@@ -1,15 +1,16 @@
 const UserModel = require('../models/user.js');
+const RoomModel = require('../models/room.js');
 const pageSize = 20;
 
 exports.userList = function (req, res) {
     let pageNum = req.params.page;
     let totalPageNum;
-    let query = UserModel.find({});
-    query.count(function (err, count) {
+    UserModel.find({}).count(function (err, count) {
         totalPageNum = Math.ceil(count / pageSize);
         UserModel.find({})
             .skip((pageNum - 1) * pageSize)
             .limit(pageSize)
+            .populate('room','title')
             .exec(function (err, users) {
                 if (err) {
                     console.log(err);
@@ -26,26 +27,48 @@ exports.userList = function (req, res) {
 };
 
 exports.userSignUp = function (req, res) {
-    res.render('userSignUp', {});
+    RoomModel
+        .find({})
+        .select('name title')
+        .exec(function(err,rooms){
+            if(err){console.log(err)}
+            res.render('userSignUp', {
+                title:'用户注册',
+                rooms:rooms
+            });
+        });
 };
 
 exports.userDetail = function (req, res) {
-    let id = req.params.id;
-    UserModel.findById(id, function (err, userDetail) {
-        res.render('userDetail', {
-            userDetail,
-            title:userDetail.name+'的用户信息'
-        });
-    });
+    let _id = req.params.id;
+    UserModel.findOne({_id:_id})
+        .populate('room','title')
+        .exec(function (err, user) {
+            res.render('userDetail', {
+                user:user,
+                title:user.name+'的用户信息'
+            });
+        })
 };
 
 exports.userUpdate = function (req, res) {
-    let id = req.params.id;
-    UserModel.findById(id, function (err, userDetail) {
-        res.render('userUpdate', {
-            userDetail
+    let _id = req.params.id;
+    UserModel
+        .findOne({_id:_id})
+        .populate('room','title')
+        .exec(function (err, user) {
+            RoomModel
+                .find({})
+                .select('name title')
+                .exec(function(err,rooms){
+                    if(err){console.log(err)}
+                    res.render('userUpdate', {
+                        title:user.name+'信息修改',
+                        user:user,
+                        rooms:rooms
+                    });
+                });
         });
-    });
 };
 
 exports.userSearch = function (req, res) {
@@ -148,6 +171,22 @@ exports.update = function (req, res) {
                 }
             }
         });
+};
+
+exports.forbidden = function (req, res) {
+    let _id = req.query.id;
+    UserModel
+        .findOne({_id:_id})
+        .exec(function(err,user){
+            console.log(user);
+            user.forbidden=!user.forbidden;
+            user.save(function(){
+                res.json({
+                    state:'success',
+                    forbidden:user.forbidden
+                })
+            })
+        })
 };
 
 exports.delete = function (req, res) {

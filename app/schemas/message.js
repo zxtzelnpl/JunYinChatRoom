@@ -38,18 +38,4 @@ MessageSchema.pre('save', function (next) {
     next();
 });
 
-MessageSchema.statics = {
-    fetch: function (cb) {
-        return this
-            .find({})
-            .sort('meta.createAt')
-            .exec(cb);
-    },
-    findById: function (id, cb) {
-        return this
-            .findOne({_id: id})
-            .exec(cb);
-    }
-};
-
 module.exports = MessageSchema;

@@ -37,6 +37,8 @@ let RoomSchema = new Schema({
     }
 });
 
+RoomSchema.set('toObject', { virtuals: true });
+
 RoomSchema.pre('save',function(next){
    const room = this;
    if(room.isNew){

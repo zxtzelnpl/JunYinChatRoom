@@ -2,14 +2,6 @@ exports.admin = function (req, res) {
     res.render('admin', {});
 };
 
-exports.room = function (req, res) {
-    res.render('room', {});
-};
-
-exports.messageList = function (req, res) {
-    res.render('message', {});
-};
-
 exports.adminRequired=function(req,res,next){
     next()
 };

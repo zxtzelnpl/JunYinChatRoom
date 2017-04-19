@@ -39,17 +39,13 @@ block content
                 div.col-sm-4
                     input.form-control(id="signUpLevel" name="user[level]" type="number")
             div.form-group
-                label.col-sm-2.col-sm-offset-3.control-label(for="signUpBelong") 所属公司：
+                label.col-sm-2.col-sm-offset-3.control-label(for="signUpBelong") 所属直播室：
                 div.col-sm-4
-                    select.form-control(id="signUpBelong" name="user[belong]")
-                        option(value="main") 总部
-                        option(value="shanghai") 上海分公司
-                        option(value="wuhan") 武汉分公司
-                        option(value="changsha") 长沙分公司
-                        option(value="shenzhen") 深圳分公司
-                        option(value="hunan") 湖南分公司
-                        option(value="he-fei") 合肥分公司
-                        option(value="guangzhou") 广州分公司
+                    mixin option(value,title)
+                        option(value=value)=title
+                    select.form-control(id="signUpBelong" name="user[room]")
+                        each val in rooms
+                            +option(val._id,val.title)
             div.form-group
                 div.col-sm-offset-5.col-sm-2.text-center
                     input.btn.btn-success(id="submit" type="submit" value="提交")

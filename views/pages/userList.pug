@@ -31,8 +31,12 @@ block content
                             td #{item.email}
                             td #{item.sex}
                             td #{item.level}
-                            td #{item.belong}
-                            td #{item.forbidden}
+                            td #{item.room.title}
+                            td
+                                if(item.forbidden)
+                                    button.btn.btn-success.change(type="button",data-id=item._id) 解禁
+                                else
+                                    button.btn.btn-warning.change(type="button",data-id=item._id) 禁用
                             td #{moment(item.createAt).format('MM/DD/YYYY')}
                             td #{moment(item.updateAt).format('MM/DD/YYYY')}
                             td 离线

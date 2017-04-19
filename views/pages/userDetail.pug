@@ -9,36 +9,36 @@ block content
                 tbody
                     tr
                         td.text-right 用户名：
-                        td #{userDetail.name}
+                        td #{user.name}
                     tr
                         td.text-right 昵称：
-                        td #{userDetail.nickName}
+                        td #{user.nickName}
                     tr
                         td.text-right 手机：
-                        td #{userDetail.phone}
+                        td #{user.phone}
                     tr
                         td.text-right 邮箱：
-                        td #{userDetail.email}
+                        td #{user.email}
                     tr
                         td.text-right 性别：
-                        td #{userDetail.sex}
+                        td #{user.sex}
                     tr
                         td.text-right 等级：
-                        td #{userDetail.level}
+                        td #{user.level}
                     tr
                         td.text-right 所属公司：
-                        td #{userDetail.belong}
+                        td #{user.room.title}
                     tr
                         td.text-right 是否被禁用：
-                        td #{userDetail.forbidden}
+                        td #{user.forbidden}
 
                     tr
                         td.text-right 创建时间：
-                        td #{moment(userDetail.createAt).format('MM/DD/YYYY')}
+                        td #{moment(user.createAt).format('MM/DD/YYYY')}
                     tr
                         td.text-right 修改时间：
-                        td #{moment(userDetail.updateAt).format('MM/DD/YYYY')}
+                        td #{moment(user.updateAt).format('MM/DD/YYYY')}
                     tr
                         td.text-right 是否在线：
-                        td #{userDetail.online}
+                        td #{user.online}
 block js

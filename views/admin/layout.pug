@@ -26,13 +26,6 @@ html
                                         ul#roomlist.collapse
                                             li: a(role="button" href="/admin/roomlist") 房间列表
                                             li: a(role="button" href="/admin/roomnew") 新增房间
-                                    li(role="presentation")
-                                        a.collapsed(data-toggle="collapse" href="#picturelist" role="button" aria-haspopup="true" aria-expanded="false")
-                                            | 图片管理
-                                            span.caret
-                                        ul#picturelist.collapse
-                                            li: a(role="button" href="/admin/picture/room/shanghai") 图片列表
-                                            li: a(role="button" href="/admin/picture/upload") 图片上传
                                     li(role="presentation").dropdown
                                         a.collapsed(data-toggle="collapse" href="#userlist" role="button" aria-haspopup="true" aria-expanded="false")
                                             | 用户管理
@@ -41,6 +34,13 @@ html
                                             li: a(role="button" href="/admin/userlist/1") 用户列表
                                             li: a(role="button" href="/admin/usersearch") 用户查询
                                             li: a(role="button" href="/admin/usersignup") 用户注册
+                                    li(role="presentation")
+                                        a.collapsed(data-toggle="collapse" href="#picturelist" role="button" aria-haspopup="true" aria-expanded="false")
+                                            | 图片管理
+                                            span.caret
+                                        ul#picturelist.collapse
+                                            li: a(role="button" href="/admin/pictureroom/shanghai") 图片列表
+                                            li: a(role="button" href="/admin/pictureupload") 图片上传
                                     li(role="presentation")
                                         a.collapsed(data-toggle="collapse" href="#messagelist" role="button" aria-haspopup="true" aria-expanded="false")
                                             | 聊天管理
