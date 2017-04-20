@@ -7,6 +7,11 @@ function Message({message,check,del}) {
     let DOMStr;
     let DOMcheck;
     let ClassStr='item-'+message._id;
+    if(!message.from||!message.from.name){
+        message.from={
+            name:'路人'
+        }
+    }
     if(iUser.level>999){
         if(message.check){
             DOMcheck=(

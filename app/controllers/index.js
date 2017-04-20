@@ -12,11 +12,15 @@ exports.index = function (req, res) {
     if (rank > 999) {
         MessageModel
             .find({/*check: false*/}, ['_id', 'from', 'content', 'createAt', 'check'])
+            .populate({
+                path:'from',
+                select:'name -_id'
+            })
             .sort({_id: -1})
             .skip(0)
             .limit(PageSize)
-            .populate('from', 'name')
             .exec(function (err, messages) {
+                console.log(messages);
                 let messagesStr=JSON.stringify(messages);
                 PictureModel
                     .find({room: 'shanghai'},['-_id','urlB','position','urlBack','rank','alt'])

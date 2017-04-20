@@ -1,5 +1,6 @@
 const UserModel = require('../models/user.js');
 const RoomModel = require('../models/room.js');
+const MessageModel = require('../models/message.js');
 const pageSize = 20;
 
 exports.userList = function (req, res) {
@@ -204,14 +205,19 @@ exports.forbidden = function (req, res) {
 
 exports.delete = function (req, res) {
     let id = req.query.id;
-    UserModel.findByIdAndRemove(id, function (err) {
-        if (err) {
-            console.log(err)
-        }
-        res.json({
-            state: 'success'
+    MessageModel
+        .remove({from:id},function(err){
+            if(err){console.log(err)}
+            UserModel.findByIdAndRemove(id, function (err) {
+                if (err) {
+                    console.log(err)
+                }
+                res.json({
+                    state: 'success'
+                })
+            })
         })
-    })
+
 };
 
 exports.signIn = function (req, res) {
