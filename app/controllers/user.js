@@ -217,7 +217,6 @@ exports.delete = function (req, res) {
                 })
             })
         })
-
 };
 
 exports.signIn = function (req, res) {

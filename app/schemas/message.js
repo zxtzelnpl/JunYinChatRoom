@@ -22,6 +22,10 @@ let MessageSchema = new Schema({
         type: Boolean
         , default: false
     }
+    ,room:{
+        type:ObjectId
+        ,ref:'Room'
+    }
     , verifier: {
         type: ObjectId
         , ref: 'User'

@@ -21,6 +21,7 @@ module.exports = function (app, io) {
 
     /*Index*/
     app.get('/', Index.index);
+    app.get('/test', Index.test);
 
     /*User*/
     app.post('/user/signin', User.signIn);
