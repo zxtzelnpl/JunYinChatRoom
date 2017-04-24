@@ -20,7 +20,7 @@ let images = [
 iRoom.pictures.forEach(function(pic){
     if(pic.position==='carousel')
     images.push({
-        src:'/upload/'+pic.urlBack,
+        src:'http://139.196.93.207:3000/upload/'+pic.urlBack,
         alt:pic.alt
     })
 });
