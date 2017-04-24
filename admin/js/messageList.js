@@ -31,12 +31,7 @@ socket.on('checkedMessage', function (message,checker) {
 
     let className = ".item-id-" + message._id;
     let tds=$(className).children();
-    console.log(tds);
     tds.eq(3).html(checker);
     tds.eq(4).html(time);
+    tds.eq(5).html('已经审核通过');
 });
-
-// socket.emit('test','aaaaaa');
-// socket.on('test',function(msg){
-//     console.log(msg);
-// });
