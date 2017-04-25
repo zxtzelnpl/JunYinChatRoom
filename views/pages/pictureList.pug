@@ -25,7 +25,7 @@ block content
                             td #{item.alt}
                             td #{item.content}
                             td #{item.rank}
-                            td: img.img-responsive(src="/upload/"+item.urlBack)
+                            td: img.img-responsive(src="http://139.196.93.207:3000/upload/"+item.urlBack)
                             if item.uploader&&item.uploader.name
                                 td #{item.uploader.name}
                             else

@@ -40,7 +40,6 @@ exports.pictureList = function (req, res) {
 
 exports.pictureUpload = function (req, res) {
     let id = req.query.id;
-    let room = req.params.room;
     if(id){
         PictureModel.findById(id,function(err,picture){
             if(err){console.log(err)}
@@ -54,7 +53,7 @@ exports.pictureUpload = function (req, res) {
             .find({})
             .exec(function(err,rooms){
                 res.render('pictureUpload', {
-                    title: '图片上传-' + room
+                    title: '图片上传'
                     ,rooms
                 });
             });
