@@ -24,7 +24,7 @@ exports.index = function (req, res) {
         .exec(function (err, messages) {
             let messagesStr = JSON.stringify(messages);
             PictureModel
-                .find({room: room}, ['-_id', 'urlB', 'position', 'urlBack', 'rank', 'alt'])
+                .find({}, ['-_id', 'urlB', 'position', 'urlBack', 'rank', 'alt'])
                 .exec(function (err, pictures) {
                     if (err) {
                         console.log(err)
