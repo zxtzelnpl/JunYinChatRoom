@@ -41,13 +41,18 @@ exports.pictureList = function (req, res) {
 exports.pictureUpload = function (req, res) {
     let id = req.query.id;
     if(id){
-        PictureModel.findById(id,function(err,picture){
-            if(err){console.log(err)}
-            res.render('pictureUpload',{
-                title: '图片修改-' + id
-                ,picture
-            })
-        })
+        RoomModel
+            .find({})
+            .exec(function(err,rooms){
+                PictureModel.findById(id,function(err,picture){
+                    if(err){console.log(err)}
+                    res.render('pictureUpload',{
+                        title: '图片修改-' + id
+                        ,picture,
+                        rooms
+                    })
+                })
+            });
     }else{
         RoomModel
             .find({})
