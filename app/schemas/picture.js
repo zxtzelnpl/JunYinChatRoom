@@ -6,7 +6,8 @@ const ObjectId = Schema.Types.ObjectId;
 
 let PictureSchema = new Schema({
     room: {
-        type: String
+        type:ObjectId
+        ,ref:'Room'
     },
     position: {
         type: String

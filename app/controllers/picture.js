@@ -2,19 +2,40 @@ const fs = require('fs');
 const path = require('path');
 
 const PictureModel = require('../models/picture');
+const RoomModel = require('../models/room');
 
 exports.pictureList = function (req, res) {
-    let room = req.params.id;
-    PictureModel
-        .find({room: room})
-        .populate('uploader','name')
-        .exec(function (err, pictures) {
-            if(err){console.log(err)}
-            res.render('pictureList', {
-                title: '图片列表-' + room
-                ,pictures:pictures
+    let name = req.params.id;
+    if(name==='all'){
+        PictureModel
+            .find({})
+            .populate('uploader','name')
+            .populate('room','title')
+            .exec(function (err, pictures) {
+                if(err){console.log(err)}
+                console.log(pictures);
+                res.render('pictureList', {
+                    title: '图片列表'
+                    ,pictures:pictures
+                });
             });
-        });
+    }else{
+        RoomModel
+            .find({name:name})
+            .exec(function(err,room){
+                PictureModel
+                    .find({room: room._id})
+                    .populate('uploader','name')
+                    .populate('room','title')
+                    .exec(function (err, pictures) {
+                        if(err){console.log(err)}
+                        res.render('pictureList', {
+                            title: '图片列表-' + room
+                            ,pictures:pictures
+                        });
+                    });
+            });
+    }
 };
 
 exports.pictureUpload = function (req, res) {
@@ -29,9 +50,14 @@ exports.pictureUpload = function (req, res) {
             })
         })
     }else{
-        res.render('pictureUpload', {
-            title: '图片上传-' + room
-        });
+        RoomModel
+            .find({})
+            .exec(function(err,rooms){
+                res.render('pictureUpload', {
+                    title: '图片上传-' + room
+                    ,rooms
+                });
+            });
     }
 };
 

@@ -20,7 +20,7 @@ block content
                 if pictures && pictures.length > 0
                     each item in pictures
                         tr(class="item-id-" + item._id)
-                            td #{item.room}
+                            td #{item.room.title}
                             td #{item.position}
                             td #{item.alt}
                             td #{item.content}

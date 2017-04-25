@@ -30,7 +30,14 @@ block content
                 .form-group
                     label.col-sm-2.control-label 图片上传
                     .col-sm-10
-                        input.form-control#pic(type="file" name="uploadPic")
+                        mixin option(value)
+                            if picture.room.id == value.id
+                                option(value=value._id selected)=value.title
+                            else
+                                option(value=value._id)=value.title
+                        select.form-control(name="picture[room]")
+                            each val in rooms
+                                +option(val)
                 .form-group
                     label.col-sm-offset-2.col-sm-10
                         button.btn.btn-default(type="submit") 录入
@@ -38,7 +45,11 @@ block content
                 .form-group
                     label.col-sm-2.control-label 房间号
                     .col-sm-10
-                        input.form-control(type="text" name="picture[room]")
+                        mixin option(value,title)
+                            option(value=value)=title
+                        select.form-control(name="picture[room]")
+                            each val in rooms
+                                +option(val._id,val.title)
                 .form-group
                     label.col-sm-2.control-label 上传位置
                     .col-sm-10
@@ -65,7 +76,7 @@ block content
     .row
         p.col-sm-2.text-right 图片预览
         if(picture&&picture.urlBack)
-            img.col-sm-10.img-thumbnail#img(src="/upload/"+picture.urlBack)
+            img.col-sm-10.img-thumbnail#img(src="139.196.93.207:3000/upload/"+picture.urlBack)
         else
             img.col-sm-10.img-thumbnail#img(src="")
 
