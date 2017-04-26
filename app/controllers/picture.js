@@ -13,7 +13,6 @@ exports.pictureList = function (req, res) {
             .populate('room','title')
             .exec(function (err, pictures) {
                 if(err){console.log(err)}
-                console.log(pictures);
                 res.render('pictureList', {
                     title: '图片列表'
                     ,pictures:pictures
@@ -104,7 +103,6 @@ exports.update = function (req, res) {
         })
     } else {
         let _picture = new PictureModel(picture);
-        console.log(_picture);
         _picture.save(function (err, picture) {
             if (err) {
                 console.log(err)
