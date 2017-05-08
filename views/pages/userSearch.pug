@@ -49,7 +49,7 @@ block content
                 div.col-sm-4
                     mixin option(value,title)
                         option(value=value)=title
-                    select.form-control(id="searchBelong" name="user[room]")
+                    select.form-control(id="searchBelong" name="search[room]")
                         each val in rooms
                             +option(val._id,val.title)
             div.form-group
