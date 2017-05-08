@@ -11,7 +11,7 @@ block content
                     label.col-sm-2.control-label 房间
                     .col-sm-10
                         mixin option(value)
-                            if picture.room.id == value.id
+                            if picture.room == value.id
                                 option(value=value._id selected)=value.title
                             else
                                 option(value=value._id)=value.title

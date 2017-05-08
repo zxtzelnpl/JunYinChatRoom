@@ -5,8 +5,8 @@ const PictureModel = require('../models/picture');
 const RoomModel = require('../models/room');
 
 exports.pictureList = function (req, res) {
-    let name = req.params.id;
-    if(name==='all'){
+    let _id = req.params.id;
+    if(_id==='all'){
         PictureModel
             .find({})
             .populate('uploader','name')
@@ -19,20 +19,16 @@ exports.pictureList = function (req, res) {
                 });
             });
     }else{
-        RoomModel
-            .find({name:name})
-            .exec(function(err,room){
-                PictureModel
-                    .find({room: room._id})
-                    .populate('uploader','name')
-                    .populate('room','title')
-                    .exec(function (err, pictures) {
-                        if(err){console.log(err)}
-                        res.render('pictureList', {
-                            title: '图片列表-' + room
-                            ,pictures:pictures
-                        });
-                    });
+        PictureModel
+            .find({room:_id})
+            .populate('uploader','name')
+            .populate('room','title')
+            .exec(function (err, pictures) {
+                if(err){console.log(err)}
+                res.render('pictureList', {
+                    title: '图片列表'
+                    ,pictures:pictures
+                });
             });
     }
 };
@@ -66,7 +62,6 @@ exports.pictureUpload = function (req, res) {
 
 exports.savePic = function (req, res, next) {
     let posterData = req.files.uploadPic;
-    console.log(posterData);
     let filePath = posterData.path;
     let originalFilename = posterData.originalFilename;
     if (originalFilename) {
