@@ -27,7 +27,10 @@ block content
                         td #{user.level}
                     tr
                         td.text-right 所属公司：
-                        td #{user.room.title}
+                        if(user.room&&user.room.title)
+                            td #{user.room.title}
+                        else
+                            td 未分配
                     tr
                         td.text-right 是否被禁用：
                         td #{user.forbidden}

@@ -20,6 +20,7 @@ exports.roomDetail = function (req, res) {
         .populate('uploader','name')
         .exec(function(err,room){
             if(err){console.log(err)}
+
             res.render('roomDetail',{
                 title:'房间管理',
                 item:room
@@ -37,7 +38,6 @@ exports.roomUpdate = function (req, res) {
     let _id=req.params.id;
     RoomModel
         .findOne({_id:_id})
-        .populate('uploader','name')
         .exec(function(err,room){
             if(err){console.log(err)}
             res.render('roomUpdate',{
@@ -69,11 +69,10 @@ exports.delete=function(req,res){
 
 exports.update=function(req,res){
     let room=req.body.room;
-    console.log(room);
+    room.uploader=req.session.user._id;
     let _id=room._id;
     delete room._id;
-    console.log(room);
-    RoomModel.findByIdAndUpdate(_id,{'$set':{room:room}},function(err,room){
+    RoomModel.findByIdAndUpdate(_id,{$set:room},function(err,room){
         if(err){console.log(err)}
         res.redirect('/admin/roomdetail/'+room._id)
     })

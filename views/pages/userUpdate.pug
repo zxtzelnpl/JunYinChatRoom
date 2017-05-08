@@ -47,11 +47,12 @@ block content
                 label.col-sm-2.col-sm-offset-3.control-label(for="signUpBelong") 所属直播室：
                 div.col-sm-4
                     mixin option(value)
-                        if user.room.id==value.id
+                        if user.room&&user.room.id==value.id
                             option(value=value._id selected)=value.title
                         else
                             option(value=value._id)=value.title
                     select.form-control(id="signUpBelong" name="user[room]")
+                        option(value='')='请选择'
                         each val in rooms
                             +option(val)
             div.form-group

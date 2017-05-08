@@ -88,7 +88,6 @@ exports.userSearch = function (req, res) {
                 }
             );
         });
-
 };
 
 exports.userQuery = function (req, res) {

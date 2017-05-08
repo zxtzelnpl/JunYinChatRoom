@@ -44,6 +44,7 @@ block content
                     mixin option(value,title)
                         option(value=value)=title
                     select.form-control(id="signUpBelong" name="user[room]")
+                        option(value='')='请选择'
                         each val in rooms
                             +option(val._id,val.title)
             div.form-group

@@ -31,7 +31,10 @@ block content
                         td #{item.video.ownerId}
                     tr
                         td.text-right 修改人：
-                        td #{item.uploader.name}
+                        if item.uploader
+                            td #{item.uploader.name&&item.uploader.name}
+                        else
+                            td 未知
                     tr
                         td.text-right 创建时间：
                         td #{moment(item.createAt).format('MM/DD/YYYY')}
