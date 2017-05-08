@@ -66,6 +66,7 @@ exports.pictureUpload = function (req, res) {
 
 exports.savePic = function (req, res, next) {
     let posterData = req.files.uploadPic;
+    console.log(posterData);
     let filePath = posterData.path;
     let originalFilename = posterData.originalFilename;
     if (originalFilename) {
