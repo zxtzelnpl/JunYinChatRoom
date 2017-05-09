@@ -53,6 +53,7 @@ exports.messageList = function (req, res) {
             .limit(PageSize)
             .populate('from', 'name')
             .populate('verifier', 'name')
+            .populate('room','title')
             .exec(function (err, messages) {
                 if (err) {
                     console.log(err)

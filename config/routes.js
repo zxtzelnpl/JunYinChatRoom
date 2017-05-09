@@ -21,6 +21,7 @@ module.exports = function (app, io) {
 
     /*Index*/
     app.get('/', Index.index);
+    app.get('/room/:room', Index.room);
     app.get('/test', Index.test);
 
     /*User*/
