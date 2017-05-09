@@ -4,88 +4,64 @@ const RoomModel = require('../models/room');
 const PageSize = 30;
 
 exports.index = function (req, res) {
-    let title = '君银直播室';
-    let rank = 0;
-    let room = 'shanghai';
-    let optFind = {check: true};
-    let optField = ['_id', 'from', 'content', 'createAt'];
-    let optPopulate = {path: 'from', select: 'name -_id'};
-    if (req.session.user) {
-        rank = parseInt(req.session.user.level);
-        if (rank > 999) {
-            optFind = {};
-            optField = ['_id', 'from', 'content', 'createAt', 'check'];
-        }
-    }
-    MessageModel
-        .find(optFind, optField)
-        .limit(PageSize)
-        .populate(optPopulate)
-        .exec(function (err, messages) {
-            let messagesStr = JSON.stringify(messages);
-            PictureModel
-                .find({}, ['-_id', 'urlB', 'position', 'urlBack', 'rank', 'alt'])
-                .exec(function (err, pictures) {
-                    if (err) {
-                        console.log(err)
-                    }
-                    res.render('index', {
-                        messages: messagesStr,
-                        title,
-                        pictures: pictures,
-                    });
-                });
-        });
+    res.redirect('/room/shanghai');
 };
 
 exports.room = function (req, res) {
-    let rank = 0;
     let roomName = req.params.room;
-    let optFind = {check: true};
-    let optField = ['_id', 'from', 'content', 'room','createAt'];
-    let optPopulate = {path: 'from', select: 'name -_id'};
-    if (req.session.user) {
-        rank = parseInt(req.session.user.level);
-        if (rank > 999) {
-            optFind = {};
-            optField = ['_id', 'from', 'content', 'room', 'createAt', 'check'];
-        }
-    }
 
-    let promiseRoom=new Promise(function(resolve,reject){
+    let promiseRoom = new Promise(function (resolve, reject) {
         RoomModel
-            .findOne({name:roomName})
-            .exec(function(err,room){
-                if(err){reject(err)}
-                if(room){
+            .findOne({name: roomName})
+            .exec(function (err, room) {
+                if (err) {
+                    reject(err)
+                }
+                if (room) {
                     resolve(room)
-                }else{
+                } else {
                     reject('We can not find the room')
                 }
             })
     });
-    let promiseMessages=promiseRoom
-        .then(function(room){
-            optFind.room=room._id;
-            return new Promise(function(resolve,reject){
+
+    let promiseMessages = promiseRoom
+        .then(function (room) {
+            return new Promise(function (resolve, reject) {
+                let rank = req.session.user ? parseInt(req.session.user.level) : 0;
+                let optFind = {check: true,room:room._id};
+                let optField = ['_id', 'from', 'content', 'room', 'createAt'];
+                let optPopulate = {path: 'from', select: 'name -_id'};
+                if (rank > 999) {
+                    optFind = {room:room._id};
+                    optField = ['_id', 'from', 'content', 'room', 'createAt', 'check'];
+                }
                 MessageModel
                     .find(optFind, optField)
+                    .sort({_id:-1})
                     .limit(PageSize)
                     .populate(optPopulate)
                     .exec(function (err, messages) {
-                        if(err){reject(err)}
-                        resolve(JSON.stringify(messages)) ;
+                        if (err) {
+                            reject(err)
+                        }
+                        resolve(JSON.stringify(messages));
                     });
             });
 
         });
-    let promisePictures=promiseRoom
-        .then(function(room){
-            return new Promise(function(resolve,reject){
+
+    let promisePictures = promiseRoom
+        .then(function (room) {
+            return new Promise(function (resolve, reject) {
+                let optFind = {};
+                let optField = ['-_id', 'urlB', 'position', 'urlBack', 'rank', 'alt'];
                 PictureModel
-                    .find({}, ['-_id', 'urlB', 'position', 'urlBack', 'rank', 'alt'])
+                    .find(optFind, optField)
                     .exec(function (err, pictures) {
-                        if(err){reject(err)}
+                        if (err) {
+                            reject(err)
+                        }
                         resolve(pictures);
                     });
             });
@@ -93,53 +69,19 @@ exports.room = function (req, res) {
         });
 
     Promise
-        .all([promiseRoom,promiseMessages,promisePictures])
-        .then(function(arr){
+        .all([promiseRoom, promiseMessages, promisePictures])
+        .then(function (arr) {
             res.render('index', {
-                title:arr[0].title,
+                title: arr[0].title,
                 messages: arr[1],
                 pictures: arr[2],
             });
         })
-        .catch(function(err){
-           console.log(err)
+        .catch(function (err) {
+            console.log(err)
         });
-
-    // RoomModel
-    //     .findOne({name:roomName})
-    //     .exec(function(err,room){
-    //         if(err){console.log(err)}
-    //         if(room){
-    //             optFind.room=room._id;
-    //         }else{
-    //             res.render('wrongWay',{
-    //                 title:'没有找到您需要的页面',
-    //                 information:'You are enter the wrong page'
-    //             });
-    //             return;
-    //         }
-    //         MessageModel
-    //             .find(optFind, optField)
-    //             .limit(PageSize)
-    //             .populate(optPopulate)
-    //             .exec(function (err, messages) {
-    //                 let messagesStr = JSON.stringify(messages);
-    //                 PictureModel
-    //                     .find({}, ['-_id', 'urlB', 'position', 'urlBack', 'rank', 'alt'])
-    //                     .exec(function (err, pictures) {
-    //                         if (err) {
-    //                             console.log(err)
-    //                         }
-    //                         res.render('index', {
-    //                             messages: messagesStr,
-    //                             title,
-    //                             pictures: pictures,
-    //                         });
-    //                     });
-    //             });
-    //     });
 };
 
-exports.test = function(req,res){
+exports.test = function (req, res) {
     console.log(Promise);
 };
