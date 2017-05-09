@@ -39,7 +39,6 @@ exports.index = function (req, res) {
 };
 
 exports.room = function (req, res) {
-    let title = '君银直播室';
     let rank = 0;
     let roomName = req.params.room;
     let optFind = {check: true};
@@ -52,49 +51,95 @@ exports.room = function (req, res) {
             optField = ['_id', 'from', 'content', 'room', 'createAt', 'check'];
         }
     }
-    RoomModel
-        .findOne({name:roomName})
-        .exec(function(err,room){
-            if(err){console.log(err)}
-            if(room){
-                console.log(room);
-                optFind.room=room._id;
-            }else{
-                res.render('wrongWay',{
-                    title:'没有找到您需要的页面',
-                    information:'You are enter the wrong page'
-                });
-                return;
-            }
-            MessageModel
-                .find(optFind, optField)
-                .limit(PageSize)
-                .populate(optPopulate)
-                .exec(function (err, messages) {
-                    let messagesStr = JSON.stringify(messages);
-                    PictureModel
-                        .find({}, ['-_id', 'urlB', 'position', 'urlBack', 'rank', 'alt'])
-                        .exec(function (err, pictures) {
-                            if (err) {
-                                console.log(err)
-                            }
-                            res.render('index', {
-                                messages: messagesStr,
-                                title,
-                                pictures: pictures,
-                            });
-                        });
-                });
+
+    let promiseRoom=new Promise(function(resolve,reject){
+        RoomModel
+            .findOne({name:roomName})
+            .exec(function(err,room){
+                if(err){reject(err)}
+                if(room){
+                    resolve(room)
+                }else{
+                    reject('We can not find the room')
+                }
+            })
+    });
+    let promiseMessages=promiseRoom
+        .then(function(room){
+            optFind.room=room._id;
+            return new Promise(function(resolve,reject){
+                MessageModel
+                    .find(optFind, optField)
+                    .limit(PageSize)
+                    .populate(optPopulate)
+                    .exec(function (err, messages) {
+                        if(err){reject(err)}
+                        resolve(JSON.stringify(messages)) ;
+                    });
+            });
+
         });
+    let promisePictures=promiseRoom
+        .then(function(room){
+            return new Promise(function(resolve,reject){
+                PictureModel
+                    .find({}, ['-_id', 'urlB', 'position', 'urlBack', 'rank', 'alt'])
+                    .exec(function (err, pictures) {
+                        if(err){reject(err)}
+                        resolve(pictures);
+                    });
+            });
+
+        });
+
+    Promise
+        .all([promiseRoom,promiseMessages,promisePictures])
+        .then(function(arr){
+            res.render('index', {
+                title:arr[0].title,
+                messages: arr[1],
+                pictures: arr[2],
+            });
+        })
+        .catch(function(err){
+           console.log(err)
+        });
+
+    // RoomModel
+    //     .findOne({name:roomName})
+    //     .exec(function(err,room){
+    //         if(err){console.log(err)}
+    //         if(room){
+    //             optFind.room=room._id;
+    //         }else{
+    //             res.render('wrongWay',{
+    //                 title:'没有找到您需要的页面',
+    //                 information:'You are enter the wrong page'
+    //             });
+    //             return;
+    //         }
+    //         MessageModel
+    //             .find(optFind, optField)
+    //             .limit(PageSize)
+    //             .populate(optPopulate)
+    //             .exec(function (err, messages) {
+    //                 let messagesStr = JSON.stringify(messages);
+    //                 PictureModel
+    //                     .find({}, ['-_id', 'urlB', 'position', 'urlBack', 'rank', 'alt'])
+    //                     .exec(function (err, pictures) {
+    //                         if (err) {
+    //                             console.log(err)
+    //                         }
+    //                         res.render('index', {
+    //                             messages: messagesStr,
+    //                             title,
+    //                             pictures: pictures,
+    //                         });
+    //                     });
+    //             });
+    //     });
 };
 
 exports.test = function(req,res){
-    RoomModel
-        .findOne({name:'shanghai'})
-        .exec(function(err,room){
-            console.log(room);
-            MessageModel.update({},{'$set':{room:room._id}},{multi:true},function(err,messages){
-                console.log(messages)
-            });
-        })
+    console.log(Promise);
 };
