@@ -136,6 +136,9 @@ exports.userQuery = function (req, res) {
 exports.signUp = function (req, res) {
     let user;
     let _user = req.body.user;
+    if(_user.room===''){
+        delete _user.room;
+    }
     UserModel.find({"$or": [{'name': _user.name}, {'phone': _user.phone}]}, function (err, users) {
         if (err) {
             console.log(err);

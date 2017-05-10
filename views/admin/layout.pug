@@ -9,7 +9,7 @@ html
         .container
             .row
                 .col-sm-2
-                    if user
+                    if user&&parseInt(user.level)>=1000
                         .row
                             .col-sm-12
                                 p.col-sm-12.col-xs-2.col-xs-1.glyphicon.glyphicon-user.label.label-default#userName #{user.name}

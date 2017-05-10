@@ -29,11 +29,11 @@ exports.room = function (req, res) {
     let promiseMessages = promiseRoom
         .then(function (room) {
             return new Promise(function (resolve, reject) {
-                let rank = req.session.user ? parseInt(req.session.user.level) : 0;
+                let level = req.session.user ? parseInt(req.session.user.level) : 0;
                 let optFind = {check: true,room:room._id};
                 let optField = ['_id', 'from', 'content', 'room', 'createAt'];
                 let optPopulate = {path: 'from', select: 'name -_id'};
-                if (rank > 999) {
+                if (level >= 1000) {
                     optFind = {room:room._id};
                     optField = ['_id', 'from', 'content', 'room', 'createAt', 'check'];
                 }
