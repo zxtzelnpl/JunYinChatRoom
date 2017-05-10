@@ -8,19 +8,20 @@ exports.index = function (req, res) {
 };
 
 exports.room = function (req, res) {
-    let roomName = req.params.room;
 
     let promiseRoom = new Promise(function (resolve, reject) {
+        let roomName = req.params.room;
         RoomModel
             .findOne({name: roomName})
             .exec(function (err, room) {
+                console.log(room);
                 if (err) {
                     reject(err)
                 }
                 if (room) {
                     resolve(room)
                 } else {
-                    reject('We can not find the room')
+                    reject('We can not find the room:'+roomName)
                 }
             })
     });
@@ -78,7 +79,10 @@ exports.room = function (req, res) {
             });
         })
         .catch(function (err) {
-            console.log(err)
+            res.render('wrongWay',{
+                title:'发生错误',
+                err:err
+            })
         });
 };
 
