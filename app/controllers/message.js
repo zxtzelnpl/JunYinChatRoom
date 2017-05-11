@@ -6,34 +6,27 @@ const PageSize = 30;
 /**get聊天信息start*/
 exports.getMessage = function (req, res) {
     let page = req.query.page;
+    let optFind, optField;
     if (req.session.user && parseInt(req.session.user.level) > 999) {
-        MessageModel
-            .find({}, ['_id', 'from', 'content', 'createAt', 'check'])
-            .sort({_id: -1})
-            .skip(page * PageSize)
-            .limit(PageSize)
-            .populate('from', 'name')
-            .exec(function (err, messages) {
-                if (err) {
-                    console.log(err)
-                }
-                console.log(messages);
-                res.json(messages);
-            })
-    } else {
-        MessageModel
-            .find({'check': true}, ['_id', 'from', 'content', 'createAt'])
-            .sort({_id: -1})
-            .skip(page * PageSize)
-            .limit(PageSize)
-            .populate('from', 'name')
-            .exec(function (err, messages) {
-                if (err) {
-                    console.log(err)
-                }
-                res.json(messages);
-            })
+        optFind = {};
+        optField = ['_id', 'from', 'content', 'createAt', 'check'];
     }
+    else {
+        optFind = {'check': true};
+        optField=['_id', 'from', 'content', 'createAt'];
+    }
+    MessageModel
+        .find(optFind, optField)
+        .sort({_id: -1})
+        .skip(page * PageSize)
+        .limit(PageSize)
+        .populate('from', 'name')
+        .exec(function (err, messages) {
+            if (err) {
+                console.log(err)
+            }
+            res.json(messages);
+        })
 };
 /**get聊天信息end*/
 
@@ -53,7 +46,7 @@ exports.messageList = function (req, res) {
             .limit(PageSize)
             .populate('from', 'name')
             .populate('verifier', 'name')
-            .populate('room','title')
+            .populate('room', 'title')
             .exec(function (err, messages) {
                 if (err) {
                     console.log(err)
@@ -158,23 +151,23 @@ exports.query = function (req, res) {
             else if (key === 'content') {
                 search[key] = new RegExp(_search[key], 'gi')
             }
-            else if(key === 'timeStart'){
-                _search[key]+=' 00:01';
-                search['createAt']={
+            else if (key === 'timeStart') {
+                _search[key] += ' 00:01';
+                search['createAt'] = {
                     '$gte': new Date(_search[key])
                 }
             }
-            else if(key === 'timeEnd'){
-                _search[key]+=' 23:59';
-                if(search['createAt']){
-                    search['createAt']['$lt']=new Date(_search[key])
-                }else{
-                    search['createAt']={
+            else if (key === 'timeEnd') {
+                _search[key] += ' 23:59';
+                if (search['createAt']) {
+                    search['createAt']['$lt'] = new Date(_search[key])
+                } else {
+                    search['createAt'] = {
                         "$lt": new Date(_search[key])
                     }
                 }
             }
-            else if(key === 'name'){
+            else if (key === 'name') {
 
             }
             else {
@@ -188,10 +181,10 @@ exports.query = function (req, res) {
             if (err) {
                 console.log(err)
             }
-            if(!user){
-                res.render('information',{
-                    title:'错误提示',
-                    information:'未查找到此人'
+            if (!user) {
+                res.render('information', {
+                    title: '错误提示',
+                    information: '未查找到此人'
                 });
                 return;
             }
@@ -217,7 +210,7 @@ exports.query = function (req, res) {
                     });
             });
         })
-    }else{
+    } else {
         MessageModel.count(search, function (err, count) {
             totalPageNum = Math.ceil(count / PageSize);
             MessageModel.find(search)
@@ -238,7 +231,6 @@ exports.query = function (req, res) {
                 });
         });
     }
-
 };
 /**查询结果end*/
 
