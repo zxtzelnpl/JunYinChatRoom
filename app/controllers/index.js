@@ -87,5 +87,12 @@ exports.room = function (req, res) {
 };
 
 exports.test = function (req, res) {
-    console.log(Promise);
+    // RoomModel
+    //     .findOne({name: 'shanghai'})
+    //     .exec(function (err, room) {
+    //         MessageModel.update({},{room:room._id},{multi:true})
+    //             .exec(function(err,results){
+    //                 console.log(results);
+    //             })
+    //     })
 };
