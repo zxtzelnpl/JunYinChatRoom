@@ -11,7 +11,12 @@ const UserModule = require('../app/models/user.js');
 
 module.exports = function (app, io) {
     let ids = [];
+    let socketIds=[];
+    let tourists=0;
+    let users=[];
+    let admins=[];
     let userNum = 0;
+    let rooms=[];
 
     /*pre handle user*/
     app.use(function (req, res, next) {
@@ -71,53 +76,78 @@ module.exports = function (app, io) {
     /*socket.io*/
     io.on('connection', function (socket) {
         let user;
-        let delNum;
-        userNum++;
-        io.emit('online', userNum);
+        let room;
+
         if (socket.request.session.user) {
             user = socket.request.session.user;
 
+            console.log(user);
+
             UserModule.findByIdAndUpdate(user._id, {$set: {online: true}}, function () {
-                ids.push(user._id);
+                users.push(user._id);
                 io.emit('usersAdd', user._id);
             });
+        }else{
+            tourists++;
+        }
+        io.emit('online', (tourists+users.length));
+
+        if(user&&user.room){
+            room=user.room;
+            if(rooms[room]){
+                rooms[room]++;
+            }else{
+                rooms[room]=1;
+            }
+            socket.join(room);
+        }
+
+        if(user&&parseInt(user.level)>=10000){
+            socket.join('admin');
         }
 
         socket.on('message', function (msg) {
             Message.save(msg,user, function (message) {
-                io.emit('message', message);
+                io.to(room).emit('message', message);
+                io.to('admin').emit('message', message);
                 socket.emit('selfBack',message);
             });
         });
 
         socket.on('checkMessage',function(msg){
             Message.checkMessage(msg,user,function(message,checker){
-                io.emit('checkedMessage',message,checker);
+                io.to(room).emit('checkedMessage',message,checker);
+                io.to('admin').emit('checkedMessage',message,checker);
             })
         });
 
         socket.on('delMessage',function(msg){
             Message.delMessage(msg,user,function(message){
-                io.emit('delMessage',message)
+                io.to(room).emit('delMessage',message);
+                io.to('admin').emit('delMessage',message);
             })
         });
 
         socket.on('disconnect', function () {
+            let delNum;
             if (user) {
-                ids.forEach(function (id, index) {
-                    if (id === user._id) {
-                        delNum = index;
-                    }
+                delNum=users.indexOf(user._id);
+                users.splice(delNum, 1);
+                UserModule.findByIdAndUpdate(user._id, {$set: {online: false}}, function () {
+                    io.emit('usersMinus', user._id)
                 });
-                ids.splice(delNum, 1);
-                if (ids.indexOf(user._id) === -1) {
-                    UserModule.findByIdAndUpdate(user._id, {$set: {online: false}}, function () {
-                        io.emit('usersMinus', user._id)
-                    });
+
+                if(room){
+                    socket.leave(room);
+                    rooms[room]--;
+                    if(rooms[room]===0){
+                        rooms[room]=undefined;
+                    }
                 }
+            }else{
+                tourists--;
             }
-            userNum--;
-            io.emit('online', userNum);
+            io.emit('online', (tourists+users.length));
         });
 
     })

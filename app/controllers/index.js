@@ -14,7 +14,6 @@ exports.room = function (req, res) {
         RoomModel
             .findOne({name: roomName})
             .exec(function (err, room) {
-                console.log(room);
                 if (err) {
                     reject(err)
                 }
@@ -76,6 +75,7 @@ exports.room = function (req, res) {
                 title: arr[0].title,
                 messages: arr[1],
                 pictures: arr[2],
+                roomId:arr[0]._id
             });
         })
         .catch(function (err) {

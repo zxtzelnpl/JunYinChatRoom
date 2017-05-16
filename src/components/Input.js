@@ -26,7 +26,10 @@ class Input extends React.Component {
         let name = document.querySelector('.signIn>span') ? document.querySelector('.signIn>span').innerHTML : undefined;
         if (name) {
             let content = this.textarea.value.replace(/\s/g, "");
-            socket.emit('message', content);
+            socket.emit('message', {
+                content:content,
+                room:iRoom._id
+            });
         } else {
             alert('登录后可发送信息');
         }
@@ -40,7 +43,10 @@ class Input extends React.Component {
             let name = document.querySelector('.signIn>span') ? document.querySelector('.signIn>span').innerHTML : undefined;
             if (name) {
                 let content = this.textarea.value.replace(/\s/g, "");
-                socket.emit('message', content);
+                socket.emit('message', {
+                    content:content,
+                    room:iRoom._id
+                });
             } else {
                 alert('登录后可发送信息');
             }

@@ -69,7 +69,8 @@ exports.save = function (msg, user, next) {
         from: {}
     };
     _message.from = user._id;
-    _message.content = msg;
+    _message.content = msg.content;
+    _message.room = msg.room;
 
     let message = new MessageModel(_message);
     message.save(function (err, message) {
@@ -82,7 +83,7 @@ exports.save = function (msg, user, next) {
                 , from: {
                 name: user.name
             }
-                , content: msg
+                , content: message.content
                 , createAt: message.createAt
             }
         )
