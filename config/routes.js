@@ -108,8 +108,8 @@ module.exports = function (app, io) {
 
         socket.on('message', function (msg) {
             Message.save(msg,user, function (message) {
-                io.to(room).emit('message', message);
-                io.to('admin').emit('message', message);
+                socket.broadcast.to(room).emit('message', message);
+                socket.broadcast.to('admin').emit('message', message);
                 socket.emit('selfBack',message);
             });
         });
