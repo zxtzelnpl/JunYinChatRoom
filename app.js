@@ -2,7 +2,6 @@ const fs=require('fs');
 
 /**定义常量**/
 const port = process.env.PORT || 3000;
-const dbUrl = 'mongodb://localhost/junyin';
 const secret='junyin';
 
 /**引如外部**/
