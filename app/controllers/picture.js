@@ -6,28 +6,33 @@ const RoomModel = require('../models/room');
 
 exports.pictureList = function (req, res) {
     let _id = req.params.id;
-    if(_id==='all'){
+    if (_id === 'all') {
         PictureModel
             .find({})
-            .populate('uploader','name')
-            .populate('room','title')
+            .sort({'room':-1,'position':1})
+            .populate('uploader', 'name')
+            .populate('room', 'title')
             .exec(function (err, pictures) {
-                if(err){console.log(err)}
+                if (err) {
+                    console.log(err)
+                }
                 res.render('pictureList', {
                     title: '图片列表'
-                    ,pictures:pictures
+                    , pictures: pictures
                 });
             });
-    }else{
+    } else {
         PictureModel
-            .find({room:_id})
-            .populate('uploader','name')
-            .populate('room','title')
+            .find({room: _id})
+            .populate('uploader', 'name')
+            .populate('room', 'title')
             .exec(function (err, pictures) {
-                if(err){console.log(err)}
+                if (err) {
+                    console.log(err)
+                }
                 res.render('pictureList', {
                     title: '图片列表'
-                    ,pictures:pictures
+                    , pictures: pictures
                 });
             });
     }
@@ -35,26 +40,28 @@ exports.pictureList = function (req, res) {
 
 exports.pictureUpload = function (req, res) {
     let id = req.query.id;
-    if(id){
+    if (id) {
         RoomModel
             .find({})
-            .exec(function(err,rooms){
-                PictureModel.findById(id,function(err,picture){
-                    if(err){console.log(err)}
-                    res.render('pictureUpload',{
+            .exec(function (err, rooms) {
+                PictureModel.findById(id, function (err, picture) {
+                    if (err) {
+                        console.log(err)
+                    }
+                    res.render('pictureUpload', {
                         title: '图片修改-' + id
-                        ,picture,
+                        , picture,
                         rooms
                     })
                 })
             });
-    }else{
+    } else {
         RoomModel
             .find({})
-            .exec(function(err,rooms){
+            .exec(function (err, rooms) {
                 res.render('pictureUpload', {
                     title: '图片上传'
-                    ,rooms
+                    , rooms
                 });
             });
     }
@@ -106,4 +113,16 @@ exports.update = function (req, res) {
             res.redirect('/admin/pictureroom/' + picture.room)
         })
     }
+};
+
+exports.delete = function (req, res) {
+    let id = req.query.id;
+    UserModel.findByIdAndRemove(id, function (err) {
+        if (err) {
+            console.log(err)
+        }
+        res.json({
+            state: 'success'
+        })
+    })
 };

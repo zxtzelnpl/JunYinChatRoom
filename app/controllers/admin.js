@@ -1,8 +1,13 @@
 exports.admin = function (req, res) {
-    res.render('admin', {});
+    res.render('admin', {
+
+    });
 };
 
 exports.adminRequired=function(req,res,next){
+    console.log('xxx');
+    console.log(this.locals);
+    console.log('xxx');
     let level = req.session.user ? parseInt(req.session.user.level) : 0;
     if(level>=1000){
         next();

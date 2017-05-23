@@ -49,16 +49,16 @@ module.exports = function (app, io) {
     app.delete('/admin/room/delete', Admin.adminRequired, Room.delete);//JSON：房间删除
 
     /*Admin-User*/
-    app.get('/admin/userlist/:page', Admin.adminRequired, User.userList);
-    app.get('/admin/usersignup', Admin.adminRequired, User.userSignUp);
-    app.get('/admin/userdetail/:id', Admin.adminRequired, User.userDetail);
-    app.get('/admin/userupdate/:id', Admin.adminRequired, User.userUpdate);
-    app.get('/admin/usersearch', Admin.adminRequired, User.userSearch);
-    app.post('/admin/userquery/:page', Admin.adminRequired, User.userQuery);
-    app.post('/admin/user/signup', Admin.adminRequired, User.signUp);
-    app.post('/admin/user/update', Admin.adminRequired, User.update);
-    app.delete('/admin/user/delete', Admin.adminRequired, User.delete);
-    app.get('/admin/user/forbidden', Admin.adminRequired, User.forbidden);
+    app.get('/admin/userlist/:page', Admin.adminRequired, User.userList);//PAGE:用户列表
+    app.get('/admin/usersignup', Admin.adminRequired, User.userSignUp);//PAGE:用户注册
+    app.get('/admin/userdetail/:id', Admin.adminRequired, User.userDetail);//PAGE:用户详情
+    app.get('/admin/userupdate/:id', Admin.adminRequired, User.userUpdate);//PAGE:用户更新
+    app.get('/admin/usersearch', Admin.adminRequired, User.userSearch);//PAGE：用户检索
+    app.post('/admin/userquery/:page', Admin.adminRequired, User.userQuery);//PAGE:用户查询
+    app.post('/admin/user/signup', Admin.adminRequired, User.signUp);//FORM：用户注册
+    app.post('/admin/user/update', Admin.adminRequired, User.update);//FORM：用户更新
+    app.delete('/admin/user/delete', Admin.adminRequired, User.delete);//JSON：用户删除
+    app.get('/admin/user/forbidden', Admin.adminRequired, User.forbidden);//JSON：用户禁止
 
     /*Admin-Message*/
     app.get('/admin/messagelist/:page', Admin.adminRequired, Message.messageList);//PAGE：信息列表
@@ -69,6 +69,7 @@ module.exports = function (app, io) {
     app.get('/admin/pictureroom/:id', Admin.adminRequired, Picture.pictureList);//PAGE:图片列表
     app.get('/admin/pictureupload', Admin.adminRequired, Picture.pictureUpload);//PAGE:图片更新
     app.post('/admin/picture/update', Admin.adminRequired, multiparty(),Picture.savePic,Picture.update);//PAGE:图片更新
+    app.delete('/admin/picture/delete', Admin.adminRequired, Picture.delete);//JSON：图片删除
 
     /*Information*/
     app.get('/admin/information/:information', Admin.adminRequired, Admin.information);//PAGE：信息提示

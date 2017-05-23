@@ -8,7 +8,6 @@ exports.index = function (req, res) {
 };
 
 exports.room = function (req, res) {
-
     let promiseRoom = new Promise(function (resolve, reject) {
         let roomName = req.params.room;
         RoomModel
@@ -54,7 +53,7 @@ exports.room = function (req, res) {
     let promisePictures = promiseRoom
         .then(function (room) {
             return new Promise(function (resolve, reject) {
-                let optFind = {};
+                let optFind = {room:room._id};
                 let optField = ['-_id', 'urlB', 'position', 'urlBack', 'rank', 'alt'];
                 PictureModel
                     .find(optFind, optField)
