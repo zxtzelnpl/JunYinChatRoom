@@ -6,7 +6,7 @@ $('#submit').click(function(e){
     let password=$('#signInPassword').val();
     console.log(name,password);
     $.ajax({
-        url:'/user/signin'
+        url:'/admin/signin'
         ,method:'POST'
         ,data:{
             name

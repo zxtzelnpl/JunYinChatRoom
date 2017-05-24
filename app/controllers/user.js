@@ -225,6 +225,7 @@ exports.signIn = function (req, res) {
     let _user = req.body;
     let name = _user.name;
     let password = _user.password;
+    let roomId=_user.room;
 
     UserModel.findOne({name: name}, function (err, user) {
         if (err) {
@@ -235,6 +236,12 @@ exports.signIn = function (req, res) {
             return res.json({
                 state: 'fail'
                 , reason: 'no name'
+            })
+        }
+        if(user.room!=roomId){
+            return res.json({
+                state: 'fail'
+                , reason: 'wrong room'
             })
         }
 

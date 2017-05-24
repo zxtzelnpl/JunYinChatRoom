@@ -38,6 +38,7 @@ module.exports = function (app, io) {
 
     /*Admin*/
     app.get('/admin/login', Admin.login);//PAGE:登录
+    app.post('/admin/signin', Admin.signIn);//PAGE:登录
 
     /*Admin-Room*/
     app.get('/admin/roomlist', Admin.adminRequired, Room.roomList);//PAGE：房间列表
@@ -89,7 +90,8 @@ module.exports = function (app, io) {
         }else{
             tourists++;
         }
-        io.emit('online', (tourists+users.length));
+
+
 
         if(user&&user.room){
             room=user.room;
@@ -101,14 +103,11 @@ module.exports = function (app, io) {
             socket.join(room);
         }
 
-        if(user&&parseInt(user.level)>=10000){
-            socket.join('admin');
-        }
+        io.to(room).emit('online', (tourists+rooms[room]));
 
         socket.on('message', function (msg) {
             Message.save(msg,user, function (message) {
                 socket.broadcast.to(room).emit('message', message);
-                socket.broadcast.to('admin').emit('message', message);
                 socket.emit('selfBack',message);
             });
         });
@@ -146,7 +145,7 @@ module.exports = function (app, io) {
             }else{
                 tourists--;
             }
-            io.emit('online', (tourists+users.length));
+            io.emit('online', (tourists+rooms[room]));
         });
 
     })

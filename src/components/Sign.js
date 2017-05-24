@@ -15,6 +15,7 @@ class Sign extends React.Component {
             , data: {
                 name: name
                 , password: password
+                ,room:iRoom._id
             }
             , success: (datas) => {
                 if (datas.state === 'success') {

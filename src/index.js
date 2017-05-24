@@ -19,22 +19,22 @@ import socket from './socket/socket';
 const store = createStore(reducer);
 
 
-if(iUser.level<999){
-    socket.on('selfBack',function(msg){
-        store.dispatch(messages(msg,'BACK'));
-    })
-}else{
+if(iUser.level>999){
     socket.on('message',function(msg){
+        console.log(msg);
         store.dispatch(messages(msg,'ADD'));
     });
 }
+
+socket.on('selfBack',function(msg){
+    store.dispatch(messages(msg,'BACK'));
+});
 socket.on('checkedMessage',function(msg){
     store.dispatch(messages(msg,'CHECK'))
 });
 socket.on('delMessage',function(msg){
     store.dispatch(messages(msg,'DEL'))
 });
-
 socket.on('online',function(msg){
   store.dispatch(onlines(msg))
 });
