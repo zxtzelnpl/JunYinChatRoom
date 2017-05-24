@@ -37,7 +37,7 @@ module.exports = function (app, io) {
     app.get('/message/getmessage',Message.getMessage);//JSON:信息
 
     /*Admin*/
-    app.get('/admin/login', Admin.admin);//PAGE:登录
+    app.get('/admin/login', Admin.login);//PAGE:登录
 
     /*Admin-Room*/
     app.get('/admin/roomlist', Admin.adminRequired, Room.roomList);//PAGE：房间列表
@@ -81,8 +81,6 @@ module.exports = function (app, io) {
 
         if (socket.request.session.user) {
             user = socket.request.session.user;
-
-            console.log(user);
 
             UserModule.findByIdAndUpdate(user._id, {$set: {online: true}}, function () {
                 users.push(user._id);

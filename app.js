@@ -2,6 +2,7 @@ const fs=require('fs');
 
 /**定义常量**/
 const port = process.env.PORT || 3000;
+const dbUrl = 'mongodb://was:96321@139.196.93.207:3883/junyin';
 const secret='junyin';
 
 /**引如外部**/
@@ -54,12 +55,10 @@ const sessionMiddleware=session({
 const parseCookie = cookieParser(secret);
 /**4.parseCookie建立并加密end*/
 
-
 /**5.模版文件start*/
 app.set('views', './views/pages');
 app.set('view engine', 'pug');
 /**5.模版文件end*/
-
 
 /**6.中间件start*/
 app.use(parseCookie);
@@ -84,7 +83,6 @@ server.listen(port, function () {
     console.log('Express server listening on port ' + port);
 });
 /**8..服务器端口监听start*/
-
 
 /**9.增加本地文件夹start*/
 fs.exists('./public/upload',function(exists){

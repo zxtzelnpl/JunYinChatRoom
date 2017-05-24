@@ -1,6 +1,6 @@
-exports.admin = function (req, res) {
+exports.login = function (req, res) {
     res.render('admin', {
-
+        title:'登录页面'
     });
 };
 
