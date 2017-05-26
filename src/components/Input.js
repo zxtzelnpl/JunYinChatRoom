@@ -20,7 +20,6 @@ class Input extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            html: '请在此处输入内容',
             emojiStyle: {display: 'none'}
         };
         this._range = {
@@ -30,8 +29,8 @@ class Input extends React.Component {
     }
 
     clearPlaceholder() {
-        if (this.state.html === '请在此处输入内容') {
-            this.setState({html:''});
+        if (this.textarea.innerHTML === '请在此处输入内容') {
+            this.textarea.innerHTML='';
         }
     }
 
@@ -73,7 +72,6 @@ class Input extends React.Component {
             console.log(node);
             node.parentNode.insertBefore(img, node.nextSibling);
             this._range.node = img;
-            this.setState({html:node.parentNode.innerHTML});
             return;
         }
         if (node.nodeType === 1) {
@@ -81,7 +79,6 @@ class Input extends React.Component {
             let childNodes = node.childNodes;
             node.insertBefore(img, childNodes[offset]);
             this._range.offset++;
-            this.setState({html:node.innerHTML});
             return;
         }
         if (node.nodeType === 3) {
@@ -97,13 +94,12 @@ class Input extends React.Component {
             parent.replaceChild(fragment, node);
             this._range.node = img;
             this._range.offset = undefined;
-            this.setState({html:parent.innerHTML});
         }
     }
     submit(){
         let name = document.querySelector('.signIn>span') ? document.querySelector('.signIn>span').innerHTML : undefined;
         if (name) {
-            let content = format(this.state.html);
+            let content = format(this.textarea.innerHTML);
             socket.emit('message', {
                 content: content,
                 room: iRoom._id
@@ -118,16 +114,16 @@ class Input extends React.Component {
         e.stopPropagation();
         if (e.keyCode === 13 && e.ctrlKey) {
             this.submit.call(this)
-        }else{
-            this.setState({
-                html:this.textarea.innerHTML
-            })
         }
     }
 
     handleClick(e) {
         e.preventDefault();
         this.submit.call(this)
+    }
+
+    componentDidMount(){
+        this.textarea.innerHTML='请在此处输入内容';
     }
 
     render() {
@@ -149,7 +145,6 @@ class Input extends React.Component {
                         onBlur={this.saveRange.bind(this)}
                         onFocus={this.clearPlaceholder.bind(this)}
                         onKeyUp={this.handleKeyup.bind(this)}
-                        dangerouslySetInnerHTML={{__html:this.state.html}}
                     ></div>
                 </div>
                 <div>
