@@ -44,7 +44,7 @@ exports.room = function (req, res) {
                         if (err) {
                             reject(err)
                         }
-                        resolve(JSON.stringify(messages));
+                        resolve(messages);
                     });
             });
 

@@ -1,290 +1,326 @@
 @import 'normalize/normalize';
 
-@headerH:50px;
-@gap:10px;
+@headerH: 50px;
+@gap: 10px;
 
-html{
-  width:100%;
-  height:100%;
+html {
+    width: 100%;
+    height: 100%;
 }
 
-body{
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.6);
+body {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
 }
 
-a{
-  text-decoration: none;
+a {
+    text-decoration: none;
 }
-#app{
-  width:100%;
-  height:100%;
+
+#app {
+    width: 100%;
+    height: 100%;
 }
-.app{
-  width:100%;
-  height:100%;
 
-  //头部样式
-  .header{
-    margin-bottom:@gap;
-    width:100%;
-    height:@headerH;
-    background:#000;
-    color:#fff;
-    .clear;
-    .title{
-      float:left;
-      height:100%;
-      display:flex;
-      justify-content:center;
-      align-items:flex-end;
-      img{
-        display:block;
-      }
-    }
-    .onLines{
-      float:left;
-      height:100%;
-      display:flex;
-      justify-content:center;
-      align-items:flex-end;
-      span{
-        padding:5px 5px;
-        color:#fff;
-        font-weight:bold;
-      }
-    }
-    .user{
-      float:right;
-      width:@headerH;
-      height:100%;
-      display:flex;
-      flex-direction:row;
-      flex-wrap:wrap;
-      justify-content:center;
-      align-items:flex-end;
-      align-content:center;
-      div{
-        width:100%;
-        height:50%;
-        a{
-          display:block;
-          width:100%;
-          text-align: center;
-          line-height:@headerH/2;
-          cursor:pointer;
-          &:hover{
-            font-weight:bold;
-          }
-        }
-        span{
-          display:block;
-          width:100%;
-          text-align: center;
-          line-height:@headerH/2;
-          &:hover{
-            font-weight:bold;
-          }
-        }
-      }
-    }
-  }
+.app {
+    width: 100%;
+    height: 100%;
 
-  //主体样式
-  .main{
-    display:flex;
-    flex-direction: row;
-    flex-wrap:nowrap;
-    justify-content:space-between;
-    align-items:center;
-
-    margin:0 @gap @gap;
-    width:auto;
-    height:calc(~"100% -" @headerH + @gap*2);
-
-    >div{
-      height:100%;
-      //导航栏样式
-      &.nav{
-        flex-grow: 2;
-
-        min-width:100px;
-        max-width:120px;
-        background:lemonchiffon;
-      }
-      //视频样式
-      &.video{
-        flex-grow: 1;
-
-        display:flex;
-        flex-direction:column;
-        flex-wrap:nowrap;
-        flex-flow:column nowrap;
-        justify-content:space-between;
-
-        min-width:600px;
-        max-width:900px;
-        background:lightblue;
-        .videoBox{
-          width:100%;
-
-          flex-grow: 1;
-          align-self:flex-start;
-        }
-        .Banner{
-          position:relative;
-          width:100%;
-
-          align-self:flex-end;
-          overflow: hidden;
-
-          .carouselWrap{
-            display:flex;
-
-            flex-direction: row;
-            flex-wrap: nowrap;
-            flex-flow:row nowrap;
+    //头部样式
+    .header {
+        margin-bottom: @gap;
+        width: 100%;
+        height: @headerH;
+        background: #000;
+        color: #fff;
+        .clear;
+        .title {
+            float: left;
+            height: 100%;
+            display: flex;
             justify-content: center;
-
-            transition:transform 1s linear;
-            .carouselBox{
-
+            align-items: flex-end;
+            img {
+                display: block;
             }
-          }
-          img{
-            width:100%;
-            display:block;
-          }
         }
-      }
-      //聊天框样式
-      &.chat{
-        flex-grow: 1;
-
-        min-width:400px;
-        max-width:900px;
-        background: palevioletred;
-
-        .messagesBox{
-          box-sizing: border-box;
-          margin:16px 0;
-          padding:0 16px;
-          height:~"calc(100% - 232px)";
-          cursor:pointer;
-          overflow: hidden;
-          position: relative;
-          .message{
-            padding-bottom:10px;
-            >div{
-              user-select:none;
-              &.name{
-                float:left;
+        .onLines {
+            float: left;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            span {
+                padding: 5px 5px;
+                color: #fff;
                 font-weight: bold;
-              }
-              &.time{
-                float:right;
-                font-style:italic;
-                color:#c0c0c0;
-                font-size:12px;
-              }
-              &.content{
-                padding:5px;
-                clear:both;
-                border-radius:5px;
-                background:#fff;
-              }
             }
-          }
         }
-        .chatInputBox{
-          height:200px;
+        .user {
+            float: right;
+            width: @headerH;
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-end;
+            align-content: center;
+            div {
+                width: 100%;
+                height: 50%;
+                a {
+                    display: block;
+                    width: 100%;
+                    text-align: center;
+                    line-height: @headerH/2;
+                    cursor: pointer;
+                    &:hover {
+                        font-weight: bold;
+                    }
+                }
+                span {
+                    display: block;
+                    width: 100%;
+                    text-align: center;
+                    line-height: @headerH/2;
+                    &:hover {
+                        font-weight: bold;
+                    }
+                }
+            }
         }
-      }
     }
-  }
 
-  //弹出框样式
-  .popBox{
-    position: fixed;
-    top:0;
-    left:0;
+    //主体样式
+    .main {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: center;
 
-    //display:none;
-    display:flex;
-    flex-direction: row;
-    flex-wrap:nowrap;
-    justify-content: center;
-    align-items: center;
-    width:100%;
-    height:100%;
+        margin: 0 @gap @gap;
+        width: auto;
+        height: calc(~"100% -"@headerH + @gap * 2);
 
-    background:rgba(10,10,10,.6);
+        > div {
+            height: 100%;
+            //导航栏样式
+            &.nav {
+                flex-grow: 2;
 
-    .box{
-      background: #fff;
+                min-width: 100px;
+                max-width: 120px;
+                background: lemonchiffon;
+            }
+            //视频样式
+            &.video {
+                flex-grow: 1;
+
+                display: flex;
+                flex-direction: column;
+                flex-wrap: nowrap;
+                flex-flow: column nowrap;
+                justify-content: space-between;
+
+                min-width: 600px;
+                max-width: 900px;
+                background: lightblue;
+                .videoBox {
+                    width: 100%;
+
+                    flex-grow: 1;
+                    align-self: flex-start;
+                }
+                .Banner {
+                    position: relative;
+                    width: 100%;
+
+                    align-self: flex-end;
+                    overflow: hidden;
+
+                    .carouselWrap {
+                        display: flex;
+
+                        flex-direction: row;
+                        flex-wrap: nowrap;
+                        flex-flow: row nowrap;
+                        justify-content: center;
+
+                        transition: transform 1s linear;
+                        .carouselBox {
+
+                        }
+                    }
+                    img {
+                        width: 100%;
+                        display: block;
+                    }
+                }
+            }
+            //聊天框样式
+            &.chat {
+                flex-grow: 1;
+
+                min-width: 400px;
+                max-width: 900px;
+                background: palevioletred;
+
+                .messagesBox {
+                    box-sizing: border-box;
+                    margin: 16px 0;
+                    padding: 0 16px;
+                    height: ~"calc(100% - 232px)";
+                    cursor: pointer;
+                    overflow: hidden;
+                    position: relative;
+                    .message {
+                        padding-bottom: 10px;
+                        > div {
+                            user-select: none;
+                            &.name {
+                                float: left;
+                                font-weight: bold;
+                            }
+                            &.time {
+                                float: right;
+                                font-style: italic;
+                                color: #c0c0c0;
+                                font-size: 12px;
+                            }
+                            &.content {
+                                padding: 5px;
+                                clear: both;
+                                border-radius: 5px;
+                                background: #fff;
+                                font-size:16px;
+                                img {
+                                    display:inline-block;
+                                    width:16px;
+                                    height:16px;
+                                }
+                            }
+                        }
+                    }
+                }
+                .chatInputBox {
+                    @box:20px;
+                    position:relative;
+                    height: 200px;
+                    .chatMessage{
+                        padding:5px;
+                        width:300px;
+                        height:160px;
+                        background:#fff;
+                        img{
+                            display:inline-block;
+                            width:@box;
+                            height:@box;
+                        }
+                    }
+                    .emoji{
+                        position:absolute;
+                        bottom:10px;
+                        right:10px;
+                        width:@box*7;
+                        overflow: hidden;
+                        .box{
+                            float:left;
+                            cursor:pointer;
+                            img{
+                                display:block;
+                                width:@box;
+                                height:@box;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
-  }
 
-  .signBox{
-    //display:none;
-    display:flex;
-    flex-direction: row;
-    flex-wrap:wrap;
-    justify-content: center;
-    width:400px;
-    height:200px;
-    .userName{
-      display:flex;
-      justify-content: center;
-      align-items: center;
+    //弹出框样式
+    .popBox {
+        position: fixed;
+        top: 0;
+        left: 0;
 
-      width:100%;
-      height:40px;
+        //display:none;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
 
-      text-align:center;
+        background: rgba(10, 10, 10, .6);
 
-      label{
-        display:inline-block;
-        width:80px;
-      }
-
+        .box {
+            background: #fff;
+        }
     }
-    .password{
-      display:flex;
-      justify-content: center;
-      align-items: center;
 
-      width:100%;
-      height:40px;
+    .signBox {
+        //display:none;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 400px;
+        height: 200px;
+        .userName {
+            display: flex;
+            justify-content: center;
+            align-items: center;
 
-      text-align:center;
+            width: 100%;
+            height: 40px;
 
-      label{
-        display:inline-block;
-        width:80px;
-      }
+            text-align: center;
 
+            label {
+                display: inline-block;
+                width: 80px;
+            }
+
+        }
+        .password {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            width: 100%;
+            height: 40px;
+
+            text-align: center;
+
+            label {
+                display: inline-block;
+                width: 80px;
+            }
+
+        }
+        .button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            width: 100%;
+            height: 40px;
+
+            text-align: center;
+
+            .btn {
+                padding: 0 20px;
+                height: 40px;
+                line-height: 40px;
+            }
+        }
     }
-    .button{
-      display:flex;
-      justify-content: center;
-      align-items: center;
-
-      width:100%;
-      height:40px;
-
-      text-align:center;
-
-      .btn{
-        padding: 0 20px;
-        height:40px;
-        line-height:40px;
-      }
-    }
-  }
 }
-
 
 /*自定义滚动条样式*/
 //.iScrollHorizontalScrollbar {

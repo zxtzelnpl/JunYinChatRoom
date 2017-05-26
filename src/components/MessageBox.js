@@ -3,48 +3,52 @@ import $ from 'jquery';
 import IScroll from 'iscroll';
 import socket from '../socket/socket';
 
-function Message({message,check,del}) {
+function Message({message, check, del}) {
     let DOMStr;
     let DOMcheck;
-    let ClassStr='item-'+message._id;
-    if(!message.from||!message.from.name){
-        message.from={
-            name:'路人'
+    let ClassStr = 'item-' + message._id;
+    let content = message.content.replace(/(&lt;)(img src='\/images\/emoji\/[\d].jpg' \/)(&gt;)/g,function(match,p1,p2,p3){
+        console.log(arguments);
+        return '<'+p2+'>'
+    });
+    if (!message.from || !message.from.name) {
+        message.from = {
+            name: '路人'
         }
     }
-    if(iUser.level>999){
-        if(message.check){
-            DOMcheck=(
+    if (iUser.level > 999) {
+        if (message.check) {
+            DOMcheck = (
                 <div className="manage">
-                    <a className="del" onClick={del.bind(null,message._id)}>删除</a>
+                    <a className="del" onClick={del.bind(null, message._id)}>删除</a>
                 </div>
             );
-        }else{
-            DOMcheck=
+        } else {
+            DOMcheck =
                 (
                     <div className="manage">
-                        <a className="check" onClick={check.bind(null,message._id)}>审核</a>
-                        <a className="del" onClick={del.bind(null,message._id)}>删除</a>
+                        <a className="check" onClick={check.bind(null, message._id)}>审核</a>
+                        <a className="del" onClick={del.bind(null, message._id)}>删除</a>
                     </div>
                 )
         }
 
-        DOMStr=
+        DOMStr =
             (
                 <li className="message">
                     <div className="name">{message.from.name}:</div>
                     <div className="time">{new Date(message.createAt).toLocaleString()}</div>
-                    <div className="content">{message.content}</div>
+                    <div className="content" dangerouslySetInnerHTML={{__html:content}}></div>
                     {DOMcheck}
                 </li>
             )
-    }else{
-        DOMStr=
+    } else {
+        DOMStr =
             (
                 <li className="message">
                     <div className="name">{message.from.name}:</div>
                     <div className="time">{new Date(message.createAt).toLocaleString()}</div>
-                    <div className="content">{message.content}</div>
+                    <div className="content" dangerouslySetInnerHTML={{__html:content}}></div>
                 </li>
             )
     }
@@ -57,11 +61,11 @@ class MessageBox extends React.Component {
         this.canMove = 0;
         this.page = 1;
         this.pageLoad = false;
-        this.check=function(id){
-            socket.emit('checkMessage',id)
+        this.check = function (id) {
+            socket.emit('checkMessage', id)
         };
-        this.del=function(id){
-            socket.emit('delMessage',id)
+        this.del = function (id) {
+            socket.emit('delMessage', id)
         };
     }
 
@@ -77,10 +81,10 @@ class MessageBox extends React.Component {
             }
             , success: (messages) => {
                 me.pageLoad = true;
-                if(messages.length>0){
+                if (messages.length > 0) {
                     me.props.getAll(messages);
                     me.page++;
-                }else{
+                } else {
                     alert('已经加载完所有数据')
                 }
             }
@@ -153,10 +157,10 @@ class MessageBox extends React.Component {
     }
 
     render() {
-        let me=this;
+        let me = this;
         console.log(this.props.messages);
-        let messages=[];
-        for(let key in this.props.messages){
+        let messages = [];
+        for (let key in this.props.messages) {
             messages.push(this.props.messages[key])
         }
         messages.sort(function (a, b) {

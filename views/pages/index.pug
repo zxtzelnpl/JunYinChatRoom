@@ -10,6 +10,7 @@ html
     body
         if user
             input(id="INITIAL_STATE_LOG" type="hidden" value=user.name)
+            input(id="INITIAL_STATE_MES_ORIGN" type="hidden" value=messages)
             script.
                 var iUser = {
                     name: "#{user.name}",
@@ -57,7 +58,8 @@ html
                     }
                 }
             });
-            var INITIAL_STATE_MES_ORIGN = ("#{messages}")?JSON.parse(("#{messages}".replace(/&quot;/ig, '\"'))):[];
+            var INITIAL_STATE_MES_ORIGN = JSON.parse(document.getElementById('INITIAL_STATE_MES_ORIGN').value);
+            console.log(INITIAL_STATE_MES_ORIGN);
             var INITIAL_STATE_MES = new iMap()
             INITIAL_STATE_MES_ORIGN.forEach(function(message){
                 INITIAL_STATE_MES.set(message);
