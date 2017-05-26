@@ -20,7 +20,7 @@ class Input extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: '请在此处输入内容',
+            html: '请在此处输入内容',
             emojiStyle: {display: 'none'}
         };
         this._range = {
@@ -30,8 +30,8 @@ class Input extends React.Component {
     }
 
     clearPlaceholder() {
-        if (this.textarea.innerHTML === '请在此处输入内容') {
-            this.textarea.innerHTML = '';
+        if (this.state.html === '请在此处输入内容') {
+            this.setState({html:''});
         }
     }
 
@@ -68,18 +68,24 @@ class Input extends React.Component {
         img.src = e.target.src;
         node = this._range.node;
         offset = this._range.offset;
+        if (node.nodeType === 1 && this._range.offset === undefined) {
+            console.log('node是img');
+            console.log(node);
+            node.parentNode.insertBefore(img, node.nextSibling);
+            this._range.node = img;
+            this.setState({html:node.parentNode.innerHTML});
+            return;
+        }
         if (node.nodeType === 1) {
+            console.log('node是div');
             let childNodes = node.childNodes;
             node.insertBefore(img, childNodes[offset]);
             this._range.offset++;
-            return;
-        }
-        if (node.nodeType === 1 && this._range.offset === undefined) {
-            node.parentNode.insertBefore(img, node.nextSibling);
-            this._range.node = img;
+            this.setState({html:node.innerHTML});
             return;
         }
         if (node.nodeType === 3) {
+            console.log('node是text');
             let value = node.nodeValue;
             let parent = node.parentNode;
             let fragment = document.createDocumentFragment();
@@ -89,15 +95,15 @@ class Input extends React.Component {
             fragment.appendChild(img);
             fragment.appendChild(textNodeAfter);
             parent.replaceChild(fragment, node);
-            console.log(parent.contains(img));
             this._range.node = img;
             this._range.offset = undefined;
+            this.setState({html:parent.innerHTML});
         }
     }
     submit(){
         let name = document.querySelector('.signIn>span') ? document.querySelector('.signIn>span').innerHTML : undefined;
         if (name) {
-            let content = format(this.textarea.innerHTML);
+            let content = format(this.state.html);
             socket.emit('message', {
                 content: content,
                 room: iRoom._id
@@ -112,6 +118,10 @@ class Input extends React.Component {
         e.stopPropagation();
         if (e.keyCode === 13 && e.ctrlKey) {
             this.submit.call(this)
+        }else{
+            this.setState({
+                html:this.textarea.innerHTML
+            })
         }
     }
 
@@ -139,9 +149,8 @@ class Input extends React.Component {
                         onBlur={this.saveRange.bind(this)}
                         onFocus={this.clearPlaceholder.bind(this)}
                         onKeyUp={this.handleKeyup.bind(this)}
-                    >
-                        请在此处输入内容
-                    </div>
+                        dangerouslySetInnerHTML={{__html:this.state.html}}
+                    ></div>
                 </div>
                 <div>
                     <a className="btn" onClick={this.handleClick.bind(this)}>提交</a>
