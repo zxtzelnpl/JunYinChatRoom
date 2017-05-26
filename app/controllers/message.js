@@ -2,7 +2,6 @@ const MessageModel = require('../models/message.js');
 const UserModel = require('../models/user.js');
 const PageSize = 30;
 
-
 /**get聊天信息start*/
 exports.getMessage = function (req, res) {
     let page = req.query.page;

@@ -8,9 +8,9 @@ html
         script(src="/js/jquery.js")
         script(src="/js/vendor.js")
     body
+        input(id="INITIAL_STATE_MES_ORIGN" type="hidden" value=messages)
         if user
             input(id="INITIAL_STATE_LOG" type="hidden" value=user.name)
-            input(id="INITIAL_STATE_MES_ORIGN" type="hidden" value=messages)
             script.
                 var iUser = {
                     name: "#{user.name}",

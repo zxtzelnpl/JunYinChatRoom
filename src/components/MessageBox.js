@@ -2,13 +2,14 @@ import React from 'react';
 import $ from 'jquery';
 import IScroll from 'iscroll';
 import socket from '../socket/socket';
+const reg=/(&lt;)(img src="[\S]*\/images\/emoji\/[\d]{1,2}\.jpg")(&gt;)/gi;
+
 
 function Message({message, check, del}) {
     let DOMStr;
     let DOMcheck;
     let ClassStr = 'item-' + message._id;
-    let content = message.content.replace(/(&lt;)(img src='\/images\/emoji\/[\d].jpg' \/)(&gt;)/g,function(match,p1,p2,p3){
-        console.log(arguments);
+    let content = message.content.replace(reg,function(match,p1,p2,p3){
         return '<'+p2+'>'
     });
     if (!message.from || !message.from.name) {
@@ -122,7 +123,7 @@ class MessageBox extends React.Component {
     }
 
     componentDidUpdate() {
-        console.log('componentDidUpdate');
+        console.log('componentDidUpdate:MessageBox is ready');
 
 
         let innerH = this.messages.scrollHeight;
