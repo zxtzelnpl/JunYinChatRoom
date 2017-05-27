@@ -9,8 +9,8 @@ function format(str){
     return str.replace(reg1, "").replace(reg3, "&lt;").replace(reg4, "&gt;")
 }
 
+/*生成表情盒子*/
 const emojisNum = 28;
-
 function Box({i}) {
     let url = '/images/emoji/' + i + '.jpg';
     return (<div className="box"><img src={url}/></div>)
@@ -26,6 +26,7 @@ class Input extends React.Component {
             node: null,
             offset: 0
         };
+        this.html='';
     }
 
     clearPlaceholder() {
@@ -72,6 +73,7 @@ class Input extends React.Component {
             console.log(node);
             node.parentNode.insertBefore(img, node.nextSibling);
             this._range.node = img;
+            this.html=this.textarea.innerHTML;
             return;
         }
         if (node.nodeType === 1) {
@@ -79,6 +81,7 @@ class Input extends React.Component {
             let childNodes = node.childNodes;
             node.insertBefore(img, childNodes[offset]);
             this._range.offset++;
+            this.html=this.textarea.innerHTML;
             return;
         }
         if (node.nodeType === 3) {
@@ -94,6 +97,7 @@ class Input extends React.Component {
             parent.replaceChild(fragment, node);
             this._range.node = img;
             this._range.offset = undefined;
+            this.html=this.textarea.innerHTML;
         }
     }
     submit(){
@@ -122,8 +126,14 @@ class Input extends React.Component {
         this.submit.call(this)
     }
 
+    handleInput(e){
+        e.preventDefault();
+        this.html=this.textarea.innerHTML;
+    }
+
     componentDidMount(){
         this.textarea.innerHTML='请在此处输入内容';
+        this._range.node=this.textarea;
     }
 
     render() {
@@ -140,11 +150,12 @@ class Input extends React.Component {
                         contentEditable="true"
                         id="chatMessage"
                         ref={(textarea) => {
-                            this._range.node = this.textarea = textarea
+                            this.textarea = textarea
                         }}
                         onBlur={this.saveRange.bind(this)}
                         onFocus={this.clearPlaceholder.bind(this)}
                         onKeyUp={this.handleKeyup.bind(this)}
+                        onInput={this.handleInput.bind(this)}
                     ></div>
                 </div>
                 <div>
