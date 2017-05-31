@@ -7,8 +7,6 @@ const Picture = require('../app/controllers/picture');
 const Room=require('../app/controllers/room');
 const Admin = require('../app/controllers/admin');
 
-const UserModule = require('../app/models/user.js');
-
 module.exports = function (app, io) {
     let tourists=0;
     let users=[];
@@ -81,7 +79,7 @@ module.exports = function (app, io) {
         if (socket.request.session.user) {
             user = socket.request.session.user;
 
-            UserModule.findByIdAndUpdate(user._id, {$set: {online: true}}, function () {
+            User.onLine(user._id, function () {
                 users.push(user._id);
                 io.emit('usersAdd', user._id);
             });
@@ -113,14 +111,12 @@ module.exports = function (app, io) {
         socket.on('checkMessage',function(msg){
             Message.checkMessage(msg,user,function(message,checker){
                 io.to(room).emit('checkedMessage',message,checker);
-                io.to('admin').emit('checkedMessage',message,checker);
             })
         });
 
         socket.on('delMessage',function(msg){
             Message.delMessage(msg,user,function(message){
                 io.to(room).emit('delMessage',message);
-                io.to('admin').emit('delMessage',message);
             })
         });
 
@@ -129,7 +125,7 @@ module.exports = function (app, io) {
             if (user) {
                 delNum=users.indexOf(user._id);
                 users.splice(delNum, 1);
-                UserModule.findByIdAndUpdate(user._id, {$set: {online: false}}, function () {
+                User.offLine(user._id, function () {
                     io.emit('usersMinus', user._id)
                 });
 
@@ -143,7 +139,7 @@ module.exports = function (app, io) {
             }else{
                 tourists--;
             }
-            io.emit('online', (tourists+rooms[room]));
+            io.to(room).emit('online', (tourists+rooms[room]));
         });
 
     })

@@ -199,6 +199,19 @@ exports.forbidden = function (req, res) {
         })
 };
 
+exports.onLine = function(id,next){
+    UserModel.findByIdAndUpdate(id, {$set: {online: true}},function(err){
+        if(err){console.log(err)}
+        next();
+    })
+};
+exports.offLine = function(id,next){
+    UserModel.findByIdAndUpdate(id, {$set: {online: false}},function(err){
+        if(err){console.log(err)}
+        next();
+    })
+};
+
 exports.delete = function (req, res) {
     let id = req.query.id;
     MessageModel
