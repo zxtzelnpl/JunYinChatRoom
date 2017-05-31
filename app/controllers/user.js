@@ -98,13 +98,7 @@ exports.userQuery = function (req, res) {
     console.log(_search);
     for (let key in _search) {
         if (_search[key] !== '') {
-            if (key === 'online') {
-                if (_search[key] === 'true') {
-                    search[key] = true
-                } else {
-                    search[key] = false
-                }
-            } else if (key === 'name' || key === 'nickName') {
+            if (key === 'name' || key === 'nickName') {
                 search[key] = new RegExp(_search[key], 'gi')
             } else {
                 search[key] = _search[key]
@@ -136,7 +130,7 @@ exports.userQuery = function (req, res) {
 exports.signUp = function (req, res) {
     let user;
     let _user = req.body.user;
-    if(_user.room===''){
+    if (_user.room === '') {
         delete _user.room;
     }
     UserModel.find({"$or": [{'name': _user.name}, {'phone': _user.phone}]}, function (err, users) {
@@ -208,8 +202,10 @@ exports.forbidden = function (req, res) {
 exports.delete = function (req, res) {
     let id = req.query.id;
     MessageModel
-        .remove({from:id},function(err){
-            if(err){console.log(err)}
+        .remove({from: id}, function (err) {
+            if (err) {
+                console.log(err)
+            }
             UserModel.findByIdAndRemove(id, function (err) {
                 if (err) {
                     console.log(err)
@@ -225,7 +221,7 @@ exports.signIn = function (req, res) {
     let _user = req.body;
     let name = _user.name;
     let password = _user.password;
-    let roomId=_user.room;
+    let roomId = _user.room;
 
     UserModel.findOne({name: name}, function (err, user) {
         if (err) {
@@ -238,7 +234,7 @@ exports.signIn = function (req, res) {
                 , reason: 'no name'
             })
         }
-        if(user.room!=roomId){
+        if (user.room != roomId) {
             return res.json({
                 state: 'fail'
                 , reason: 'wrong room'

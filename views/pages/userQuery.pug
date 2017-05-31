@@ -31,10 +31,10 @@ block content
                             td #{item.email}
                             td #{item.sex}
                             td #{item.level}
-                            if(user.room && user.room.title)
-                                td #{user.room.title}
+                            if(item.room && item.room.title)
+                                td #{item.room.title}
                             else
-                                td 未分配
+                                td 未知
                             td
                                 if(item.forbidden)
                                     button.btn.btn-success.change(type="button",data-id=item._id) 解禁

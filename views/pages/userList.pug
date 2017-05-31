@@ -42,7 +42,11 @@ block content
                                     button.btn.btn-warning.change(type="button",data-id=item._id) 禁用
                             td #{moment(item.createAt).format('MM/DD/YYYY')}
                             td #{moment(item.updateAt).format('MM/DD/YYYY')}
-                            td 离线
+                            td
+                                if(item.online)
+                                    | 在线
+                                else
+                                    | 离线
                             td: a(target="_blank", href= "/admin/userdetail/"+item._id) 查看
                             td: a(target="_blank", href= "/admin/userupdate/"+item._id) 修改
                             td: button.btn.btn-danger.del(type="button", data-id=item._id) 删除
