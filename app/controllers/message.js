@@ -1,4 +1,5 @@
 const MessageModel = require('../models/message.js');
+const RoomModel = require('../models/room.js');
 const UserModel = require('../models/user.js');
 const PageSize = 30;
 
@@ -12,7 +13,7 @@ exports.getMessage = function (req, res) {
     }
     else {
         optFind = {'check': true};
-        optField=['_id', 'from', 'content', 'createAt'];
+        optField = ['_id', 'from', 'content', 'createAt'];
     }
     MessageModel
         .find(optFind, optField)
@@ -126,10 +127,23 @@ exports.delMessage = function (id, user, next) {
 
 /**查询首页start*/
 exports.messageSearch = function (req, res) {
-    res.render('messageSearch', {
-            title: '聊天信息查询'
-        }
-    )
+    let user = req.session.user;
+    let findOpt;
+    if (parseInt(user.level) > 1000) {
+        findOpt = {}
+    } else {
+        findOpt = {_id: user.room}
+    }
+    RoomModel
+        .find(findOpt)
+        .exec(function (err, rooms) {
+            if(err){console.log(err)}
+            console.log(rooms);
+            res.render('messageSearch', {
+                title: '聊天信息查询',
+                rooms:rooms
+            })
+        });
 };
 /**查询首页end*/
 
@@ -234,3 +248,56 @@ exports.query = function (req, res) {
 };
 /**查询结果end*/
 
+exports.roomMessageList = function (req, res) {
+    let room = req.params.room;
+    let page = req.params.page;
+    let count = new Promise(function (resolve, reject) {
+        MessageModel
+            .find({room: room})
+            .count(function (err, count) {
+                let totalPageNum;
+                if (err) {
+                    reject(err)
+                }
+                totalPageNum = Math.ceil(count / PageSize);
+                resolve(totalPageNum);
+            });
+    });
+    let messages = new Promise(function (resolve, reject) {
+        MessageModel
+            .find({room: room})
+            .sort({_id: -1})
+            .skip((page - 1) * PageSize)
+            .limit(PageSize)
+            .populate('from', 'name')
+            .populate('verifier', 'name')
+            .populate('room', 'title')
+            .exec(function (err, messages) {
+                if (err) {
+                    reject(err)
+                }
+                resolve(messages);
+            })
+    });
+    Promise.all([count, messages])
+        .then(function (results) {
+            res.render('messageList', {
+                title: '聊天列表',
+                totalPageNum: results[0],
+                messages: results[1]
+            })
+        })
+        .catch(function (err) {
+            res.render('wrongWay', {
+                title: '发生错误',
+                err: err
+            })
+        });
+};
+
+// exports.roomMessageSearch=function(req,res){
+//     res.render('messageSearch', {
+//             title: '聊天信息查询'
+//         }
+//     )
+// };

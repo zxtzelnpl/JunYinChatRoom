@@ -9,7 +9,7 @@ exports.pictureList = function (req, res) {
     if (_id === 'all') {
         PictureModel
             .find({})
-            .sort({'room':-1,'position':1})
+            .sort({'room': -1, 'position': 1})
             .populate('uploader', 'name')
             .populate('room', 'title')
             .exec(function (err, pictures) {
@@ -40,6 +40,7 @@ exports.pictureList = function (req, res) {
 
 exports.pictureUpload = function (req, res) {
     let id = req.query.id;
+    let room = req.params.id;
     if (id) {
         RoomModel
             .find({})
@@ -56,14 +57,26 @@ exports.pictureUpload = function (req, res) {
                 })
             });
     } else {
-        RoomModel
-            .find({})
-            .exec(function (err, rooms) {
-                res.render('pictureUpload', {
-                    title: '图片上传'
-                    , rooms
+        if (room === 'all') {
+            RoomModel
+                .find({})
+                .exec(function (err, rooms) {
+                    res.render('pictureUpload', {
+                        title: '图片上传'
+                        , rooms
+                    });
                 });
-            });
+        }else{
+            RoomModel
+                .find({_id:room})
+                .exec(function (err, rooms) {
+                    res.render('pictureUpload', {
+                        title: '图片上传'
+                        , rooms
+                    });
+                });
+        }
+
     }
 };
 

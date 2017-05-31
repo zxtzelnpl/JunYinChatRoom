@@ -6,6 +6,14 @@ block content
     .row
         form.form-horizontal(method="POST" action="/admin/messagequery/1" target="_blank")
             div.form-group
+                label.col-sm-2.col-sm-offset-3.control-label(for="searchRoom") 所属直播室：
+                div.col-sm-4
+                    mixin option(value,title)
+                        option(value=value)=title
+                    select.form-control(id="searchRoom" name="search[room]")
+                        each val in rooms
+                            +option(val._id,val.title)
+            div.form-group
                 label.col-sm-2.col-sm-offset-3.control-label(for="searchName") 用户：
                 div.col-sm-4
                     input.form-control(id="searchName" name="search[name]" type="text")

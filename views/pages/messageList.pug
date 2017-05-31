@@ -46,7 +46,10 @@ block content
             ul#page.pagination
                 - var n=1
                 while n <= totalPageNum
-                    li: a(href="/admin/messagelist/" + n)=n++
+                    if parseInt(user.level)>1000
+                        li: a(href="/admin/messagelist/" + n)=n++
+                    else
+                        li: a(href="/admin/room/messagelist/"+user.room+"/" + n)=n++
 
 
 block js

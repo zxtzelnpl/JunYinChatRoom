@@ -1,4 +1,5 @@
 const UserModel = require('../models/user.js');
+const RoomModel = require('../models/room');
 
 exports.login = function (req, res) {
     res.render('admin', {
@@ -7,9 +8,6 @@ exports.login = function (req, res) {
 };
 
 exports.adminRequired=function(req,res,next){
-    console.log('xxx');
-    console.log(this.locals);
-    console.log('xxx');
     let level = req.session.user ? parseInt(req.session.user.level) : 0;
     if(level>=1000){
         next();

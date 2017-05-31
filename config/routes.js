@@ -66,14 +66,17 @@ module.exports = function (app, io) {
     app.get('/admin/messagesearch', Admin.adminRequired,Message.messageSearch);//PAG：信息检索
     app.post('/admin/messagequery/:page', Admin.adminRequired, Message.query);//PAGE：信息查询
 
+    app.get('/admin/room/messagelist/:room/:page',Admin.adminRequired,Message.roomMessageList);//PAGE:所选房间，所选页面的信息查询
+    app.get('/admin/room/messagesearch/:room',Admin.adminRequired,Message.messageSearch);//PAGE:所选房间的信息查询
+
     /*Admin-Picture*/
     app.get('/admin/pictureroom/:id', Admin.adminRequired, Picture.pictureList);//PAGE:图片列表
-    app.get('/admin/pictureupload', Admin.adminRequired, Picture.pictureUpload);//PAGE:图片更新
+    app.get('/admin/pictureupload/:id', Admin.adminRequired, Picture.pictureUpload);//PAGE:图片更新
     app.post('/admin/picture/update', Admin.adminRequired, multiparty(),Picture.savePic,Picture.update);//PAGE:图片更新
     app.delete('/admin/picture/delete', Admin.adminRequired, Picture.delete);//JSON：图片删除
 
     /*Information*/
-    app.get('/admin/information/:information', Admin.adminRequired, Admin.information);//PAGE：信息提示
+    app.get('/admin/information/:information', Admin.information);//PAGE：信息提示
 
     /*socket.io*/
     io.on('connection', function (socket) {
