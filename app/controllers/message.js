@@ -155,14 +155,7 @@ exports.query = function (req, res) {
     let pageNum = req.params.page;
     for (let key in _search) {
         if (_search[key] !== '') {
-            if (key === 'check') {
-                if (_search[key] === 'true') {
-                    search[key] = true
-                } else {
-                    search[key] = false
-                }
-            }
-            else if (key === 'content') {
+            if (key === 'content') {
                 search[key] = new RegExp(_search[key], 'gi')
             }
             else if (key === 'timeStart') {
