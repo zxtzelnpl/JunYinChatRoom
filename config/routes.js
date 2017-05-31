@@ -76,9 +76,9 @@ module.exports = function (app, io) {
         let user;
         let room;
 
+        /*房间人员增加*/
         if (socket.request.session.user) {
             user = socket.request.session.user;
-
             User.onLine(user._id, function () {
                 users.push(user._id);
                 io.emit('usersAdd', user._id);
@@ -88,7 +88,7 @@ module.exports = function (app, io) {
         }
 
 
-
+        /*房间分组*/
         if(user&&user.room){
             room=user.room;
             if(rooms[room]){
@@ -98,6 +98,7 @@ module.exports = function (app, io) {
             }
             socket.join(room);
         }
+
 
         io.to(room).emit('online', (tourists+rooms[room]));
 
