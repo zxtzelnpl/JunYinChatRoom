@@ -40,44 +40,44 @@ exports.pictureList = function (req, res) {
 
 exports.pictureUpload = function (req, res) {
     let id = req.query.id;
-    let room = req.params.id;
-    if (id) {
-        RoomModel
-            .find({})
-            .exec(function (err, rooms) {
-                PictureModel.findById(id, function (err, picture) {
-                    if (err) {
-                        console.log(err)
-                    }
-                    res.render('pictureUpload', {
-                        title: '图片修改-' + id
-                        , picture,
-                        rooms
-                    })
-                })
-            });
-    } else {
+    let room = req.params.room;
+    let rooms = new Promise(function (resolve, reject) {
+        let findOpt;
         if (room === 'all') {
-            RoomModel
-                .find({})
-                .exec(function (err, rooms) {
-                    res.render('pictureUpload', {
-                        title: '图片上传'
-                        , rooms
-                    });
-                });
-        }else{
-            RoomModel
-                .find({_id:room})
-                .exec(function (err, rooms) {
-                    res.render('pictureUpload', {
-                        title: '图片上传'
-                        , rooms
-                    });
-                });
+            findOpt = {}
+        } else {
+            findOpt = {_id: room}
         }
+        RoomModel
+            .find(findOpt)
+            .exec(function (err, rooms) {
+                if (err) {
+                    reject(err)
+                }
+                resolve(rooms);
+            })
+    });
 
-    }
+    rooms.then(function (rooms) {
+        if (id) {
+            PictureModel.findById(id, function (err, picture) {
+                if (err) {
+                    console.log(err)
+                }
+                res.render('pictureUpload', {
+                    title: '图片修改-' + id
+                    , picture,
+                    rooms
+                })
+            })
+        }
+        else {
+            res.render('pictureUpload', {
+                title: '图片上传'
+                , rooms
+            });
+        }
+    });
 };
 
 exports.savePic = function (req, res, next) {
