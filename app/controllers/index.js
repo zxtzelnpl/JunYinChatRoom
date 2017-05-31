@@ -69,12 +69,12 @@ exports.room = function (req, res) {
 
     Promise
         .all([promiseRoom, promiseMessages, promisePictures])
-        .then(function (arr) {
+        .then(function ([room,messages,picture]) {
             res.render('index', {
-                title: arr[0].title,
-                messages: arr[1],
-                pictures: arr[2],
-                roomId:arr[0]._id
+                title: room.title,
+                messages: messages,
+                pictures: picture,
+                roomId:room._id
             });
         })
         .catch(function (err) {

@@ -280,11 +280,11 @@ exports.roomMessageList = function (req, res) {
             })
     });
     Promise.all([count, messages])
-        .then(function (results) {
+        .then(function ([totalPageNum, messages]) {
             res.render('messageList', {
                 title: '聊天列表',
-                totalPageNum: results[0],
-                messages: results[1]
+                totalPageNum: totalPageNum,
+                messages: messages
             })
         })
         .catch(function (err) {
@@ -294,10 +294,3 @@ exports.roomMessageList = function (req, res) {
             })
         });
 };
-
-// exports.roomMessageSearch=function(req,res){
-//     res.render('messageSearch', {
-//             title: '聊天信息查询'
-//         }
-//     )
-// };

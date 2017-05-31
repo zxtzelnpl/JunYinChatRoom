@@ -6,36 +6,29 @@ const RoomModel = require('../models/room');
 
 exports.pictureList = function (req, res) {
     let _id = req.params.id;
+    let optFind, optSort;
     if (_id === 'all') {
-        PictureModel
-            .find({})
-            .sort({'room': -1, 'position': 1})
-            .populate('uploader', 'name')
-            .populate('room', 'title')
-            .exec(function (err, pictures) {
-                if (err) {
-                    console.log(err)
-                }
-                res.render('pictureList', {
-                    title: '图片列表'
-                    , pictures: pictures
-                });
-            });
-    } else {
-        PictureModel
-            .find({room: _id})
-            .populate('uploader', 'name')
-            .populate('room', 'title')
-            .exec(function (err, pictures) {
-                if (err) {
-                    console.log(err)
-                }
-                res.render('pictureList', {
-                    title: '图片列表'
-                    , pictures: pictures
-                });
-            });
+        optFind = {};
+        optSort = {'room': -1, 'position': 1};
     }
+    else {
+        optFind = {room: _id};
+        optSort = {'position': 1};
+    }
+    PictureModel
+        .find(optFind)
+        .sort(optSort)
+        .populate('uploader', 'name')
+        .populate('room', 'title')
+        .exec(function (err, pictures) {
+            if (err) {
+                console.log(err)
+            }
+            res.render('pictureList', {
+                title: '图片列表'
+                , pictures: pictures
+            });
+        });
 };
 
 exports.pictureUpload = function (req, res) {

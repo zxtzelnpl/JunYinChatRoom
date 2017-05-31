@@ -10,12 +10,8 @@ const Admin = require('../app/controllers/admin');
 const UserModule = require('../app/models/user.js');
 
 module.exports = function (app, io) {
-    let ids = [];
-    let socketIds=[];
     let tourists=0;
     let users=[];
-    let admins=[];
-    let userNum = 0;
     let rooms=[];
 
     /*pre handle user*/
@@ -67,7 +63,6 @@ module.exports = function (app, io) {
     app.post('/admin/messagequery/:page', Admin.adminRequired, Message.query);//PAGE：信息查询
 
     app.get('/admin/room/messagelist/:room/:page',Admin.adminRequired,Message.roomMessageList);//PAGE:所选房间，所选页面的信息查询
-    app.get('/admin/room/messagesearch/:room',Admin.adminRequired,Message.messageSearch);//PAGE:所选房间的信息查询
 
     /*Admin-Picture*/
     app.get('/admin/pictureroom/:id', Admin.adminRequired, Picture.pictureList);//PAGE:图片列表
