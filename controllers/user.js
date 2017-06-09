@@ -1,6 +1,6 @@
-const UserModel = require('../models/user.js');
-const RoomModel = require('../models/room.js');
-const MessageModel = require('../models/message.js');
+const UserModel = require('./user.js');
+const RoomModel = require('./room.js');
+const MessageModel = require('./message.js');
 const pageSize = 20;
 
 exports.userList = function (req, res) {

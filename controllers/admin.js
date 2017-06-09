@@ -1,5 +1,5 @@
-const UserModel = require('../models/user.js');
-const RoomModel = require('../models/room');
+const UserModel = require('./user.js');
+const RoomModel = require('./room');
 
 exports.login = function (req, res) {
     res.render('admin', {

@@ -1,11 +1,11 @@
 const multiparty=require('connect-multiparty');
 
-const Index = require('../app/controllers/index');
-const User = require('../app/controllers/user');
-const Message = require('../app/controllers/message');
-const Picture = require('../app/controllers/picture');
-const Room=require('../app/controllers/room');
-const Admin = require('../app/controllers/admin');
+const Index = require('../controllers/index');
+const User = require('../controllers/user');
+const Message = require('../controllers/message');
+const Picture = require('../controllers/picture');
+const Room=require('../controllers/room');
+const Admin = require('../controllers/admin');
 
 module.exports = function (app, io) {
     let tourists=0;

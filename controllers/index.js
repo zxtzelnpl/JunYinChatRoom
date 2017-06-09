@@ -1,6 +1,6 @@
-const MessageModel = require('../models/message');
-const PictureModel = require('../models/picture');
-const RoomModel = require('../models/room');
+const MessageModel = require('./message');
+const PictureModel = require('./picture');
+const RoomModel = require('./room');
 const PageSize = 30;
 
 exports.index = function (req, res) {
