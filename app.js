@@ -4,6 +4,7 @@ const fs=require('fs');
 const port = process.env.PORT || 3000;
 const secret='junyin';
 
+
 /**引如外部**/
 const path = require('path');
 const mongoose = require('mongoose');
