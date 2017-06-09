@@ -6,6 +6,7 @@ const Message = require('../controllers/message');
 const Picture = require('../controllers/picture');
 const Room=require('../controllers/room');
 const Admin = require('../controllers/admin');
+const NotFound=require('../controllers/notFound');
 
 module.exports = function (app, io) {
     let tourists=0;
@@ -68,8 +69,8 @@ module.exports = function (app, io) {
     app.post('/admin/picture/update', Admin.adminRequired, multiparty(),Picture.savePic,Picture.update);//PAGE:图片更新
     app.delete('/admin/picture/delete', Admin.adminRequired, Picture.delete);//JSON：图片删除
 
-    /*Information*/
-    app.get('/admin/information/:information', Admin.information);//PAGE：信息提示
+    /*404页面*/
+    app.get('*', NotFound.notFound);
 
     /*socket.io*/
     io.on('connection', function (socket) {

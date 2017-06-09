@@ -1,6 +1,7 @@
 const MessageModel = require('../models/message');
 const PictureModel = require('../models/picture');
 const RoomModel = require('../models/room');
+const Report = require('../report/report');
 const PageSize = 30;
 
 exports.index = function (req, res) {
@@ -78,10 +79,7 @@ exports.room = function (req, res) {
             });
         })
         .catch(function (err) {
-            res.render('wrongWay',{
-                title:'发生错误',
-                err:err
-            })
+            Report.errPage(res, err);
         });
 };
 
