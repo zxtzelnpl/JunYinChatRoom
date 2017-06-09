@@ -1,5 +1,3 @@
-import $ from 'jquery';
-
 $('#signOut').click(function(e){
     e.preventDefault();
     $.ajax({

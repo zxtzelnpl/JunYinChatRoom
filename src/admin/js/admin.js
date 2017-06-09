@@ -1,9 +1,7 @@
-import $ from 'jquery';
-
 $('#submit').click(function(e){
     e.preventDefault();
-    let name=$('#signInName').val();
-    let password=$('#signInPassword').val();
+    var name=$('#signInName').val();
+    var password=$('#signInPassword').val();
     console.log(name,password);
     $.ajax({
         url:'/admin/signin'

@@ -1,13 +1,11 @@
-import $ from 'jquery'
-
-const socket = io();
-let trs = $('[class^=item-id]');
+var socket = io();
+var trs = $('[class^=item-id]');
 
 $('.del').click(function (e) {
 
-    let target = $(e.target);
-    let id = target.data('id');
-    let tr = $('.item-id-' + id);
+    var target = $(e.target);
+    var id = target.data('id');
+    var tr = $('.item-id-' + id);
 
     if(tr.find('.change').html()==='禁用'){
         alert('先将用户禁用才能删除');
@@ -28,9 +26,9 @@ $('.del').click(function (e) {
 });
 
 $('.change').click(function (e) {
-    let target = $(e.target);
-    let id = target.data('id');
-    let word=target.html();
+    var target = $(e.target);
+    var id = target.data('id');
+    var word=target.html();
     if(word==='禁用'){
         if(confirm('确认是否'+word)){
             $.ajax({
@@ -65,11 +63,11 @@ $('.change').click(function (e) {
 });
 
 socket.on('usersAdd', function (id) {
-    let queryClass = ".item-id-" + id;
+    var queryClass = ".item-id-" + id;
     $(queryClass).children().eq(10).html('在线');
 });
 
 socket.on('usersMinus', function (id) {
-    let queryClass = ".item-id-" + id;
+    var queryClass = ".item-id-" + id;
     $(queryClass).children().eq(10).html('离线');
 });

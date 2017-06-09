@@ -26,8 +26,8 @@ const paths = {
     srcJs: ['src/*.js', 'src/**/*.js']
     , index: 'src/index.js'
     , indexTo:'public'
-    , admin: 'src/admin/js/*.js'
-    , jsTo: 'public/js'
+    , admin: 'src/*/js/*.js'
+    , adminTo: 'public'
     , css: ['src/**/*.less', '!src/css/normalize/*']
     , cssTo: 'public'
     , images: 'src/images/**/*.*'
@@ -98,20 +98,9 @@ gulp.task('browserify-index', function () {
  | Compile only project files, excluding all third-party dependencies.
  |--------------------------------------------------------------------------
  */
-gulp.task('admin-js', function (cb) {
-    glob(paths.admin, function (err, files) {
-        if (err) cb(err);
-
-        let tasks = files.map(function (entry) {
-            return browserify({entries: [entry]})
-                .external(dependencies)
-                .transform(babelify, {presets: ['es2015']})
-                .bundle()
-                .pipe(source(entry))
-                .pipe(gulp.dest('public'));
-        });
-        es.merge(tasks).on('end', cb);
-    });
+gulp.task('admin-js', function () {
+    return gulp.src(paths.admin)
+        .pipe(gulp.dest(paths.adminTo));
 });
 
 /**

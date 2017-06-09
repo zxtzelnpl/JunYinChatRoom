@@ -1,7 +1,6 @@
-import $ from 'jquery';
-let pic=document.getElementById('pic');
-let img=document.getElementById('img');
-let reader=new FileReader();
+var pic=document.getElementById('pic');
+var img=document.getElementById('img');
+var reader=new FileReader();
 reader.onload=function(e){
     console.log(e);
     img.src=e.target.result;

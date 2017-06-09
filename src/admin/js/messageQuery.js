@@ -1,36 +1,33 @@
-import $ from 'jquery'
-import moment from 'moment';
-
-const socket = io();
-let trs = $('[class^=item-id]');
+var socket = io();
+var trs = $('[class^=item-id]');
 
 $('.del').click(function (e) {
-    let target = $(e.target);
-    let id = target.data('id');
+    var target = $(e.target);
+    var id = target.data('id');
 
 
     socket.emit('delMessage', id)
 });
 
 socket.on('delMessage', function (message) {
-    let className = ".item-id-" + message._id;
+    var className = ".item-id-" + message._id;
     $(className).remove();
 });
 
 
 $('.success').click(function (e) {
-    let target = $(e.target);
-    let id = target.data('id');
+    var target = $(e.target);
+    var id = target.data('id');
 
 
     socket.emit('checkMessage', id)
 });
 
 socket.on('checkedMessage', function (message,checker) {
-    let time=moment(message.createAt).format('HH:MM-MM/DD/YYYY');
+    var time=message.createAt;
 
-    let className = ".item-id-" + message._id;
-    let tds=$(className).children();
+    var className = ".item-id-" + message._id;
+    var tds=$(className).children();
     console.log(tds);
     tds.eq(3).html(checker);
     tds.eq(4).html(time);
@@ -40,8 +37,8 @@ socket.on('checkedMessage', function (message,checker) {
 
 
 $('#page').find('a').click(function (e) {
-    let page = e.target.innerHTML;
-    let form = $('#search');
+    var page = e.target.innerHTML;
+    var form = $('#search');
     form.attr('action', function (index, before) {
         console.log(before);
         return before + page;
