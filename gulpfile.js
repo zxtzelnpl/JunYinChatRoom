@@ -25,6 +25,7 @@ const production = process.env.NODE_ENV === 'production';
 const paths = {
     srcJs: ['src/*.js', 'src/**/*.js']
     , index: 'src/index.js'
+    , indexTo:'public'
     , admin: 'src/admin/js/*.js'
     , jsTo: 'public/js'
     , css: ['src/**/*.less', '!src/css/normalize/*']
@@ -55,7 +56,7 @@ gulp.task('jquery', function () {
         .pipe(source('jquery.js'))
         .pipe(buffer())
         .pipe(gulpif(production, uglify({mangle: false})))
-        .pipe(gulp.dest(paths.jsTo));
+        .pipe(gulp.dest(paths.indexTo));
 });
 
 /**
@@ -70,7 +71,7 @@ gulp.task('browserify-vendor', function () {
         .pipe(source('vendor.js'))
         .pipe(buffer())
         .pipe(gulpif(production, uglify({mangle: false})))
-        .pipe(gulp.dest(paths.jsTo));
+        .pipe(gulp.dest(paths.indexTo));
 });
 
 
@@ -89,7 +90,7 @@ gulp.task('browserify-index', function () {
         .pipe(sourcemaps.init({loadMaps: true}))
         .pipe(gulpif(production, uglify({mangle: false})))
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(paths.jsTo));
+        .pipe(gulp.dest(paths.indexTo));
 });
 
 /**
