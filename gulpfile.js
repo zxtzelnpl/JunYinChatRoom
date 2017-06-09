@@ -27,7 +27,6 @@ const paths = {
     , index: 'src/index.js'
     , admin:'src/admin/js/*.js'
     , jsTo: 'public/js'
-    , normalize: 'node_modules/normalize.css/normalize.css'
     , css: ['src/**/*.less','!src/css/normalize/*']
     , cssTo: 'public'
     , images: 'src/images/**/*.*'
@@ -129,17 +128,6 @@ gulp.task('less', function () {
         .pipe(autoprefixer())
         .pipe(gulpif(production, cssmin()))
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(paths.cssTo));
-});
-
-/**
- |--------------------------------------------------------------------------
- | Compile normalize stylesheets.
- |--------------------------------------------------------------------------
- */
-gulp.task('normalize', function () {
-    return gulp.src(paths.normalize)
-        .pipe(gulpif(production, cssmin()))
         .pipe(gulp.dest(paths.cssTo));
 });
 
