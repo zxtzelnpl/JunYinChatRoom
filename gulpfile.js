@@ -25,9 +25,9 @@ const production = process.env.NODE_ENV === 'production';
 const paths = {
     srcJs: ['src/*.js', 'src/**/*.js']
     , index: 'src/index.js'
-    , admin:'src/admin/js/*.js'
+    , admin: 'src/admin/js/*.js'
     , jsTo: 'public/js'
-    , css: ['src/**/*.less','!src/css/normalize/*']
+    , css: ['src/**/*.less', '!src/css/normalize/*']
     , cssTo: 'public'
     , images: 'src/images/**/*.*'
     , imagesTo: 'public/images'
@@ -186,9 +186,7 @@ gulp.task('nodemon', function () {
  */
 gulp.task('server', ['nodemon'], function () {
     const files = [
-        'app/views/*.pug'
-        , 'app/views/**/*.pug'
-        , 'public/*.*'
+        'app/views/**/*.pug'
         , 'public/**/*.*'
     ];
     browserSync.init(files, {
@@ -228,7 +226,7 @@ gulp.task('watch', ['browserify-index', 'admin-js', 'less'], function () {
  */
 gulp.task('produce', [
     'jquery'
-    ,'browserify-vendor'
+    , 'browserify-vendor'
     , 'bootstrap'
     , 'images'
     , 'favicon'
