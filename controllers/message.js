@@ -1,31 +1,40 @@
 const MessageModel = require('../models/message.js');
 const RoomModel = require('../models/room.js');
 const UserModel = require('../models/user.js');
+const Report = require('../report/report');
 const PageSize = 30;
 
 /**get聊天信息start*/
 exports.getMessage = function (req, res) {
-    let page = req.query.page;
-    let optFind, optField;
-    if (req.session.user && parseInt(req.session.user.level) > 999) {
-        optFind = {};
-        optField = ['_id', 'from', 'content', 'createAt', 'check'];
-    }
-    else {
-        optFind = {'check': true};
-        optField = ['_id', 'from', 'content', 'createAt'];
-    }
-    MessageModel
-        .find(optFind, optField)
-        .sort({_id: -1})
-        .skip(page * PageSize)
-        .limit(PageSize)
-        .populate('from', 'name')
-        .exec(function (err, messages) {
-            if (err) {
-                console.log(err)
-            }
-            res.json(messages);
+    new Promise(function (resolve, reject) {
+        let page = req.query.page;
+        let optFind, optField;
+        if (req.session.user && parseInt(req.session.user.level) > 999) {
+            optFind = {};
+            optField = ['_id', 'from', 'content', 'createAt', 'check'];
+        }
+        else {
+            optFind = {'check': true};
+            optField = ['_id', 'from', 'content', 'createAt'];
+        }
+        MessageModel
+            .find(optFind, optField)
+            .sort({_id: -1})
+            .skip(page * PageSize)
+            .limit(PageSize)
+            .populate('from', 'name')
+            .exec(function (err, messages) {
+                if (err) {
+                    reject(err)
+                }
+                resolve(messages);
+            })
+    })
+        .then(function (messages) {
+            res.json(messages)
+        })
+        .catch(function (err) {
+            Report.errJSON(res, err)
         })
 };
 /**get聊天信息end*/
@@ -137,11 +146,13 @@ exports.messageSearch = function (req, res) {
     RoomModel
         .find(findOpt)
         .exec(function (err, rooms) {
-            if(err){console.log(err)}
+            if (err) {
+                console.log(err)
+            }
             console.log(rooms);
             res.render('messageSearch', {
                 title: '聊天信息查询',
-                rooms:rooms
+                rooms: rooms
             })
         });
 };
