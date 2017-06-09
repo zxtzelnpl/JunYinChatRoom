@@ -1,0 +1,17 @@
+<!-- navbar -->
+.navbar.navbar-inverse
+    .navbar-inner
+        button.btn.btn-navbar.visible-phone#menu-toggler(type="button")
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+        a.brand(href="#")
+            img(src="/model/img/junyin/logo-1.png")
+        ul.nav.pull-right
+            li
+                a 用户：#{user.name}
+            li
+                a 等级：#{user.level}
+            li.settings.hidden-phone
+                a(href="/admin/login" role="button")
+                    i.icon-share-alt

@@ -1,8 +1,8 @@
-const UserModel = require('./user.js');
-const RoomModel = require('./room');
+const UserModel = require('../models/user.js');
+const RoomModel = require('../models/room');
 
 exports.login = function (req, res) {
-    res.render('admin', {
+    res.render('login', {
         title:'登录页面'
     });
 };

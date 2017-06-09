@@ -1,6 +1,6 @@
-const MessageModel = require('./message.js');
-const RoomModel = require('./room.js');
-const UserModel = require('./user.js');
+const MessageModel = require('../models/message.js');
+const RoomModel = require('../models/room.js');
+const UserModel = require('../models/user.js');
 const PageSize = 30;
 
 /**get聊天信息start*/

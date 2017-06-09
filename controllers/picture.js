@@ -1,8 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const PictureModel = require('./picture');
-const RoomModel = require('./room');
+const PictureModel = require('../models/picture');
+const RoomModel = require('../models/room');
 
 exports.pictureList = function (req, res) {
     let _id = req.params.id;

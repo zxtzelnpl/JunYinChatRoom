@@ -1,4 +1,4 @@
-const RoomModel = require('./room');
+const RoomModel = require('../models/room');
 
 exports.roomList = function (req, res) {
     RoomModel
