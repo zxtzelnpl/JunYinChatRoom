@@ -229,7 +229,6 @@ gulp.task('watch', ['browserify-index', 'admin-js', 'less'], function () {
 gulp.task('produce', [
     'jquery'
     ,'browserify-vendor'
-    , 'normalize'
     , 'bootstrap'
     , 'images'
     , 'favicon'
