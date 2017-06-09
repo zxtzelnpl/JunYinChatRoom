@@ -25,12 +25,12 @@ const production = process.env.NODE_ENV === 'production';
 const paths = {
     srcJs: ['src/*.js', 'src/**/*.js']
     , index: 'src/index.js'
-    , admin:'admin/js/*.js'
+    , admin:'src/admin/js/*.js'
     , jsTo: 'public/js'
-    , less: ['src/less/*.less', 'src/less/**/*.less', '!src/less/normalize/*']
     , normalize: 'node_modules/normalize.css/normalize.css'
-    , cssTo: 'public/css'
-    , images: 'src/images/**/**'
+    , css: ['src/**/*.less','!src/css/normalize/*']
+    , cssTo: 'public'
+    , images: 'src/images/**/*.*'
     , imagesTo: 'public/images'
 };
 
@@ -120,7 +120,7 @@ gulp.task('admin-js', function (cb) {
  |--------------------------------------------------------------------------
  */
 gulp.task('less', function () {
-    return gulp.src(paths.less)
+    return gulp.src(paths.css)
         .pipe(plumber())
         .pipe(sourcemaps.init())
         .pipe(less({
@@ -149,15 +149,8 @@ gulp.task('normalize', function () {
  |--------------------------------------------------------------------------
  */
 gulp.task('bootstrap', function () {
-    return gulp.src([
-        'node_modules/bootstrap/dist/**/**.css'
-        , 'node_modules/bootstrap/dist/**/**.eot'
-        , 'node_modules/bootstrap/dist/**/**.svg'
-        , 'node_modules/bootstrap/dist/**/**.ttf'
-        , 'node_modules/bootstrap/dist/**/**.woff'
-        , 'node_modules/bootstrap/dist/**/**.woff2'
-    ])
-        .pipe(gulp.dest('public/admin'));
+    return gulp.src('src/model/**/**.*')
+        .pipe(gulp.dest('public/model'));
 });
 
 /**
@@ -235,7 +228,7 @@ gulp.task('watch', ['browserify-index', 'admin-js', 'less'], function () {
         console.log('File ' + event.path + ' was ' + event.type + ', running tasks...')
     });
 
-    gulp.watch(paths.less, ['less']).on('change', function (event) {
+    gulp.watch(paths.css, ['less']).on('change', function (event) {
         console.log('File ' + event.path + ' was ' + event.type + ', running tasks...')
     });
 });

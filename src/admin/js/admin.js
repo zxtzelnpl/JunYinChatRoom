@@ -29,7 +29,7 @@ $('#signOut_ls_999').click(function(e){
         ,method:'GET'
         ,success:function(data){
             console.log(data);
-            location.href='/admin/login';
+            location.href='/src/admin/login';
         }
         ,error:function(data){
             console.log(data)
