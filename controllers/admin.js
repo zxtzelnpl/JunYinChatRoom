@@ -14,12 +14,13 @@ exports.welcome = function (req,res){
 };
 
 exports.adminRequired = function (req, res, next) {
-    let level = req.session.user ? parseInt(req.session.user.level) : 0;
-    if (level >= 1000) {
-        next();
-    } else {
-        Report.errPage(res, '你没有相关权限');
-    }
+    next()
+    // let level = req.session.user ? parseInt(req.session.user.level) : 0;
+    // if (level >= 1000) {
+    //     next();
+    // } else {
+    //     Report.errPage(res, '你没有相关权限');
+    // }
 };
 
 exports.signIn = function (req, res) {
@@ -49,16 +50,17 @@ exports.signIn = function (req, res) {
                 if (!isMatch) {
                     reject('密码错误')
                 }
-                resolve(user.name)
+                resolve(user)
             })
         })
     });
 
     checkPromise
-        .then(function (name) {
+        .then(function (user) {
+            req.session.user = user;
             res.json({
                 state: 'success',
-                name: name
+                name: user.name
             })
         })
         .catch(function (err) {

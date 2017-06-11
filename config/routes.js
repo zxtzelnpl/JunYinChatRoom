@@ -34,7 +34,7 @@ module.exports = function (app, io) {
     /*Admin*/
     app.get('/admin/login', Admin.login);//PAGE:登录
     app.post('/admin/signin', Admin.signIn);//PAGE:登录
-    app.get('/admin/welcome', Admin.welcome); //PAGE:欢迎
+    app.get('/admin/welcome',Admin.adminRequired, Admin.welcome); //PAGE:欢迎
 
     /*Admin-Room*/
     app.get('/admin/roomlist', Admin.adminRequired, Room.roomList);//PAGE：房间列表

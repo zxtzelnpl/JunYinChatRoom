@@ -8,31 +8,32 @@
                 //    .arrow_border
                 a.dropdown-toggle(href="#")
                     i.icon-tablet
-                    span 渠道管理
+                    span 房间管理
                     i.icon-chevron-down
                 ul.submenu
-                    li: a(href="/admin/way/waylist/1") 渠道列表
-                    li: a(href="/admin/way/waynew") 新建渠道
+                    li: a(href="/admin/roomlist") 房间列表
+                    li: a(href="/admin/roomnew") 新建房间
             li
                 a.dropdown-toggle(href="#")
                     i.icon-group
                     span 用户管理
                     i.icon-chevron-down
                 ul.submenu
-                    li: a(href="/admin/userlist/1") 用户列表
+                    li: a(href="/admin/userlist/all/1") 用户列表
                     li: a(href="/admin/usersignup") 用户注册
-            li
-                a.dropdown-toggle(href="#")
-                    i.icon-bar-chart
-                    span 聊天管理
-                    i.icon-chevron-down
-                ul.submenu
-                    li: a(href="/admin/leavemes/all/1") 留言列表
         if(user&&parseInt(user.level)===1000)
             li
                 a.dropdown-toggle(href="#")
                     i.icon-tablet
-                    span 渠道管理
+                    span 房间管理
                     i.icon-chevron-down
                 ul.submenu
-                    li: a(href="/admin/way/waylist/1") 渠道列表
+                    li: a(href="/admin/roomlist") 房间列表
+            li
+                a.dropdown-toggle(href="#")
+                    i.icon-group
+                    span 用户管理
+                    i.icon-chevron-down
+                ul.submenu
+                    li: a(href="/admin/userlist/"+user.room+"1") 用户列表
+                    li: a(href="/admin/usersignup") 用户注册
