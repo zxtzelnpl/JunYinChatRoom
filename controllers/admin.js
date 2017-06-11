@@ -1,21 +1,18 @@
 const UserModel = require('../models/user.js');
-const RoomModel = require('../models/room');
+const Report = require('../report/report');
 
 exports.login = function (req, res) {
     res.render('login', {
-        title:'登录页面'
+        title: '登录页面'
     });
 };
 
-exports.adminRequired=function(req,res,next){
+exports.adminRequired = function (req, res, next) {
     let level = req.session.user ? parseInt(req.session.user.level) : 0;
-    if(level>=1000){
+    if (level >= 1000) {
         next();
-    }else{
-        res.render('wrongWay',{
-            title:'你是不是忘记了什么',
-            err:'这些页面暂时不对外开放哦'
-        })
+    } else {
+        Report.errPage(res, '你没有相关权限');
     }
 };
 
@@ -23,44 +20,43 @@ exports.signIn = function (req, res) {
     let _user = req.body;
     let name = _user.name;
     let password = _user.password;
-    let roomId=_user.room;
 
-    UserModel.findOne({name: name}, function (err, user) {
-        if (err) {
-            console.log(err)
-        }
-
-        if (!user) {
-            return res.json({
-                state: 'fail'
-                , reason: 'no name'
+    let userPromise = new Promise(function (resolve, reject) {
+        UserModel
+            .findOne({name: name})
+            .exec(function (err, user) {
+                if (err) {
+                    reject(err)
+                }
+                if (!user) {
+                    reject('无法找到向对应的用户名')
+                }
+                resolve(user)
             })
-        }
+    });
 
-        user.comparePassword(password, function (err, isMatch) {
-            if (err) {
-                console.log(err)
-            }
-            if (isMatch) {
-                req.session.user = user;
-                return res.json({
-                    state: 'success'
-                    , name: user.name
-                });
-            }
-            else {
-                return res.json({
-                    state: 'fail'
-                    , reason: 'password wrong'
-                })
-            }
+    let checkPromise = userPromise.then(function (user) {
+        return new Promise(function (resolve, reject) {
+            user.comparePassword(password, function (err, isMatch) {
+                if (err) {
+                    reject(err)
+                }
+                if (!isMatch) {
+                    reject('密码错误')
+                }
+                resolve(user.name)
+            })
         })
-    })
-};
+    });
 
-exports.information=function(req,res){
-    let information=req.params.information;
-    res.render('information',{
-        information
-    })
+    checkPromise
+        .then(function (name) {
+            res.json({
+                state: 'success',
+                name: name
+            })
+        })
+        .catch(function (err) {
+            Report.errJSON(res, err)
+        });
 };

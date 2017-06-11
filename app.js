@@ -2,6 +2,7 @@ const fs=require('fs');
 
 /**定义常量**/
 const port = process.env.PORT || 3000;
+const dbUrl = 'mongodb://was:96321@139.196.93.207:3883/junyin';
 const secret='junyin';
 
 

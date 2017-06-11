@@ -41,32 +41,43 @@ exports.getMessage = function (req, res) {
 
 /**get聊天信息start*/
 exports.messageList = function (req, res) {
-    let page = req.params.page;
-    let totalPageNum;
-    MessageModel.find({}).count(function (err, count) {
-        if (err) {
-            console.log(err)
-        }
-        totalPageNum = Math.ceil(count / PageSize);
+    let totalPageNumPromise=new Promise(function(resolve,reject){
+        let totalPageNum;
         MessageModel
             .find({})
-            .sort({_id: -1})
-            .skip((page - 1) * PageSize)
-            .limit(PageSize)
-            .populate('from', 'name')
-            .populate('verifier', 'name')
-            .populate('room', 'title')
-            .exec(function (err, messages) {
-                if (err) {
-                    console.log(err)
-                }
-                res.render('messageList', {
-                    title: '聊天列表'
-                    , messages
-                    , totalPageNum
-                });
+            .count(function(err,count){
+                if(err){reject(err)}
+                totalPageNum = Math.ceil(count/PageSize);
+                resolve(totalPageNum)
             })
     });
+    let messagesPromise=new Promise(function(resolve,reject){
+        let page = req.param.page;
+        MessageModel.find({})
+            .find({})
+            .sort({_id:-1})
+            .skip((page-1)*PageSize)
+            .limit(PageSize)
+            .populate('from','name')
+            .populate('verifier','name')
+            .populate('room','title')
+            .exec(function(err,messages){
+                if(err){reject(err)}
+                resolve(messages)
+            })
+    });
+    Promise
+        .all([totalPageNumPromise,messagesPromise])
+        .then(function([totalPageNum,messages]){
+            res.render('messageList', {
+                title: '聊天列表'
+                , messages
+                , totalPageNum
+            });
+        })
+        .catch(function(err){
+            Report.errPage(res,err)
+        });
 
 };
 /**get聊天信息end*/
