@@ -24,10 +24,8 @@ exports.adminRequired = function (req, res, next) {
 
 exports.signIn = function (req, res) {
     let _user = req.body;
-    let name = _user.name;
-    let password = _user.password;
-
     let userPromise = new Promise(function (resolve, reject) {
+        let name = _user.name;
         UserModel
             .findOne({name: name})
             .exec(function (err, user) {
@@ -43,6 +41,7 @@ exports.signIn = function (req, res) {
 
     let checkPromise = userPromise.then(function (user) {
         return new Promise(function (resolve, reject) {
+            let password = _user.password;
             user.comparePassword(password, function (err, isMatch) {
                 if (err) {
                     reject(err)

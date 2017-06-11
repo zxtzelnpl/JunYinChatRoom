@@ -15,22 +15,23 @@ $(function () {
         var name = $('#name').val();
         var password = $('#password').val();
         $.ajax({
-            url: '/user/signin'
+            url: '/admin/signin'
             , method: 'POST'
             , data: {
                 name:name,
                 password:password
             }
             , success: function (data) {
-                if (data.state == 'success') {
-                    location.href = '/admin/way/waylist/1';
+                if (data.state === 'success') {
+                    location.href = '/admin/welcome';
                 }
                 else {
                     alert(data.err)
                 }
             }
             , error: function (err) {
-                alert(err)
+                alert('链接错误');
+                console.log(err)
             }
         })
     });
