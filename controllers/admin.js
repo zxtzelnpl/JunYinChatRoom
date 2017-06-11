@@ -7,6 +7,12 @@ exports.login = function (req, res) {
     });
 };
 
+exports.welcome = function (req,res){
+    res.render('welcome',{
+        title:'欢迎页面'
+    })
+};
+
 exports.adminRequired = function (req, res, next) {
     let level = req.session.user ? parseInt(req.session.user.level) : 0;
     if (level >= 1000) {

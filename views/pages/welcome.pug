@@ -1,0 +1,28 @@
+doctype
+html.login-bg
+    head
+        include ../include/meta
+        title #{title}
+        include ../include/bootstrap
+        include ../include/globalStyle
+
+        <!-- libraries -->
+        link(href="/model/css/lib/font-awesome.css",rel="stylesheet")
+        <!-- this page specific styles -->
+        link(href="/model/css/compiled/signin.css",rel="stylesheet",media="screen")
+        <!-- open sans font -->
+        link(href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,600,700,800",rel="stylesheet",media="screen")
+
+
+    body
+        include ../include/navbar
+        include ../include/sidebar
+        .content
+            .container-fluid
+                #main-stats
+                    .row-fluid.stats-row
+                #pad-wrapper Welcome
+    script(src="/model/js/jquery-3.2.1.min.js")
+    script(src="/model/js/bootstrap.min.js")
+    script(src="/model/js/theme.js")
+    script(src="/admin/js/welcome.js")
