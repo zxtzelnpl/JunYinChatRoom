@@ -1,40 +1,50 @@
 const fs = require('fs');
 const path = require('path');
-
 const PictureModel = require('../models/picture');
 const RoomModel = require('../models/room');
+const Report = require('../report/report');
 
 exports.pictureList = function (req, res) {
-    let _id = req.params.id;
-    let optFind, optSort;
-    if (_id === 'all') {
-        optFind = {};
-        optSort = {'room': -1, 'position': 1};
-    }
-    else {
-        optFind = {room: _id};
-        optSort = {'position': 1};
-    }
-    PictureModel
-        .find(optFind)
-        .sort(optSort)
-        .populate('uploader', 'name')
-        .populate('room', 'title')
-        .exec(function (err, pictures) {
-            if (err) {
-                console.log(err)
-            }
+    new Promise(function (resolve, reject) {
+        let _id = req.params.id;
+        let optFind, optSort;
+        if (_id === 'all') {
+            optFind = {};
+            optSort = {'room': -1, 'position': 1};
+        }
+        else {
+            optFind = {room: _id};
+            optSort = {'position': 1};
+        }
+        PictureModel
+            .find(optFind)
+            .sort(optSort)
+            .populate('uploader', 'name')
+            .populate('room', 'title')
+            .exec(function (err, pictures) {
+                if (err) {
+                    reject(err)
+                }
+                resolve(pictures)
+            });
+    })
+        .then(function (pictures) {
             res.render('pictureList', {
                 title: '图片列表'
                 , pictures: pictures
             });
+        })
+        .catch(function (err) {
+            Report.errPage(res, err)
         });
+
 };
 
 exports.pictureUpload = function (req, res) {
-    let id = req.query.id;
-    let room = req.params.room;
-    let rooms = new Promise(function (resolve, reject) {
+
+
+    let roomPromise = new Promise(function (resolve, reject) {
+        let room = req.params.room;
         let findOpt;
         if (room === 'all') {
             findOpt = {}
@@ -42,16 +52,19 @@ exports.pictureUpload = function (req, res) {
             findOpt = {_id: room}
         }
         RoomModel
-            .find(findOpt)
-            .exec(function (err, rooms) {
+            .findOne(findOpt)
+            .exec(function (err, room) {
                 if (err) {
                     reject(err)
                 }
-                resolve(rooms);
+                resolve(room);
             })
     });
+    let picPromise = roomPromise.then(function (room) {
+        return new Promise(function(resolve,reject){
 
-    rooms.then(function (rooms) {
+        });
+        let id = req.query.id;
         if (id) {
             PictureModel.findById(id, function (err, picture) {
                 if (err) {
@@ -60,7 +73,7 @@ exports.pictureUpload = function (req, res) {
                 res.render('pictureUpload', {
                     title: '图片修改-' + id
                     , picture,
-                    rooms
+                    room
                 })
             })
         }
@@ -71,6 +84,14 @@ exports.pictureUpload = function (req, res) {
             });
         }
     });
+    Promise
+        .all([])
+        .then(function([]){
+
+        })
+        .catch(function(err){
+            Report.errPage(res,err)
+        })
 };
 
 exports.savePic = function (req, res, next) {

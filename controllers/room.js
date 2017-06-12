@@ -122,7 +122,7 @@ exports.delete = function (req, res) {
                 state: 'success'
             })
         })
-        .then(function (err) {
+        .catch(function (err) {
             Report.errJSON(res, err)
         })
 };

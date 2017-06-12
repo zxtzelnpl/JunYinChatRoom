@@ -1,8 +1,77 @@
-extends ../admin/layout
+doctype
+html.login-bg
+    head
+        include ../include/meta
+        title #{title}
+        include ../include/bootstrap
+        include ../include/globalStyle
 
-block css
+        <!-- libraries -->
+        link(href="/model/css/lib/font-awesome.css",rel="stylesheet")
+        <!-- this page specific styles -->
+        link(href="/model/css/compiled/form-showcase.css",rel="stylesheet",media="screen")
+        <!-- open sans font -->
+        link(href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,600,700,800",rel="stylesheet",media="screen")
 
-block content
+
+    body
+        include ../include/navbar
+        include ../include/sidebar
+        .content
+            .container-fluid
+                .users-list#pad-wrapper
+                    .row-fluid.header
+                        h3 #{title}
+                    .row-fluid
+                        .span4
+                        .span4
+                            form(method="post" action="/admin/picture/update" enctype="multipart/form-data")
+                                if(picture)
+                                    input(type="hidden" name="picture[_id]" value=picture._id)
+                                .field-box
+                                    label 房间
+
+                                div.field-box
+                                    label(for="name") 名称：
+                                    input.span12(id="name" name="room[name]" type="text" value=item.name required="required")
+                                div.field-box
+                                    label(for="title") 标题：
+                                    input.span12(id="title" name="room[title]" type="text" value=item.title required = "required")
+                                div.field-box
+                                    label QQ：
+                                    input.span10(id="QQ" name="room[QQ]" type="text" value=item.QQ[0])
+                                    a#addQQ.span2.pull-right.btn-glow.success: i.icon-plus
+                                mixin QQInput(val,index)
+                                    div.field-box
+                                        input.span10(name="room[QQ]" type="text" value=val)
+                                        a.span2.pull-right.btn-glow.danger.removeQQ: i.icon-minus
+                                if(item.QQ.length > 1)
+                                    each val,index in item.QQ
+                                        if index !== 0
+                                            +QQInput(val,index)
+                                div.field-box#QQAddMark
+                                    label(for="phone") 客服电话：
+                                    input.span12(id="phone" name="room[phone]" type="text" value=item.phone)
+                                div.field-box
+                                    label(for="site") 视频site：
+                                    input.span12(id="site" name="room[video][site]" type="text" value=item.video.site)
+                                div.field-box
+                                    label(for="ctx") 视频ctx：
+                                    input.span12(id="ctx" name="room[video][ctx]" type="text" value=item.video.ctx)
+                                div.field-box
+                                    label(for="ownerId") 视频ownerId：
+                                    input.span12(id="ownerId" name="room[video][ownerId]" type="text" value=item.video.ownerId)
+                                div.field-box
+                                    div.text-center
+                                        input.pull-left.btn-flat.success(id="submit" type="submit" value="提交")
+                                        input.pull-right.btn-flat.gray(id="reset" type="reset" value="重置")
+    script(src="/model/js/jquery-3.2.1.min.js")
+    script(src="/model/js/bootstrap.min.js")
+    script(src="/model/js/theme.js")
+    script(src="/admin/js/pictureUpload.js")
+
+
+
     .row
         form.form-horizontal(method="post" action="/admin/picture/update" enctype="multipart/form-data")
             if(picture)
@@ -79,6 +148,3 @@ block content
             img.col-sm-10.img-thumbnail#img(src="http://139.196.93.207:3000/upload/"+picture.urlBack)
         else
             img.col-sm-10.img-thumbnail#img(src="")
-
-block js
-    script(src="/admin/js/pictureUpload.js")
