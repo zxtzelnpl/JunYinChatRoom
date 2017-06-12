@@ -11,8 +11,8 @@ $('#addQQ').click(function () {
         '<i class="icon-minus"></i>' +
         '</a>' +
         '</div>';
-    var parent = $('#addQQ').parent();
-    parent.after(boxStr)
+    var parent = $('#QQAddMark');
+    parent.before(boxStr)
 });
 
 $('.removeQQ').on('click', remove);

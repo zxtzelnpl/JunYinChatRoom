@@ -45,7 +45,7 @@ html.login-bg
                                         each val,index in item.QQ
                                             if index !== 0
                                                 +QQInput(val,index)
-                                div.field-box
+                                div.field-box#QQAddMark
                                     label.col-sm-2.col-sm-offset-3.control-label(for="phone") 客服电话：
                                     div.col-sm-4
                                         input.form-control(id="phone" name="room[phone]" type="text" value=item.phone)
