@@ -21,7 +21,7 @@ exports.roomList = function (req, res) {
     })
         .then(function (rooms) {
             res.render('roomList', {
-                title: '房间管理',
+                title: '房间列表',
                 items: rooms
             })
         })
@@ -46,7 +46,7 @@ exports.roomDetail = function (req, res) {
     })
         .then(function (room) {
             res.render('roomDetail', {
-                title: '房间管理',
+                title: '房间详情',
                 item: room
             })
         })
@@ -57,7 +57,7 @@ exports.roomDetail = function (req, res) {
 
 exports.roomNew = function (req, res) {
     res.render('roomNew', {
-        title: '房间管理'
+        title: '房间新增'
     })
 };
 
@@ -75,7 +75,7 @@ exports.roomUpdate = function (req, res) {
     })
         .then(function (room) {
             res.render('roomUpdate', {
-                title: '房间管理',
+                title: '房间修改',
                 item: room
             })
         })

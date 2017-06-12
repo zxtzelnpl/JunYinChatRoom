@@ -1,56 +1,72 @@
-extends ../admin/layout
+doctype
+html.login-bg
+    head
+        include ../include/meta
+        title #{title}
+        include ../include/bootstrap
+        include ../include/globalStyle
 
-block css
+        <!-- libraries -->
+        link(href="/model/css/lib/font-awesome.css",rel="stylesheet")
+        <!-- this page specific styles -->
+        link(href="/model/css/compiled/signin.css",rel="stylesheet",media="screen")
+        <!-- open sans font -->
+        link(href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,600,700,800",rel="stylesheet",media="screen")
 
-block content
-    .row
-        form.form-horizontal(method="POST" action="/admin/room/update")
-            input(type="hidden" name="room[_id]" value=item._id)
-            div.form-group
-                label.col-sm-2.col-sm-offset-3.control-label(for="name") 名称：
-                div.col-sm-4
-                    input.form-control(id="name" name="room[name]" type="text" value=item.name)
-            div.form-group
-                label.col-sm-2.col-sm-offset-3.control-label(for="title") 标题：
-                div.col-sm-4
-                    input.form-control(id="title" name="room[title]" type="text" value=item.title)
-            div.form-group
-                label.col-sm-2.col-sm-offset-3.control-label QQ：
-                div.col-sm-4
-                    input.form-control(id="QQ" name="room[QQ]" type="text" value=item.QQ[0])
-                div.col-sm-1
-                    a.btn.glyphicon.glyphicon-plus
-            mixin form-group(val,index)
-                div.form-group
-                    div.col-sm-offset-5.col-sm-4
-                        input.form-control(name="room[QQ]" type="text" value=val)
-                    div.col-sm-1
-                        a.btn.glyphicon.glyphicon-minus
-            if(item.QQ.length>1)
-                each val,index in item.QQ
-                    if index!==0
-                        +form-group(val,index)
-            div.form-group
-                label.col-sm-2.col-sm-offset-3.control-label(for="phone") 客服电话：
-                div.col-sm-4
-                    input.form-control(id="phone" name="room[phone]" type="text" value=item.phone)
-            div.form-group
-                label.col-sm-2.col-sm-offset-3.control-label(for="site") 视频site：
-                div.col-sm-4
-                    input.form-control(id="site" name="room[video][site]" type="text" value=item.video.site)
-            div.form-group
-                label.col-sm-2.col-sm-offset-3.control-label(for="ctx") 视频ctx：
-                div.col-sm-4
-                    input.form-control(id="ctx" name="room[video][ctx]" type="text" value=item.video.ctx)
-            div.form-group
-                label.col-sm-2.col-sm-offset-3.control-label(for="ownerId") 视频ownerId：
-                div.col-sm-4
-                    input.form-control(id="ownerId" name="room[video][ownerId]" type="text" value=item.video.ownerId)
-            div.form-group
-                div.col-sm-offset-5.col-sm-2.text-center
-                    input.btn.btn-success(id="submit" type="submit" value="提交")
-                div.col-sm-2.text-center
-                    input.btn.btn-warning(id="reset" type="reset" value="重置")
 
-block js
+    body
+        include ../include/navbar
+        include ../include/sidebar
+        .content
+            .container-fluid
+                .users-list#pad-wrapper
+                    .row-fluid.header
+                        h3 #{title}
+                    .row-fluid
+                        .span4
+                        .span4
+                            form(method="POST" action="/admin/room/update")
+                                input(type="hidden" name="room[_id]" value=item._id)
+                                div.field-box
+                                    label(for="name") 名称：
+                                    input.span12(id="name" name="room[name]" type="text" value=item.name required="required")
+                                div.field-box
+                                    label(for="title") 标题：
+                                    input.span12(id="title" name="room[title]" type="text" value=item.title required = "required")
+                                div.field-box
+                                    label QQ：
+                                    input.span10(id="QQ" name="room[QQ]" type="text" value=item.QQ[0])
+                                    a#addQQ.span2.pull-right.btn-glow.success: i.icon-plus
+                                    mixin QQInput(val,index)
+                                        div.field-box
+                                            input.span10(name="room[QQ]" type="text" value=val)
+                                            a#removeQQ.span2.pull-right.btn-glow.danger: i.icon-minus
+                                    if(item.QQ.length > 1)
+                                        each val,index in item.QQ
+                                            if index !== 0
+                                                +QQInput(val,index)
+                                div.field-box
+                                    label.col-sm-2.col-sm-offset-3.control-label(for="phone") 客服电话：
+                                    div.col-sm-4
+                                        input.form-control(id="phone" name="room[phone]" type="text" value=item.phone)
+                                div.field-box
+                                    label.col-sm-2.col-sm-offset-3.control-label(for="site") 视频site：
+                                    div.col-sm-4
+                                        input.form-control(id="site" name="room[video][site]" type="text" value=item.video.site)
+                                div.field-box
+                                    label.col-sm-2.col-sm-offset-3.control-label(for="ctx") 视频ctx：
+                                    div.col-sm-4
+                                        input.form-control(id="ctx" name="room[video][ctx]" type="text" value=item.video.ctx)
+                                div.field-box
+                                    label.col-sm-2.col-sm-offset-3.control-label(for="ownerId") 视频ownerId：
+                                    div.col-sm-4
+                                        input.form-control(id="ownerId" name="room[video][ownerId]" type="text" value=item.video.ownerId)
+                                div.field-box
+                                    div.col-sm-offset-5.col-sm-2.text-center
+                                        input.btn.btn-success(id="submit" type="submit" value="提交")
+                                    div.col-sm-2.text-center
+                                        input.btn.btn-warning(id="reset" type="reset" value="重置")
+    script(src="/model/js/jquery-3.2.1.min.js")
+    script(src="/model/js/bootstrap.min.js")
+    script(src="/model/js/theme.js")
     script(src="/admin/js/roomUpdate.js")

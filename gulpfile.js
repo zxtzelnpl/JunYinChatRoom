@@ -176,8 +176,8 @@ gulp.task('nodemon', function () {
  */
 gulp.task('server', ['nodemon'], function () {
     const files = [
-        'app/views/**/*.pug'
-        , 'public/**/*.*'
+        'views/**/*.pug'
+        , 'src/**/*.*'
     ];
     browserSync.init(files, {
         proxy: 'http://localhost:3000',

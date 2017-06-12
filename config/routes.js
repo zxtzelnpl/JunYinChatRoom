@@ -71,7 +71,7 @@ module.exports = function (app, io) {
     app.delete('/admin/picture/delete', Admin.adminRequired, Picture.delete);//JSON：图片删除
 
     /*404页面*/
-    app.get('*', NotFound.notFound);
+    /*app.get('*', NotFound.notFound);*/
 
     /*socket.io*/
     io.on('connection', function (socket) {
