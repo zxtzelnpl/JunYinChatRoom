@@ -1,38 +1,61 @@
-extends ../admin/layout
+doctype
+html.login-bg
+    head
+        include ../include/meta
+        title #{title}
+        include ../include/bootstrap
+        include ../include/globalStyle
 
-block css
+        <!-- libraries -->
+        link(href="/model/css/lib/font-awesome.css",rel="stylesheet")
+        <!-- this page specific styles -->
+        link(href="/model/css/compiled/tables.css",rel="stylesheet",media="screen")
+        <!-- open sans font -->
+        link(href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,600,700,800",rel="stylesheet",media="screen")
 
-block content
-    .row
-        table.table.table-hover.table-bordered
-            thead
-                tr
-                    th 房间
-                    th 位置
-                    th 概述
-                    th 内容
-                    th 排序
-                    th 预览
-                    th 更改人
-                    th 修改
-                    th 删除
-            tbody
-                if pictures && pictures.length > 0
-                    each item in pictures
-                        tr(class="item-id-" + item._id)
-                            if item.room&&item.room.title
-                                td #{item.room.title}
-                            else
-                                td 未知
-                            td #{item.position}
-                            td #{item.alt}
-                            td #{item.content}
-                            td #{item.rank}
-                            td: img.img-responsive(src="http://139.196.93.207:3000/upload/"+item.urlBack)
-                            if item.uploader&&item.uploader.name
-                                td #{item.uploader.name}
-                            else
-                                td 未知
-                            td: a(target="_blank", href= "/admin/pictureupload/"+item.room._id+"?id="+item._id) 修改
-                            td: button.btn.btn-danger.del(type="button", data-id=item._id) 删除
-block js
+
+    body
+        include ../include/navbar
+        include ../include/sidebar
+        .content
+            .container-fluid
+                #pad-wrapper
+                    .table-wrapper.section
+                        .row-fluid.head
+                            .span12
+                                h4 房间列表
+                        .row-fluid
+                            table.table.table-hover
+                                thead
+                                    tr
+                                        th.span1 房间
+                                        th.span1 位置
+                                        th.span1 概述
+                                        th.span1 内容
+                                        th.span1 排序
+                                        th.span4 预览
+                                        th.span1 更改人
+                                        th.span1 修改
+                                        th.span1 删除
+                                tbody
+                                    if pictures && pictures.length > 0
+                                        each item in pictures
+                                            tr(class="item-id-" + item._id)
+                                                if item.room && item.room.title
+                                                    td #{item.room.title}
+                                                else
+                                                    td 未知
+                                                td #{item.position}
+                                                td #{item.alt}
+                                                td #{item.content}
+                                                td #{item.rank}
+                                                td: img.img-responsive(src="http://139.196.93.207:3000/upload/" + item.urlBack)
+                                                if item.uploader && item.uploader.name
+                                                    td #{item.uploader.name}
+                                                else
+                                                    td 未知
+                                                td: a(target="_blank", href= "/admin/pictureupload/" + item.room._id + "?id=" + item._id) 修改
+                                                td: button.btn.btn-danger.del(type="button", data-id=item._id) 删除
+    script(src="/model/js/jquery-3.2.1.min.js")
+    script(src="/model/js/bootstrap.min.js")
+    script(src="/model/js/theme.js")
