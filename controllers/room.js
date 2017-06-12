@@ -140,7 +140,7 @@ exports.update = function (req, res) {
             resolve(room)
         })
     })
-        .then(function () {
+        .then(function (room) {
             res.redirect('/admin/roomdetail/' + room._id)
         })
         .catch(function (err) {

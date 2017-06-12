@@ -37,35 +37,30 @@ html.login-bg
                                     label QQ：
                                     input.span10(id="QQ" name="room[QQ]" type="text" value=item.QQ[0])
                                     a#addQQ.span2.pull-right.btn-glow.success: i.icon-plus
-                                    mixin QQInput(val,index)
-                                        div.field-box
-                                            input.span10(name="room[QQ]" type="text" value=val)
-                                            a#removeQQ.span2.pull-right.btn-glow.danger: i.icon-minus
-                                    if(item.QQ.length > 1)
-                                        each val,index in item.QQ
-                                            if index !== 0
-                                                +QQInput(val,index)
+                                mixin QQInput(val,index)
+                                    div.field-box
+                                        input.span10(name="room[QQ]" type="text" value=val)
+                                        a.span2.pull-right.btn-glow.danger.removeQQ: i.icon-minus
+                                if(item.QQ.length > 1)
+                                    each val,index in item.QQ
+                                        if index !== 0
+                                            +QQInput(val,index)
                                 div.field-box#QQAddMark
-                                    label.col-sm-2.col-sm-offset-3.control-label(for="phone") 客服电话：
-                                    div.col-sm-4
-                                        input.form-control(id="phone" name="room[phone]" type="text" value=item.phone)
+                                    label(for="phone") 客服电话：
+                                    input.span12(id="phone" name="room[phone]" type="text" value=item.phone)
                                 div.field-box
-                                    label.col-sm-2.col-sm-offset-3.control-label(for="site") 视频site：
-                                    div.col-sm-4
-                                        input.form-control(id="site" name="room[video][site]" type="text" value=item.video.site)
+                                    label(for="site") 视频site：
+                                    input.span12(id="site" name="room[video][site]" type="text" value=item.video.site)
                                 div.field-box
-                                    label.col-sm-2.col-sm-offset-3.control-label(for="ctx") 视频ctx：
-                                    div.col-sm-4
-                                        input.form-control(id="ctx" name="room[video][ctx]" type="text" value=item.video.ctx)
+                                    label(for="ctx") 视频ctx：
+                                    input.span12(id="ctx" name="room[video][ctx]" type="text" value=item.video.ctx)
                                 div.field-box
-                                    label.col-sm-2.col-sm-offset-3.control-label(for="ownerId") 视频ownerId：
-                                    div.col-sm-4
-                                        input.form-control(id="ownerId" name="room[video][ownerId]" type="text" value=item.video.ownerId)
+                                    label(for="ownerId") 视频ownerId：
+                                    input.span12(id="ownerId" name="room[video][ownerId]" type="text" value=item.video.ownerId)
                                 div.field-box
-                                    div.col-sm-offset-5.col-sm-2.text-center
-                                        input.btn.btn-success(id="submit" type="submit" value="提交")
-                                    div.col-sm-2.text-center
-                                        input.btn.btn-warning(id="reset" type="reset" value="重置")
+                                    div.text-center
+                                        input.pull-left.btn-flat.success(id="submit" type="submit" value="提交")
+                                        input.pull-right.btn-flat.gray(id="reset" type="reset" value="重置")
     script(src="/model/js/jquery-3.2.1.min.js")
     script(src="/model/js/bootstrap.min.js")
     script(src="/model/js/theme.js")
