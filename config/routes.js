@@ -6,7 +6,6 @@ const Message = require('../controllers/message');
 const Picture = require('../controllers/picture');
 const Room=require('../controllers/room');
 const Admin = require('../controllers/admin');
-const NotFound=require('../controllers/notFound');
 
 module.exports = function (app, io) {
     let tourists=0;
@@ -70,8 +69,17 @@ module.exports = function (app, io) {
     app.post('/admin/picture/update', Admin.adminRequired, multiparty(),Picture.savePic,Picture.update);//PAGE:图片更新
     app.delete('/admin/picture/delete', Admin.adminRequired, Picture.delete);//JSON：图片删除
 
-    /*404页面*/
-    /*app.get('*', NotFound.notFound);*/
+    app.use(function(req, res) {
+        res.status(404).send('Sorry cant find that!');
+    });
+
+    app.use(function(err, req, res) {
+        if(err.stack){
+            res.status(500).send('Something broke!<br>'+err.stack.replace(/[\n]+/g,'<br>'));
+        }else{
+            res.status(500).send(err)
+        }
+    });
 
     /*socket.io*/
     io.on('connection', function (socket) {

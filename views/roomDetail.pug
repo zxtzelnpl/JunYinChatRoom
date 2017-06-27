@@ -3,50 +3,52 @@ block css
     <!-- libraries -->
     link(href="/vendor/css/lib/font-awesome.css",rel="stylesheet")
     <!-- this page specific styles -->
-    link(href="/vendor/css/compiled/signin.css",rel="stylesheet",media="screen")
+    link(href="/vendor/css/compiled/tables.css",rel="stylesheet",media="screen")
 block content
     .content
         .container-fluid
             #pad-wrapper
                 .table-wrapper.section
                     .row-fluid.head
-                        .span12
+                        .span4
+                        .span4
                             h4 房间列表
                     .row-fluid
-                        table.table.table-hover
-                            tbody
-                                tr
-                                    td.align-right.span6 名称：
-                                    td #{item.name}
-                                tr
-                                    td.align-right.span6 标题：
-                                    td #{item.title}
-                                tr
-                                    td.align-right.span6 QQ：
-                                    td #{item.QQ}
-                                tr
-                                    td.align-right.span6 客服：
-                                    td #{item.phone}
-                                tr
-                                    td.align-right.span6 视频site：
-                                    td #{item.video.site}
-                                tr
-                                    td.align-right.span6 视频ctx：
-                                    td #{item.video.ctx}
-                                tr
-                                    td.align-right.span6 视频ownerId：
-                                    td #{item.video.ownerId}
-                                tr
-                                    td.align-right.span6 修改人：
-                                    if item.uploader
-                                        td #{item.uploader.name && item.uploader.name}
-                                    else
-                                        td 未知
-                                tr
-                                    td.align-right.span3 创建时间：
-                                    td #{moment(item.createAt).format('MM/DD/YYYY')}
-                                tr
-                                    td.align-right.span3 修改时间：
-                                    td #{moment(item.updateAt).format('MM/DD/YYYY')}
+                        .span4
+                        .span4
+                            table.table.table-hover
+                                tbody
+                                    tr
+                                        td.align-right.span6 名称：
+                                        td.span6 #{item.name}
+                                    tr
+                                        td.align-right.span6 标题：
+                                        td.span6 #{item.title}
+                                    tr
+                                        td.align-right.span6 QQ：
+                                        td.span6 #{item.QQ}
+                                    tr
+                                        td.align-right.span6 客服：
+                                        td.span6 #{item.phone}
+                                    tr
+                                        td.align-right.span6 视频site：
+                                        td.span6 #{item.video.site}
+                                    tr
+                                        td.align-right.span6 视频ctx：
+                                        td.span6 #{item.video.ctx}
+                                    tr
+                                        td.align-right.span6 视频ownerId：
+                                        td.span6 #{item.video.ownerId}
+                                    tr
+                                        td.align-right.span6 修改人：
+                                        if item.uploader
+                                            td.span6 #{item.uploader.name && item.uploader.name}
+                                        else
+                                            td.span6 未知
+                                    tr
+                                        td.align-right.span3 创建时间：
+                                        td.span6 #{moment(item.createAt).format('MM/DD/YYYY')}
+                                    tr
+                                        td.align-right.span3 修改时间：
+                                        td.span6 #{moment(item.updateAt).format('MM/DD/YYYY')}
 block script
-    script(src="/js/welcome.js")

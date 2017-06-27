@@ -1,24 +1,16 @@
 const RoomModel = require('../models/room');
-const Report = require('../report/report');
 
-exports.roomList = function (req, res) {
-    new Promise(function (resolve, reject) {
-        let user = req.session.user;
-        let level = parseInt(user.level);
-        let findOpt = {};
-        if (level < 10000) {
-            findOpt._id = user.room;
-        }
-        RoomModel
-            .find(findOpt)
-            .populate('uploader', 'name')
-            .exec(function (err, rooms) {
-                if (err) {
-                    reject(err)
-                }
-                resolve(rooms)
-            })
-    })
+exports.roomList = function (req, res, next) {
+    let user = req.session.user;
+    let level = parseInt(user.level);
+    let findOpt = {};
+    if (level < 10000) {
+        findOpt._id = user.room;
+    }
+    RoomModel
+        .find(findOpt)
+        .populate('uploader', 'name')
+        .exec()
         .then(function (rooms) {
             res.render('roomList', {
                 title: '房间列表',
@@ -26,24 +18,16 @@ exports.roomList = function (req, res) {
             })
         })
         .catch(function (err) {
-            Report.errPage(res, err)
+            next(err)
         });
-
 };
 
-exports.roomDetail = function (req, res) {
-    new Promise(function (resolve, reject) {
-        let _id = req.params.id;
-        RoomModel
-            .findOne({_id: _id})
-            .populate('uploader', 'name')
-            .exec(function (err, room) {
-                if (err) {
-                    reject(err)
-                }
-                resolve(room)
-            })
-    })
+exports.roomDetail = function (req, res, next) {
+    let _id = req.params.id;
+    RoomModel
+        .findById(_id)
+        .populate('uploader', 'name')
+        .exec()
         .then(function (room) {
             res.render('roomDetail', {
                 title: '房间详情',
@@ -51,7 +35,7 @@ exports.roomDetail = function (req, res) {
             })
         })
         .catch(function (err) {
-            Report.errPage(res, err)
+            next(err)
         });
 };
 
@@ -61,18 +45,11 @@ exports.roomNew = function (req, res) {
     })
 };
 
-exports.roomUpdate = function (req, res) {
-    new Promise(function (resolve, reject) {
-        let _id = req.params.id;
-        RoomModel
-            .findOne({_id: _id})
-            .exec(function (err, room) {
-                if (err) {
-                    reject(err)
-                }
-                resolve(room)
-            })
-    })
+exports.roomUpdate = function (req, res, next) {
+    let _id = req.params.id;
+    RoomModel
+        .findById(_id)
+        .exec()
         .then(function (room) {
             res.render('roomUpdate', {
                 title: '房间修改',
@@ -80,71 +57,50 @@ exports.roomUpdate = function (req, res) {
             })
         })
         .catch(function (err) {
-            Report.errPage(res, err)
+            next(err)
         })
-
 };
 
-exports.add = function (req, res) {
-    new Promise(function (resolve, reject) {
-        let room = req.body.room;
-        let _room = new RoomModel(room);
-        _room.uploader = req.session.user._id;
-        _room.save(function (err, room) {
-            if (err) {
-                reject(err)
-            }
-            resolve(room)
-        });
-
-    })
+exports.add = function (req, res, next) {
+    let room = req.body.room;
+    let _room = new RoomModel(room);
+    _room.uploader = req.session.user._id;
+    _room
+        .save()
         .then(function (room) {
             res.redirect('/admin/roomdetail/' + room._id)
         })
         .catch(function (err) {
-            Report.errPage(res, err)
-        });
-
+            next(err)
+        })
 };
 
-exports.delete = function (req, res) {
-    new Promise(function (resolve, reject) {
-        let _id = req.query._id;
-        RoomModel.findByIdAndRemove(_id, function (err) {
-            if (err) {
-                reject(err)
-            }
-            resolve(true)
-        })
-    })
+exports.delete = function (req, res, next) {
+    let _id = req.query._id;
+    RoomModel.findByIdAndRemove(_id)
+        .exec()
         .then(function () {
             res.json({
                 state: 'success'
             })
         })
         .catch(function (err) {
-            Report.errJSON(res, err)
+            next(err)
         })
 };
 
-exports.update = function (req, res) {
-    new Promise(function (resolve, reject) {
-        let room = req.body.room;
-        room.uploader = req.session.user._id;
-        let _id = room._id;
-        delete room._id;
-        RoomModel.findByIdAndUpdate(_id, {$set: room}, function (err, room) {
-            if (err) {
-                reject(err)
-            }
-            resolve(room)
-        })
-    })
+exports.update = function (req, res, next) {
+    let room = req.body.room;
+    room.uploader = req.session.user._id;
+    let _id = room._id;
+    RoomModel
+        .findByIdAndUpdate(_id, {$set: room})
+        .exec()
         .then(function (room) {
             res.redirect('/admin/roomdetail/' + room._id)
         })
         .catch(function (err) {
-            Report.errPage(res, err)
-        })
+            next(err)
+        });
 };
 
