@@ -7,7 +7,7 @@ $(function () {
         $(this).addClass("active");
         var bg = $(this).data("img");
 
-        $("html").css("background-image", "url('/model/img/bgs/" + bg + "')");
+        $("html").css("background-image", "url('/vendor/img/bgs/" + bg + "')");
     });
 
     $('#login').click(function (e) {

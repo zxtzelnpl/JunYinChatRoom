@@ -1,15 +1,15 @@
 doctype
 html.login-bg
     head
-        include ../include/meta
+        include include/meta
         title #{title}
-        include ../include/bootstrap
-        include ../include/globalStyle
+        include include/bootstrap
+        include include/globalStyle
 
         <!-- libraries -->
-        link(href="/model/css/lib/font-awesome.css",rel="stylesheet")
+        link(href="/vendor/css/lib/font-awesome.css",rel="stylesheet")
         <!-- this page specific styles -->
-        link(href="/model/css/compiled/signin.css",rel="stylesheet",media="screen")
+        link(href="/vendor/css/compiled/signin.css",rel="stylesheet",media="screen")
         <!-- open sans font -->
         link(href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,600,700,800",rel="stylesheet",media="screen")
 
@@ -18,31 +18,31 @@ html.login-bg
         .bg-switch.visible-desktop
             .bgs
                 a.bg.active(href="#" data-img="landscape.jpg")
-                    img(src="/model/img/bgs/landscape.jpg")
+                    img(src="/vendor/img/bgs/landscape.jpg")
                 a.bg(href="#" data-img="blueish.jpg")
-                    img(src="/model/img/bgs/blueish.jpg")
+                    img(src="/vendor/img/bgs/blueish.jpg")
                 a.bg(href="#" data-img="7.jpg")
-                    img(src="/model/img/bgs/7.jpg")
+                    img(src="/vendor/img/bgs/7.jpg")
                 a.bg(href="#" data-img="8.jpg")
-                    img(src="/model/img/bgs/8.jpg")
+                    img(src="/vendor/img/bgs/8.jpg")
                 a.bg(href="#" data-img="9.jpg")
-                    img(src="/model/img/bgs/9.jpg")
+                    img(src="/vendor/img/bgs/9.jpg")
                 a.bg(href="#" data-img="10.jpg")
-                    img(src="/model/img/bgs/10.jpg")
+                    img(src="/vendor/img/bgs/10.jpg")
                 a.bg(href="#" data-img="11.jpg")
-                    img(src="/model/img/bgs/11.jpg")
+                    img(src="/vendor/img/bgs/11.jpg")
 
         .row-fluid.login-wrapper
             a(href="#")
-                img.logo(src="/model/img/logo-white.png")
+                img.logo(src="/vendor/img/logo-white.png")
             .span4.box
                 .content-wrap
                     h6 登录
                     input.span12#name(type="text" placeholder="Your Account")
                     input.span12#password(type="password" placeholder="Your password")
                     a.btn-glow.primary.login#login 登录
-    script(src="/model/js/jquery-3.2.1.min.js")
-    script(src="/model/js/bootstrap.min.js")
-    script(src="/model/js/theme.js")
-    script(src="/admin/js/login.js")
+    script(src="/vendor/js/jquery-3.2.1.min.js")
+    script(src="/vendor/js/bootstrap.min.js")
+    script(src="/vendor/js/theme.js")
+    script(src="/js/login.js")
 

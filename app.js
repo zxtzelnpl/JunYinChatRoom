@@ -57,7 +57,7 @@ const parseCookie = cookieParser(secret);
 /**4.parseCookie建立并加密end*/
 
 /**5.模版文件start*/
-app.set('views', './views/pages');
+app.set('views', './views');
 app.set('view engine', 'pug');
 /**5.模版文件end*/
 
