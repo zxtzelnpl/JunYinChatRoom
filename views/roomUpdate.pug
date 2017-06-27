@@ -1,22 +1,10 @@
-doctype
-html.login-bg
-    head
-        include ../include/meta
-        title #{title}
-        include ../include/bootstrap
-        include ../include/globalStyle
-
-        <!-- libraries -->
-        link(href="/model/css/lib/font-awesome.css",rel="stylesheet")
-        <!-- this page specific styles -->
-        link(href="/model/css/compiled/form-showcase.css",rel="stylesheet",media="screen")
-        <!-- open sans font -->
-        link(href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,600,700,800",rel="stylesheet",media="screen")
-
-
-    body
-        include ../include/navbar
-        include ../include/sidebar
+extends layout/layout
+block css
+    <!-- libraries -->
+    link(href="/vendor/css/lib/font-awesome.css",rel="stylesheet")
+    <!-- this page specific styles -->
+    link(href="/vendor/css/compiled/form-showcase.css",rel="stylesheet",media="screen")
+block content
         .content
             .container-fluid
                 .users-list#pad-wrapper
@@ -61,7 +49,5 @@ html.login-bg
                                     div.text-center
                                         input.pull-left.btn-flat.success(id="submit" type="submit" value="提交")
                                         input.pull-right.btn-flat.gray(id="reset" type="reset" value="重置")
-    script(src="/model/js/jquery-3.2.1.min.js")
-    script(src="/model/js/bootstrap.min.js")
-    script(src="/model/js/theme.js")
-    script(src="/admin/js/roomUpdate.js")
+block script
+    script(src="/js/roomUpdate.js")

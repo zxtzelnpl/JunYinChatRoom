@@ -1,0 +1,44 @@
+extends layout/layout
+block css
+    <!-- libraries -->
+    link(href="/vendor/css/lib/font-awesome.css",rel="stylesheet")
+    <!-- this page specific styles -->
+    link(href="/vendor/css/compiled/form-showcase.css",rel="stylesheet",media="screen")
+block content
+    .content
+        .container-fluid
+            .users-list#pad-wrapper
+                .row-fluid.header
+                    h3 #{title}
+                .row-fluid
+                    .span4
+                    .span4
+                        form(method="POST" action="/admin/room/add")
+                            div.field-box
+                                label(for="name") 名称：
+                                input.span12(id="name" name="room[name]" type="text" required="required")
+                            div.field-box
+                                label(for="title") 标题：
+                                input.span12(id="title" name="room[title]" type="text" required = "required")
+                            div.field-box
+                                label QQ：
+                                input.span10(id="QQ" name="room[QQ]" type="text")
+                                a#addQQ.span2.pull-right.btn-glow.success: i.icon-plus
+                            div.field-box#QQAddMark
+                                label(for="phone") 客服电话：
+                                input.span12(id="phone" name="room[phone]" type="text")
+                            div.field-box
+                                label(for="site") 视频site：
+                                input.span12(id="site" name="room[video][site]" type="text")
+                            div.field-box
+                                label(for="ctx") 视频ctx：
+                                input.span12(id="ctx" name="room[video][ctx]" type="text")
+                            div.field-box
+                                label(for="ownerId") 视频ownerId：
+                                input.span12(id="ownerId" name="room[video][ownerId]" type="text")
+                            div.field-box
+                                div.text-center
+                                    input.pull-left.btn-flat.success(id="submit" type="submit" value="提交")
+                                    input.pull-right.btn-flat.gray(id="reset" type="reset" value="重置")
+block script
+    script(src="/js/roomNew.js")

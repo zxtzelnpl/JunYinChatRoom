@@ -14,7 +14,7 @@ exports.welcome = function (req,res){
 };
 
 exports.adminRequired = function (req, res, next) {
-    next()
+    next();
     // let level = req.session.user ? parseInt(req.session.user.level) : 0;
     // if (level >= 1000) {
     //     next();
