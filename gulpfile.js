@@ -16,22 +16,38 @@ const nodemon = require('gulp-nodemon');
 const connect = require('gulp-connect');
 const browserSync = require('browser-sync').create();
 const glob = require('glob');
-const es = require('event-stream');
+const clean = require('gulp-clean');
 
 const reload = browserSync.reload;
 
-
 const production = process.env.NODE_ENV === 'production';
 const paths = {
-    srcJs: ['src/*.js', 'src/**/*.js']
-    , index: 'src/index.js'
-    , indexTo:'public'
-    , admin: 'src/*/js/*.js'
-    , adminTo: 'public'
-    , css: ['src/**/*.less', '!src/css/normalize/*']
-    , cssTo: 'public'
-    , images: 'src/images/**/*.*'
-    , imagesTo: 'public/images'
+    front: {
+        js: 'src/index.js',
+        watchJs:'src/!(admin)/*.js',
+        css: 'src/css/*.less',
+        img: 'src/img/**/*.*'
+    },
+    admin: {
+        js: 'src/admin/js/*.js',
+        css: 'src/admin/css/*.less',
+        img: 'src/admin/img/*.*',
+        vendor:'src/admin/vendor/**/*.*'
+    },
+    public: {
+        js: 'public/js',
+        css: 'public/css',
+        img: 'public/img'
+    },
+    server:{
+        check:'' ,
+        watch:[
+            'views/**/*.pug'
+            , 'src/**/*.*'
+        ]
+    },
+    clean: 'public',
+    normalize: 'node_modules/normalize.css/normalize.css'
 };
 
 const dependencies = [
@@ -39,106 +55,104 @@ const dependencies = [
     , 'react-dom'
     , 'redux'
     , 'react-redux'
-    , 'underscore'
     , 'iscroll'
+    , 'jquery'
 ];
 
-
 /**
- |--------------------------------------------------------------------------
- | Compile jquery.
- |--------------------------------------------------------------------------
+ * Compile third-party dependencies separately for faster performance.
  */
-gulp.task('jquery', function () {
-    return browserify()
-        .require('jquery')
-        .bundle()
-        .pipe(source('jquery.js'))
-        .pipe(buffer())
-        .pipe(gulpif(production, uglify({mangle: false})))
-        .pipe(gulp.dest(paths.indexTo));
-});
-
-/**
- |--------------------------------------------------------------------------
- | Compile third-party dependencies separately for faster performance.
- |--------------------------------------------------------------------------
- */
-gulp.task('browserify-vendor', function () {
+gulp.task('front-vendor', function () {
     return browserify()
         .require(dependencies)
         .bundle()
         .pipe(source('vendor.js'))
         .pipe(buffer())
         .pipe(gulpif(production, uglify({mangle: false})))
-        .pipe(gulp.dest(paths.indexTo));
+        .pipe(gulp.dest(paths.public.js));
 });
 
-
 /**
- |--------------------------------------------------------------------------
- | Compile only project files, excluding all third-party dependencies.
- |--------------------------------------------------------------------------
+ * Compile only project files, excluding all third-party dependencies.
  */
-gulp.task('browserify-index', function () {
-    return browserify({entries: paths.index, debug: true})
+gulp.task('front-js', function () {
+    return browserify({entries: paths.front.js, debug: true})
         .external(dependencies)
         .transform(babelify, {presets: ['es2015', 'react']})
         .bundle()
         .pipe(source('index.js'))
         .pipe(buffer())
         .pipe(sourcemaps.init({loadMaps: true}))
-        .pipe(gulpif(production, uglify({mangle: false})))
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(paths.indexTo));
+        .pipe(gulpif(production, uglify({mangle: false})))
+        .pipe(gulp.dest(paths.public.js));
 });
 
 /**
- |--------------------------------------------------------------------------
- | Compile only project files, excluding all third-party dependencies.
- |--------------------------------------------------------------------------
+ * Compile front-less stylesheets.
  */
-gulp.task('admin-js', function () {
-    return gulp.src(paths.admin)
-        .pipe(gulp.dest(paths.adminTo));
-});
-
-/**
- |--------------------------------------------------------------------------
- | Compile LESS stylesheets.
- |--------------------------------------------------------------------------
- */
-gulp.task('less', function () {
-    return gulp.src(paths.css)
+gulp.task('front-less', function () {
+    return gulp.src(paths.front.css)
         .pipe(plumber())
         .pipe(sourcemaps.init())
         .pipe(less({
             'strict-math': 'on'
         }))
         .pipe(autoprefixer())
-        .pipe(gulpif(production, cssmin()))
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(paths.cssTo));
+        .pipe(gulpif(production, cssmin()))
+        .pipe(gulp.dest(paths.public.css));
 });
 
 /**
- |--------------------------------------------------------------------------
- | Compile bootstrap stylesheets.
- |--------------------------------------------------------------------------
+ * Compile bootstrap stylesheets.
  */
-gulp.task('bootstrap', function () {
-    return gulp.src('src/model/**/**.*')
-        .pipe(gulp.dest('public/model'));
+gulp.task('admin-vendor', function () {
+    return gulp.src(paths.admin.vendor)
+        .pipe(gulp.dest('public/vendor'));
 });
 
 /**
- |--------------------------------------------------------------------------
- | Compile images.
- |--------------------------------------------------------------------------
+ * Compile only project files, excluding all third-party dependencies.
+ */
+gulp.task('admin-js', function () {
+    return gulp.src(paths.admin.js)
+        .pipe(gulpif(production, uglify({mangle: false})))
+        .pipe(gulp.dest(paths.public.js));
+});
+
+/**
+ * Compile admin-less stylesheets.
+ */
+gulp.task('admin-less', function () {
+    return gulp.src(paths.admin.css)
+        .pipe(plumber())
+        .pipe(sourcemaps.init())
+        .pipe(less({
+            'strict-math': 'on'
+        }))
+        .pipe(autoprefixer())
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulpif(production, cssmin()))
+        .pipe(gulp.dest(paths.public.css));
+});
+
+/**
+ * Compile images.
  */
 gulp.task('images', function () {
-    return gulp.src(paths.images)
-        .pipe(gulp.dest(paths.imagesTo));
+    return gulp.src(paths.front.img)
+        .pipe(gulp.dest(paths.public.img));
+});
+
+
+/**
+ * normalize
+ */
+gulp.task('normalize', function () {
+    return gulp.src(paths.normalize)
+        .pipe((gulpif(production, cssmin())))
+        .pipe(gulp.dest(paths.public.css));
 });
 
 /**
@@ -175,18 +189,13 @@ gulp.task('nodemon', function () {
  |--------------------------------------------------------------------------
  */
 gulp.task('server', ['nodemon'], function () {
-    const files = [
-        'views/**/*.pug'
-        , 'src/**/*.*'
-    ];
-    browserSync.init(files, {
+    browserSync.init(paths.server.watch, {
         proxy: 'http://localhost:3000',
-        browser: 'chrome',
         notify: false,
         port: 3001
     });
 
-    gulp.watch(files).on("change", reload)
+    gulp.watch(paths.server.watch).on("change", reload)
 
 });
 
@@ -195,32 +204,40 @@ gulp.task('server', ['nodemon'], function () {
  | Watch for change.
  |--------------------------------------------------------------------------
  */
-gulp.task('watch', ['browserify-index', 'admin-js', 'less'], function () {
-    gulp.watch(paths.srcJs, ['browserify-index']).on('change', function (event) {
+gulp.task('watch', ['front-js', 'admin-js', 'front-less','admin-less'], function () {
+    gulp.watch(paths.front.watchJs, ['front-js']).on('change', function (event) {
         console.log('File ' + event.path + ' was ' + event.type + ', running tasks...')
     });
-
-    gulp.watch(paths.admin, ['admin-js']).on('change', function (event) {
+    gulp.watch(paths.admin.js, ['admin-js']).on('change', function (event) {
         console.log('File ' + event.path + ' was ' + event.type + ', running tasks...')
     });
-
-    gulp.watch(paths.css, ['less']).on('change', function (event) {
+    gulp.watch(paths.front.css, ['front-less']).on('change', function (event) {
+        console.log('File ' + event.path + ' was ' + event.type + ', running tasks...')
+    });
+    gulp.watch(paths.admin.css, ['admin-less']).on('change', function (event) {
         console.log('File ' + event.path + ' was ' + event.type + ', running tasks...')
     });
 });
 
 /**
- |--------------------------------------------------------------------------
- | Produce.
- |--------------------------------------------------------------------------
+ * delete the pre public
+ */
+gulp.task('clean', function () {
+    return gulp.src('public')
+        .pipe(clean());
+});
+
+/**
+ * Produce.
  */
 gulp.task('produce', [
-    'jquery'
-    , 'browserify-vendor'
-    , 'bootstrap'
-    , 'images'
-    , 'favicon'
-    , 'browserify-index'
-    , 'admin-js'
-    , 'less'
+    'front-vendor',
+    'front-js',
+    'front-less',
+    'admin-vendor',
+    'admin-less',
+    'admin-js',
+    'images',
+    'normalize',
+    'favicon'
 ]);
