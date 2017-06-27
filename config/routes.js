@@ -45,8 +45,8 @@ module.exports = function (app, io) {
     app.delete('/admin/room/delete', Admin.adminRequired, Room.delete);//JSON：房间删除
 
     /*Admin-User*/
-    app.get('/admin/userlist/:page', Admin.adminRequired, User.userList);//PAGE:用户列表
-    app.get('/admin/usersignup', Admin.adminRequired, User.userSignUp);//PAGE:用户注册
+    app.get('/admin/userlist/:room_id/:page', Admin.adminRequired, User.userList);//PAGE:用户列表
+    app.get('/admin/usersignup/:room_id', Admin.adminRequired, User.userSignUp);//PAGE:用户注册
     app.get('/admin/userdetail/:id', Admin.adminRequired, User.userDetail);//PAGE:用户详情
     app.get('/admin/userupdate/:id', Admin.adminRequired, User.userUpdate);//PAGE:用户更新
     app.get('/admin/usersearch', Admin.adminRequired, User.userSearch);//PAGE：用户检索

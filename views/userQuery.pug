@@ -1,6 +1,10 @@
-extends ../admin/layout
+extends layout/layout
 
 block css
+    <!-- libraries -->
+    link(href="/vendor/css/lib/font-awesome.css",rel="stylesheet")
+    <!-- this page specific styles -->
+    link(href="/vendor/css/compiled/tables.css",rel="stylesheet",media="screen")
 
 block content
     .row
@@ -31,7 +35,7 @@ block content
                             td #{item.email}
                             td #{item.sex}
                             td #{item.level}
-                            if(item.room&&item.room.title)
+                            if(item.room && item.room.title)
                                 td #{item.room.title}
                             else
                                 td 未知
@@ -42,22 +46,21 @@ block content
                                     button.btn.btn-warning.change(type="button",data-id=item._id) 禁用
                             td #{moment(item.createAt).format('MM/DD/YYYY')}
                             td #{moment(item.updateAt).format('MM/DD/YYYY')}
-                            td
-                                if(item.online)
-                                    | 在线
-                                else
-                                    | 离线
+                            td #{item.online}
                             td: a(target="_blank", href= "/admin/userdetail/"+item._id) 查看
                             td: a(target="_blank", href= "/admin/userupdate/"+item._id) 修改
                             td: button.btn.btn-danger.del(type="button", data-id=item._id) 删除
     .row
+        form(method="POST" action="/admin/user/query/" id="search")
+            each val,key in search
+                input(type="hidden" value=val name="search["+key+"]")
+        - var n=1
         div
             ul#page.pagination
-                - var n=1
                 while n <= pageCount
-                    li: a(href="/admin/userlist/"+n)=n++
+                    li: a(href="javascript:void(0)")=n++
 
 
 block js
     script(src="/socket.io/socket.io.js")
-    script(src="/admin/js/userList.js")
+    script(src="/admin/js/userQuery.js")

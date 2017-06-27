@@ -1,6 +1,10 @@
-extends ../admin/layout
+extends layout/layout
 
 block css
+    <!-- libraries -->
+    link(href="/vendor/css/lib/font-awesome.css",rel="stylesheet")
+    <!-- this page specific styles -->
+    link(href="/vendor/css/compiled/tables.css",rel="stylesheet",media="screen")
 
 block content
     .row

@@ -3,26 +3,35 @@ const RoomModel = require('../models/room.js');
 const MessageModel = require('../models/message.js');
 const pageSize = 20;
 
-exports.userList = function (req, res) {
+exports.userList = function (req, res, next) {
     let pageNum = req.params.page;
     let totalPageNum;
-    UserModel.find({}).count(function (err, count) {
-        totalPageNum = Math.ceil(count / pageSize);
-        UserModel.find({})
-            .skip((pageNum - 1) * pageSize)
-            .limit(pageSize)
-            .populate('room', 'title')
-            .exec(function (err, users) {
-                if (err) {
-                    console.log(err);
-                }
-                res.render('userList', {
-                    title: '管理用户列表'
-                    , users: users
-                    , pageCount: totalPageNum
-                });
+    let room_id = req.params.room_id;
+    let optFind={};
+    if(room_id!=='all'){
+        optFind.room=room_id;
+    }
+    let countPromise = UserModel
+        .count(optFind)
+        .exec();
+    let usersPromise = UserModel
+        .find(optFind)
+        .skip((pageNum - 1) * pageSize)
+        .limit(pageSize)
+        .populate('room', 'title')
+        .exec();
+    Promise.all([countPromise, usersPromise])
+        .then(function ([count, users]) {
+            totalPageNum = Math.ceil(count / pageSize);
+            res.render('userList', {
+                title: '管理用户列表'
+                , users: users
+                , totalPageNum: totalPageNum
             });
-    });
+        })
+        .catch(function (err) {
+            next(err)
+        });
 };
 
 exports.userSignUp = function (req, res) {
@@ -199,15 +208,19 @@ exports.forbidden = function (req, res) {
         })
 };
 
-exports.onLine = function(id,next){
-    UserModel.findByIdAndUpdate(id, {$set: {online: true}},function(err){
-        if(err){console.log(err)}
+exports.onLine = function (id, next) {
+    UserModel.findByIdAndUpdate(id, {$set: {online: true}}, function (err) {
+        if (err) {
+            console.log(err)
+        }
         next();
     })
 };
-exports.offLine = function(id,next){
-    UserModel.findByIdAndUpdate(id, {$set: {online: false}},function(err){
-        if(err){console.log(err)}
+exports.offLine = function (id, next) {
+    UserModel.findByIdAndUpdate(id, {$set: {online: false}}, function (err) {
+        if (err) {
+            console.log(err)
+        }
         next();
     })
 };
