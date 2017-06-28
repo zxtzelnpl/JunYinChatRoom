@@ -218,16 +218,21 @@ exports.update = function (req, res) {
 
 exports.forbidden = function (req, res) {
     let _id = req.query.id;
+    let forbidden;
     UserModel
-        .findOne({_id: _id})
-        .exec(function (err, user) {
-            console.log(user);
-            user.forbidden = !user.forbidden;
-            user.save(function () {
-                res.json({
-                    state: 'success',
-                    forbidden: user.forbidden
-                })
+        .findById(_id)
+        .exec()
+        .then(function(user){
+            forbidden=!user.forbidden;
+            let userObj={
+                forbidden:forbidden
+            };
+            return UserModel.findByIdAndUpdate(_id,{$set:userObj})
+                .exec()
+        })
+        .then(function(user){
+            res.json({
+
             })
         })
 };
