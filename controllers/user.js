@@ -7,9 +7,9 @@ exports.userList = function (req, res, next) {
     let pageNum = req.params.page;
     let totalPageNum;
     let room_id = req.params.room_id;
-    let optFind={};
-    if(room_id!=='all'){
-        optFind.room=room_id;
+    let optFind = {};
+    if (room_id !== 'all') {
+        optFind.room = room_id;
     }
     let countPromise = UserModel
         .count(optFind)
@@ -34,24 +34,24 @@ exports.userList = function (req, res, next) {
         });
 };
 
-exports.userSignUp = function (req, res,next) {
-    let room_id=req.params.room_id;
-    let optFind={};
-    if(room_id!=='all'){
-        optFind._id=room_id
+exports.userSignUp = function (req, res, next) {
+    let room_id = req.params.room_id;
+    let optFind = {};
+    if (room_id !== 'all') {
+        optFind._id = room_id
     }
 
     RoomModel
         .find(optFind)
         .select('name title')
         .exec()
-        .then(function(rooms){
+        .then(function (rooms) {
             res.render('userSignUp', {
                 title: '用户注册',
                 rooms: rooms
             });
         })
-        .catch(function(err){
+        .catch(function (err) {
             next(err)
         })
 };
@@ -67,7 +67,7 @@ exports.userDetail = function (req, res, next) {
                 title: user.name + '的用户信息'
             });
         })
-        .catch(function(err){
+        .catch(function (err) {
             next(err)
         })
 };
@@ -75,50 +75,50 @@ exports.userDetail = function (req, res, next) {
 exports.userUpdate = function (req, res, next) {
     let _id = req.params.id;
     let level = parseInt(req.session.admin.level);
-    let roomFind={};
-    if(level<=1000){
-        roomFind._id=req.session.admin.room;
+    let roomFind = {};
+    if (level <= 1000) {
+        roomFind._id = req.session.admin.room;
     }
-    let userPromise=UserModel
+    let userPromise = UserModel
         .findById(_id)
         .populate('room')
         .exec();
-    let roomsPromise=RoomModel
+    let roomsPromise = RoomModel
         .find(roomFind)
         .select('name title')
         .exec();
     Promise
-        .all([userPromise,roomsPromise])
-        .then(function([user,rooms]){
+        .all([userPromise, roomsPromise])
+        .then(function ([user, rooms]) {
             res.render('userUpdate', {
                 title: user.name + '信息修改',
                 user: user,
                 rooms: rooms
             });
         })
-        .catch(function(err){
+        .catch(function (err) {
             next(err)
         });
 };
 
-exports.userSearch = function (req, res,next) {
-    let room_id=req.params.room_id;
-    let findOpt={};
-    if(room_id!=='all'){
-        findOpt._id=room_id;
+exports.userSearch = function (req, res, next) {
+    let room_id = req.params.room_id;
+    let findOpt = {};
+    if (room_id !== 'all') {
+        findOpt._id = room_id;
     }
     RoomModel
         .find(findOpt)
         .select('name title')
         .exec()
-        .then(function(rooms){
+        .then(function (rooms) {
             res.render('userSearch', {
                     title: '用户检索',
                     rooms: rooms
                 }
             );
         })
-        .catch(function(err){
+        .catch(function (err) {
             next(err)
         })
 };
@@ -222,14 +222,14 @@ exports.forbidden = function (req, res) {
     UserModel
         .findById(_id)
         .exec()
-        .then(function(user){
-            forbidden=!user.forbidden;
-            return UserModel.findByIdAndUpdate(_id,{$set:{forbidden}})
+        .then(function (user) {
+            forbidden = !user.forbidden;
+            return UserModel.findByIdAndUpdate(_id, {$set: {forbidden}})
                 .exec()
         })
-        .then(function(user){
+        .then(function (user) {
             res.json({
-                state:'success',
+                state: 'success',
                 forbidden
             })
         })
@@ -238,36 +238,41 @@ exports.forbidden = function (req, res) {
 exports.onLine = function (id, next) {
     UserModel.findByIdAndUpdate(id, {$set: {online: true}})
         .exec()
-        .then(function(){next(null)})
-        .catch(function(err){
+        .then(function () {
+            next(null)
+        })
+        .catch(function (err) {
             next(err)
         })
 };
 exports.offLine = function (id, next) {
-    UserModel.findByIdAndUpdate(id, {$set: {online: false}}, function (err) {
-        if (err) {
-            console.log(err)
-        }
-        next();
-    })
+    UserModel.findByIdAndUpdate(id, {$set: {online: false}})
+        .exec()
+        .then(function () {
+            next(null)
+        })
+        .catch(function (err) {
+            next(err)
+        })
 };
 
-exports.delete = function (req, res) {
+exports.delete = function (req, res,next) {
     let id = req.query.id;
-    MessageModel
-        .remove({from: id}, function (err) {
-            if (err) {
-                console.log(err)
-            }
-            UserModel.findByIdAndRemove(id, function (err) {
-                if (err) {
-                    console.log(err)
-                }
-                res.json({
-                    state: 'success'
-                })
+    let messagePromise = MessageModel
+        .deleteMany({from:id})
+        .exec();
+    let userPromise = UserModel.findByIdAndRemove(id)
+        .exec();
+    Promise
+        .all([messagePromise,userPromise])
+        .then(function([]){
+            res.json({
+                state: 'success'
             })
         })
+        .catch(function(err){
+            next(err)
+        });
 };
 
 exports.signIn = function (req, res) {
