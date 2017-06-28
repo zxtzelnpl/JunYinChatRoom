@@ -1,7 +1,7 @@
 <!-- sidebar -->
 #sidebar-nav
     #dashboard-menu
-        if(user&&parseInt(user.level)>1000)
+        if(admin&&parseInt(admin.level)>1000)
             li
                 //.pointer
                 //    .arrow
@@ -20,8 +20,9 @@
                     i.icon-chevron-down
                 ul.submenu
                     li: a(href="/admin/userlist/all/1") 用户列表
+                    li: a(href="/admin/usersearch/all") 用户检索
                     li: a(href="/admin/usersignup/all") 用户注册
-        if(user&&parseInt(user.level)===1000)
+        if(admin&&parseInt(admin.level)===1000)
             li
                 a.dropdown-toggle(href="#")
                     i.icon-tablet
@@ -35,5 +36,6 @@
                     span 用户管理
                     i.icon-chevron-down
                 ul.submenu
-                    li: a(href="/admin/userlist/"+user.room+"/1") 用户列表
-                    li: a(href="/admin/usersignup/"+user.room) 用户注册
+                    li: a(href="/admin/userlist/"+admin.room+"/1") 用户列表
+                    li: a(href="/admin/usersearch/"+admin.room) 用户检索
+                    li: a(href="/admin/usersignup/"+admin.room) 用户注册

@@ -279,7 +279,7 @@ exports.signIn = function (req, res) {
                 console.log(err)
             }
             if (isMatch) {
-                req.session.user = user;
+                req.session.admin = user;
                 return res.json({
                     state: 'success'
                     , name: user.name
@@ -296,7 +296,7 @@ exports.signIn = function (req, res) {
 };
 
 exports.signOut = function (req, res) {
-    delete req.session.user;
+    delete req.session.admin;
     return res.json({
         state: 'success'
     })

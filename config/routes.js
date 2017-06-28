@@ -14,7 +14,7 @@ module.exports = function (app, io) {
 
     /*pre handle user*/
     app.use(function (req, res, next) {
-        app.locals.user = req.session.user;
+        app.locals.admin = req.session.admin;
         next();
     });
 
@@ -49,7 +49,7 @@ module.exports = function (app, io) {
     app.get('/admin/usersignup/:room_id', Admin.adminRequired, User.userSignUp);//PAGE:用户注册
     app.get('/admin/userdetail/:id', Admin.adminRequired, User.userDetail);//PAGE:用户详情
     app.get('/admin/userupdate/:id', Admin.adminRequired, User.userUpdate);//PAGE:用户更新
-    app.get('/admin/usersearch', Admin.adminRequired, User.userSearch);//PAGE：用户检索
+    app.get('/admin/usersearch/:room_id', Admin.adminRequired, User.userSearch);//PAGE：用户检索
     app.post('/admin/userquery/:page', Admin.adminRequired, User.userQuery);//PAGE:用户查询
     app.post('/admin/user/signup', Admin.adminRequired, User.signUp);//FORM：用户注册
     app.post('/admin/user/update', Admin.adminRequired, User.update);//FORM：用户更新

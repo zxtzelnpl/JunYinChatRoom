@@ -57,7 +57,7 @@ exports.signIn = function (req, res) {
 
     checkPromise
         .then(function (user) {
-            req.session.user = user;
+            req.session.admin = user;
             res.json({
                 state: 'success',
                 name: user.name

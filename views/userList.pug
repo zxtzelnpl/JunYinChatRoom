@@ -5,7 +5,7 @@ block css
     <!-- this page specific styles -->
     link(href="/vendor/css/compiled/user-list.css",rel="stylesheet",media="screen")
 block content
-    - var room=(parseInt(user.level))>1000?'all':user.room
+    - var room=(parseInt(admin.level))>1000?'all':admin.room
     .content
         .container-fluid
             #pad-wrapper.users-list
