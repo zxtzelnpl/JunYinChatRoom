@@ -11,32 +11,6 @@ block content
             #pad-wrapper.users-list
                 .row-fluid.header
                     h3 用户列表
-                    .span10.pull-right
-                        input.span5.search(type="text",placeholder="Type a user's name...")
-                        .ui-dropdown
-                            .head(data-toggle="tooltip",title="Click me!")
-                                | 筛选
-                                i.arrow-down
-                            .dialog
-                                .pointer
-                                    .arrow
-                                    .arrow_border
-                                .body
-                                    .title 筛选条件
-                                    .form
-                                        select
-                                            option="Name"
-                                            option="Name"
-                                            option="Name"
-                                            option="Name"
-                                        select
-                                            option="is equal to"
-                                            option="is equal to"
-                                            option="is equal to"
-                                            option="is equal to"
-                                        input(type="text")
-                                        a.btn-flat.small 增加筛选条件
-                        a.btn-flat.success.pull-right(href="/admin/usersignup/"+room) 增加
                 .row-fluid.table
                     table.table.table-hover
                         thead
@@ -89,8 +63,5 @@ block content
                             li: a(href="javascript:void(0)") 页
 
 block script
-    script(src="/vendor/js/jquery-3.2.1.min.js")
-    script(src="/vendor/js/bootstrap.min.js")
-    script(src="/vendor/js/theme.js")
     script(src="/socket.io/socket.io.js")
     script(src="/js/userList.js")

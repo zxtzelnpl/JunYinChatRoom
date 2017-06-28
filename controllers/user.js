@@ -34,19 +34,26 @@ exports.userList = function (req, res, next) {
         });
 };
 
-exports.userSignUp = function (req, res) {
+exports.userSignUp = function (req, res,next) {
+    let room_id=req.params.room_id;
+    let optFind={};
+    if(room_id!=='all'){
+        optFind._id=room_id
+    }
+
     RoomModel
-        .find({})
+        .find(optFind)
         .select('name title')
-        .exec(function (err, rooms) {
-            if (err) {
-                console.log(err)
-            }
+        .exec()
+        .then(function(rooms){
             res.render('userSignUp', {
                 title: '用户注册',
                 rooms: rooms
             });
-        });
+        })
+        .catch(function(err){
+            next(err)
+        })
 };
 
 exports.userDetail = function (req, res) {

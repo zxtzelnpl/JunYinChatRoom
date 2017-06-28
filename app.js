@@ -15,7 +15,7 @@ const connectMongo=require('connect-mongo');
 const http = require('http');
 const io=require('socket.io');
 const moment=require('moment');
-
+const dbUrl = 'mongodb://was:96321@139.196.93.207:3883/junyin';
 
 /**引如内部路由**/
 const routes = require('./config/routes');

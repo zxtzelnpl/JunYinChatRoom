@@ -20,7 +20,7 @@
                     i.icon-chevron-down
                 ul.submenu
                     li: a(href="/admin/userlist/all/1") 用户列表
-                    li: a(href="/admin/usersignup") 用户注册
+                    li: a(href="/admin/usersignup/all") 用户注册
         if(user&&parseInt(user.level)===1000)
             li
                 a.dropdown-toggle(href="#")
@@ -35,5 +35,5 @@
                     span 用户管理
                     i.icon-chevron-down
                 ul.submenu
-                    li: a(href="/admin/userlist/"+user.room+"1") 用户列表
-                    li: a(href="/admin/usersignup") 用户注册
+                    li: a(href="/admin/userlist/"+user.room+"/1") 用户列表
+                    li: a(href="/admin/usersignup/"+user.room) 用户注册
