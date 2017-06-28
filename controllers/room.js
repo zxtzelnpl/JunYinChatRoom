@@ -1,11 +1,11 @@
 const RoomModel = require('../models/room');
 
 exports.roomList = function (req, res, next) {
-    let user = req.session.user;
-    let level = parseInt(user.level);
+    let admin = req.session.admin;
+    let level = parseInt(admin.level);
     let findOpt = {};
     if (level < 10000) {
-        findOpt._id = user.room;
+        findOpt._id = admin.room;
     }
     RoomModel
         .find(findOpt)

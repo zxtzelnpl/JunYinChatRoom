@@ -24,38 +24,38 @@ block content
                     .span4
                     .span4
                         form(method="POST" action="/admin/userquery/1" target="_blank")
-                            div.form-group
+                            div.field-box
                                 label.col-sm-2.col-sm-offset-3.control-label(for="searchName") 用户名：
                                 input.span12(id="searchName" name="search[name]" type="text")
-                            div.form-group
+                            div.field-box
                                 label.col-sm-2.col-sm-offset-3.control-label(for="searchNickName") 昵称：
                                 input.span12(id="searchNickName" name="search[nickName]" type="text")
-                            div.form-group
+                            div.field-box
                                 label.col-sm-2.col-sm-offset-3.control-label(for="searchPhone") 手机：
                                 input.span12(id="searchPhone" name="search[phone]" type="text")
-                            div.form-group
+                            div.field-box
                                 label.col-sm-2.col-sm-offset-3.control-label(for="searchEmail") 邮箱：
                                 input.span12(id="searchEmail" name="search[email]" type="text")
-                            div.form-group
+                            div.field-box
                                 label.col-sm-2.col-sm-offset-3.control-label 性别：
                                 div.col-sm-4
-                                    label.radio-inline(for="searchSexMale")
+                                    label.radio-inline.span6(for="searchSexMale")
                                         input(id="searchSexMale" name="search[sex]" type="radio" value="male")
                                         | 男
-                                    label.radio-inline(for="searchSexFemale")
+                                    label.radio-inline.span6(for="searchSexFemale")
                                         input(id="searchSexFemale" name="search[sex]" type="radio" value="female")
                                         | 女
-                            div.form-group
+                            div.field-box
                                 label.col-sm-2.col-sm-offset-3.control-label 状态：
                                 div.col-sm-4
-                                    label.radio-inline(for="searchOn")
+                                    label.radio-inline.span6(for="searchOn")
                                         input(id="searchOn" name="search[online]" type="radio" value="true")
                                         | 在线
-                                    label.radio-inline(for="searchOff")
+                                    label.radio-inline.span6(for="searchOff")
                                         input(id="searchOff" name="search[online]" type="radio" value="false")
                                         | 离线
 
-                            div.form-group
+                            div.field-box
                                 label.col-sm-2.col-sm-offset-3.control-label(for="searchBelong") 所属直播室：
                                 div.col-sm-4
                                     mixin option(value,title)
@@ -63,11 +63,11 @@ block content
                                     select.span12(id="searchBelong" name="search[room]")
                                         each val in rooms
                                             +option(val._id,val.title)
-                            div.form-group
+                            div.field-box
                                 label.col-sm-2.col-sm-offset-3.control-label(for="searchLevel") 等级：
                                 input.span12(id="searchLevel" name="search[level]" type="number")
-                            div.form-group
-                                div.col-sm-offset-5.col-sm-2
+                            div.field-box
+                                div.text-center
                                     button.btn.btn-primary(type="submit") 查询
 
 block script

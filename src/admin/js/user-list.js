@@ -64,7 +64,7 @@ $('.change').click(function (e) {
 
 socket.on('usersAdd', function (id) {
     var queryClass = ".item-id-" + id;
-    $(queryClass).children().eq(10).html('在线');
+    $(queryClass).children().hasClass('online').html('在线');
 });
 
 socket.on('usersMinus', function (id) {

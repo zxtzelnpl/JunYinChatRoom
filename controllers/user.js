@@ -56,54 +56,71 @@ exports.userSignUp = function (req, res,next) {
         })
 };
 
-exports.userDetail = function (req, res) {
+exports.userDetail = function (req, res, next) {
     let _id = req.params.id;
-    UserModel.findOne({_id: _id})
+    UserModel.findById(_id)
         .populate('room', 'title')
-        .exec(function (err, user) {
+        .exec()
+        .then(function (user) {
             res.render('userDetail', {
                 user: user,
                 title: user.name + '的用户信息'
             });
         })
+        .catch(function(err){
+            next(err)
+        })
 };
 
-exports.userUpdate = function (req, res) {
+exports.userUpdate = function (req, res, next) {
     let _id = req.params.id;
-    UserModel
-        .findOne({_id: _id})
-        .populate('room', 'title')
-        .exec(function (err, user) {
-            RoomModel
-                .find({})
-                .select('name title')
-                .exec(function (err, rooms) {
-                    if (err) {
-                        console.log(err)
-                    }
-                    res.render('userUpdate', {
-                        title: user.name + '信息修改',
-                        user: user,
-                        rooms: rooms
-                    });
-                });
+    let level = parseInt(req.session.admin.level);
+    let roomFind={};
+    if(level<=1000){
+        roomFind._id=req.session.admin.room;
+    }
+    let userPromise=UserModel
+        .findById(_id)
+        .populate('room')
+        .exec();
+    let roomsPromise=RoomModel
+        .find(roomFind)
+        .select('name title')
+        .exec();
+    Promise
+        .all([userPromise,roomsPromise])
+        .then(function([user,rooms]){
+            res.render('userUpdate', {
+                title: user.name + '信息修改',
+                user: user,
+                rooms: rooms
+            });
+        })
+        .catch(function(err){
+            next(err)
         });
 };
 
-exports.userSearch = function (req, res) {
+exports.userSearch = function (req, res,next) {
+    let room_id=req.params.room_id;
+    let findOpt={};
+    if(room_id!=='all'){
+        findOpt._id=room_id;
+    }
     RoomModel
-        .find({})
+        .find(findOpt)
         .select('name title')
-        .exec(function (err, rooms) {
-            if (err) {
-                console.log(err)
-            }
+        .exec()
+        .then(function(rooms){
             res.render('userSearch', {
-                    title: '用户查询',
+                    title: '用户检索',
                     rooms: rooms
                 }
             );
-        });
+        })
+        .catch(function(err){
+            next(err)
+        })
 };
 
 exports.userQuery = function (req, res) {

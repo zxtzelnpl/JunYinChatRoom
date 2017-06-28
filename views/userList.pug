@@ -22,7 +22,6 @@ block content
                                 th.span1 所属公司
                                 th.span1 是否被禁用
                                 th.span1 创建时间
-                                th.span1 上次修改时间
                                 th.span1 是否在线
                                 th.span1 查看
                                 th.span1 修改
@@ -45,8 +44,7 @@ block content
                                             else
                                                 button.btn.btn-warning.change(type="button",data-id=item._id) 禁用
                                         td #{moment(item.createAt).format('MM/DD/YYYY')}
-                                        td #{moment(item.updateAt).format('MM/DD/YYYY')}
-                                        td
+                                        td.online
                                             if(item.online)
                                                 | 在线
                                             else
@@ -64,4 +62,4 @@ block content
 
 block script
     script(src="/socket.io/socket.io.js")
-    script(src="/js/userList.js")
+    script(src="/js/user-list.js")
