@@ -89,7 +89,10 @@ module.exports = function (app, io) {
         /*房间人员增加*/
         if (socket.request.session.user) {
             user = socket.request.session.user;
-            User.onLine(user._id, function () {
+            User.onLine(user._id, function (err) {
+                if(err){
+                    console.log(err)
+                }
                 users.push(user._id);
                 io.emit('usersAdd', user._id);
             });

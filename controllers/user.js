@@ -224,26 +224,24 @@ exports.forbidden = function (req, res) {
         .exec()
         .then(function(user){
             forbidden=!user.forbidden;
-            let userObj={
-                forbidden:forbidden
-            };
-            return UserModel.findByIdAndUpdate(_id,{$set:userObj})
+            return UserModel.findByIdAndUpdate(_id,{$set:{forbidden}})
                 .exec()
         })
         .then(function(user){
             res.json({
-
+                state:'success',
+                forbidden
             })
         })
 };
 
 exports.onLine = function (id, next) {
-    UserModel.findByIdAndUpdate(id, {$set: {online: true}}, function (err) {
-        if (err) {
-            console.log(err)
-        }
-        next();
-    })
+    UserModel.findByIdAndUpdate(id, {$set: {online: true}})
+        .exec()
+        .then(function(){next(null)})
+        .catch(function(err){
+            next(err)
+        })
 };
 exports.offLine = function (id, next) {
     UserModel.findByIdAndUpdate(id, {$set: {online: false}}, function (err) {
