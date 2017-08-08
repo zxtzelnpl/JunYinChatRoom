@@ -18,11 +18,12 @@ let images = [
 ];
 
 iRoom.pictures.forEach(function(pic){
-    if(pic.position==='carousel')
-    images.push({
-        src:'http://139.196.93.207:3000/upload/'+pic.urlBack,
-        alt:pic.alt
-    })
+    if(pic.position==='carousel'){
+        images.push({
+            src:iRoom.staticUrl+pic.urlBack,
+            alt:pic.alt
+        })
+    }
 });
 
 class Banner extends React.Component {

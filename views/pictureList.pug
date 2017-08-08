@@ -12,6 +12,10 @@ block content
                     .row-fluid.head
                         .span12
                             h4 图片列表
+                            div.span10.pull-right
+                                a.btn-flat.success.pull-right(href="/admin/pictureupload/"+room_id)
+                                    span &#43;
+                                    | 新增图片
                     .row-fluid
                         table.table.table-hover
                             thead
@@ -42,6 +46,6 @@ block content
                                                 td #{item.uploader.name}
                                             else
                                                 td 未知
-                                            td: a(target="_blank", href= "/admin/pictureupload/" + item.room._id + "?id=" + item._id) 修改
+                                            td: a(target="_blank", href= "/admin/pictureupdate/" + item._id) 修改
                                             td: button.btn.btn-danger.del(type="button", data-id=item._id) 删除
 block script

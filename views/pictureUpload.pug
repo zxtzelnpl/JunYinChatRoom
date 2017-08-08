@@ -22,71 +22,34 @@ block content
                     .span4
                     .span4
                         form.form-horizontal(method="post" action="/admin/picture/update" enctype="multipart/form-data")
-                            if(picture)
-                                input(type="hidden" name="picture[_id]" value=picture._id)
-                                .form-group
-                                    label.col-sm-2.control-label 房间
-                                    .col-sm-10
-                                        mixin option(value)
-                                            if picture.room == value.id
-                                                option(value=value._id selected)=value.title
-                                            else
-                                                option(value=value._id)=value.title
-                                        select.form-control(name="picture[room]")
-                                            each val in rooms
-                                                +option(val)
-                                .form-group
-                                    label.col-sm-2.control-label 上传位置
-                                    .col-sm-10
-                                        input.form-control(type="text" name="picture[position]" value=picture.position)
-                                .form-group
-                                    label.col-sm-2.control-label 概述
-                                    .col-sm-10
-                                        input.form-control(type="text" name="picture[alt]" value=picture.alt)
-                                .form-group
-                                    label.col-sm-2.control-label 详细内容
-                                    .col-sm-10
-                                        input.form-control(type="text" name="picture[content]" value=picture.content)
-                                .form-group
-                                    label.col-sm-2.control-label 排序
-                                    .col-sm-10
-                                        input.form-control(type="number" name="picture[rank]" value=picture.rank)
-                                .form-group
-                                    label.col-sm-2.control-label 图片上传
-                                    .col-sm-10
-                                        input.form-control#pic(type="file" name="uploadPic")
-                                .form-group
-                                    label.col-sm-offset-2.col-sm-10
-                                        button.btn.btn-default(type="submit") 录入
-                            else
-                                .field-box
-                                    label 房间号:
-                                    mixin option(value,title)
-                                        option(value=value)=title
-                                    select.select2.span12(name="picture[room]")
-                                        each val in rooms
-                                            +option(val._id,val.title)
-                                .field-box
-                                    label 上传位置:
-                                    input.span12(type="text" name="picture[position]")
-                                .field-box
-                                    label 概述:
-                                    input.span12(type="text" name="picture[alt]")
-                                .field-box
-                                    label 详细内容:
-                                    input.span12(type="text" name="picture[content]")
-                                .field-box
-                                    label 排序:
-                                    input.span12(type="number" name="picture[rank]")
-                                .field-box
-                                    label 图片上传:
-                                    input.span12#pic(type="file" name="uploadPic")
-                                .field-box
-                                    div.text-center
-                                        input.pull-left.btn-flat.success(id="submit" type="submit" value="提交")
-                                        input.pull-right.btn-flat.gray(id="reset" type="reset" value="重置")
+                            .field-box
+                                label 房间号:
+                                mixin option(value,title)
+                                    option(value=value)=title
+                                select.select2.span12(name="picture[room]")
+                                    each val in rooms
+                                        +option(val._id,val.title)
+                            .field-box
+                                label 上传位置:
+                                input.span12(type="text" name="picture[position]")
+                            .field-box
+                                label 概述:
+                                input.span12(type="text" name="picture[alt]")
+                            .field-box
+                                label 详细内容:
+                                input.span12(type="text" name="picture[content]")
+                            .field-box
+                                label 排序:
+                                input.span12(type="number" name="picture[rank]")
+                            .field-box
+                                label 图片上传:
+                                input.span12#pic(type="file" name="uploadPic")
+                            .field-box
+                                div.text-center
+                                    input.pull-left.btn-flat.success(id="submit" type="submit" value="提交")
+                                    input.pull-right.btn-flat.gray(id="reset" type="reset" value="重置")
                 .row-fluid
-                    p.col-sm-2.text-center 图片预览
+                    p.col-sm-2.text-left 图片预览
                     if(picture && picture.urlBack)
                         img.col-sm-10.img-thumbnail#img(src="localhost:3000/upload/" + picture.urlBack)
                     else

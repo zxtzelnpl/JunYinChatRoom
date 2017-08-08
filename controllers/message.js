@@ -2,7 +2,7 @@ const MessageModel = require('../models/message.js');
 const RoomModel = require('../models/room.js');
 const UserModel = require('../models/user.js');
 const Report = require('../report/report');
-const PageSize = 30;
+const PageSize = 20;
 
 /**get聊天信息start*/
 exports.getMessage = function (req, res) {

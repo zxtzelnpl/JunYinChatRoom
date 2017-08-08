@@ -9,12 +9,12 @@ html
         script(src="/js/vendor.js")
     body
         input(id="INITIAL_STATE_MES_ORIGN" type="hidden" value=messages)
-        if user
-            input(id="INITIAL_STATE_LOG" type="hidden" value=user.name)
+        if admin
+            input(id="INITIAL_STATE_LOG" type="hidden" value=admin.name)
             script.
                 var iUser = {
-                    name: "#{user.name}",
-                    level: #{user.level}
+                    name: "#{admin.name}",
+                    level: #{admin.level}
                 };
         else
             script.
@@ -68,7 +68,7 @@ html
             var iRoom={
                 _id:'#{roomId}',
                 pictures:[#{pictures}],
-                staticUrl:'http://139.196.93.207:3000/upload/'
+                staticUrl:'localhost:3000/upload/'
             }
         div(id="app")
         script(src="/socket.io/socket.io.js")

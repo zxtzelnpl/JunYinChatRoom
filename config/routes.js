@@ -66,7 +66,8 @@ module.exports = function (app, io) {
 
     /*Admin-Picture*/
     app.get('/admin/pictureroom/:id', Admin.adminRequired, Picture.pictureList);//PAGE:图片列表
-    app.get('/admin/pictureupload/:room', Admin.adminRequired, Picture.pictureUpload);//PAGE:图片更新
+    app.get('/admin/pictureupload/:room', Admin.adminRequired, Picture.pictureUpload);//PAGE:图片上传
+    app.get('/admin/pictureupdate/:img', Admin.adminRequired, Picture.pictureUpdate);//PAGE:图片更新
     app.post('/admin/picture/update', Admin.adminRequired, multiparty(),Picture.savePic,Picture.update);//PAGE:图片更新
     app.delete('/admin/picture/delete', Admin.adminRequired, Picture.delete);//JSON：图片删除
 
@@ -92,8 +93,8 @@ module.exports = function (app, io) {
         let room;
 
         /*房间人员增加*/
-        if (socket.request.session.user) {
-            user = socket.request.session.user;
+        if (socket.request.session.admin) {
+            user = socket.request.session.admin;
             User.onLine(user._id, function (err) {
                 if(err){
                     console.log(err)
