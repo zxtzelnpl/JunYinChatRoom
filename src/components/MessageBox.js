@@ -2,21 +2,26 @@ import React from 'react';
 import $ from 'jquery';
 import IScroll from 'iscroll';
 import socket from '../socket/socket';
-const reg=/(&lt;)(img src="[\S]*\/images\/emoji\/[\d]{1,2}\.jpg")(&gt;)/gi;
+const reg=/(&lt;)(img src="[\S]*\/img\/emoji\/[\d]{1,2}\.jpg")(&gt;)/gi;
 
+function content(str){
+    console.log(str);
+    var htmlFor =  str.replace(reg,function(match,p1,p2,p3){
+        return '<'+p2+' \/>'
+    });
+    return {__html:htmlFor}
+}
 
 function Message({message, check, del}) {
     let DOMStr;
     let DOMcheck;
     let ClassStr = 'item-' + message._id;
-    let content = message.content.replace(reg,function(match,p1,p2,p3){
-        return '<'+p2+'>'
-    });
     if (!message.from || !message.from.name) {
         message.from = {
             name: '路人'
         }
     }
+    console.log(content(message.content));
     if (iUser.level > 999) {
         if (message.check) {
             DOMcheck = (
@@ -39,7 +44,7 @@ function Message({message, check, del}) {
                 <li className="message">
                     <div className="name">{message.from.name}:</div>
                     <div className="time">{new Date(message.createAt).toLocaleString()}</div>
-                    <div className="content" dangerouslySetInnerHTML={{__html:content}}></div>
+                    <div className="content" dangerouslySetInnerHTML={content(message.content)} />
                     {DOMcheck}
                 </li>
             )
@@ -49,7 +54,7 @@ function Message({message, check, del}) {
                 <li className="message">
                     <div className="name">{message.from.name}:</div>
                     <div className="time">{new Date(message.createAt).toLocaleString()}</div>
-                    <div className="content" dangerouslySetInnerHTML={{__html:content}}></div>
+                    <div className="content" dangerouslySetInnerHTML={content(message.content)} />
                 </li>
             )
     }
