@@ -34,6 +34,7 @@ module.exports = function (app, io) {
     app.get('/admin/login', Admin.login);//PAGE:登录
     app.post('/admin/signin', Admin.signIn);//PAGE:登录
     app.get('/admin/welcome',Admin.adminRequired, Admin.welcome); //PAGE:欢迎
+    app.get('/admin/test',Admin.adminRequired, Admin.test); //PAGE:测试
 
     /*Admin-Room*/
     app.get('/admin/roomlist', Admin.adminRequired, Room.roomList);//PAGE：房间列表
@@ -73,10 +74,14 @@ module.exports = function (app, io) {
         res.status(404).send('Sorry cant find that!');
     });
 
-    app.use(function(err, req, res) {
+    app.use(function(err, req, res,next) {
         if(err.stack){
             res.status(500).send('Something broke!<br>'+err.stack.replace(/[\n]+/g,'<br>'));
-        }else{
+        }
+        else if(err.state==='fail'){
+            res.json(err)
+        }
+        else{
             res.status(500).send(err)
         }
     });

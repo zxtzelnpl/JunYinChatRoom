@@ -12,7 +12,7 @@ function format(str){
 /*生成表情盒子*/
 const emojisNum = 28;
 function Box({i}) {
-    let url = '/images/emoji/' + i + '.jpg';
+    let url = '/img/emoji/' + i + '.jpg';
     return (<div className="box"><img src={url}/></div>)
 }
 

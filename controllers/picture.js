@@ -41,56 +41,29 @@ exports.pictureList = function (req, res) {
 };
 
 exports.pictureUpload = function (req, res) {
-
-
-    let roomPromise = new Promise(function (resolve, reject) {
+    new Promise(function (resolve, reject) {
         let room = req.params.room;
-        let findOpt;
-        if (room === 'all') {
-            findOpt = {}
-        } else {
-            findOpt = {_id: room}
+        let findObj={};
+        if(room!=='all'){
+            findObj._id=room
         }
         RoomModel
-            .findOne(findOpt)
-            .exec(function (err, room) {
+            .find(findObj)
+            .exec(function (err, rooms) {
                 if (err) {
                     reject(err)
                 }
-                resolve(room);
+                resolve(rooms);
             })
-    });
-    let picPromise = roomPromise.then(function (room) {
-        return new Promise(function(resolve,reject){
-
-        });
-        let id = req.query.id;
-        if (id) {
-            PictureModel.findById(id, function (err, picture) {
-                if (err) {
-                    console.log(err)
-                }
-                res.render('pictureUpload', {
-                    title: '图片修改-' + id
-                    , picture,
-                    room
-                })
-            })
-        }
-        else {
+    })
+        .then(function (rooms) {
             res.render('pictureUpload', {
                 title: '图片上传'
                 , rooms
-            });
-        }
-    });
-    Promise
-        .all([])
-        .then(function([]){
-
+            })
         })
-        .catch(function(err){
-            Report.errPage(res,err)
+        .catch(function (err) {
+            Report.errPage(res, err)
         })
 };
 
@@ -98,6 +71,10 @@ exports.savePic = function (req, res, next) {
     let posterData = req.files.uploadPic;
     let filePath = posterData.path;
     let originalFilename = posterData.originalFilename;
+    console.log("########originalFilename########");
+    console.log(originalFilename);
+    console.log(filePath);
+    console.log("########originalFilename########");
     if (originalFilename) {
         fs.readFile(filePath, function (err, data) {
             if (err) {
@@ -106,7 +83,7 @@ exports.savePic = function (req, res, next) {
             let timestamp = Date.now();
             let type = posterData.type.split('/')[1];
             let picName = timestamp + '.' + type;
-            let newPath = path.join(__dirname, '../../', '/public/upload/' + picName);
+            let newPath = path.join(__dirname, '../','/public/upload/' + picName);
 
             fs.writeFile(newPath, data, function (err) {
                 if (err) {
@@ -123,7 +100,7 @@ exports.savePic = function (req, res, next) {
 
 exports.update = function (req, res) {
     let picture = req.body.picture;
-    picture.uploader = req.session.user._id;
+    picture.uploader = req.session.admin._id;
     if (picture._id) {
         PictureModel.findByIdAndUpdate(picture._id, {$set: picture}, function (err) {
             if (err) {

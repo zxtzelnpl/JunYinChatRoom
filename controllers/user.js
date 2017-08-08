@@ -1,7 +1,7 @@
 const UserModel = require('../models/user.js');
 const RoomModel = require('../models/room.js');
 const MessageModel = require('../models/message.js');
-const pageSize = 20;
+const pageSize = 10;
 
 exports.userList = function (req, res, next) {
     let pageNum = req.params.page;
@@ -123,12 +123,11 @@ exports.userSearch = function (req, res, next) {
         })
 };
 
-exports.userQuery = function (req, res) {
+exports.userQuery = function (req, res, next) {
     let search = {};
     let _search = req.body.search;
     let totalPageNum;
     let pageNum = req.params.page;
-    console.log(_search);
     for (let key in _search) {
         if (_search[key] !== '') {
             if (key === 'name' || key === 'nickName') {
@@ -138,67 +137,73 @@ exports.userQuery = function (req, res) {
             }
         }
     }
-    console.log(search);
 
-    UserModel.count(search, function (err, count) {
-        totalPageNum = Math.ceil(count / pageSize);
-        UserModel.find(search)
-            .skip((pageNum - 1) * pageSize)
-            .limit(pageSize)
-            .populate('room', 'title')
-            .exec(function (err, users) {
-                if (err) {
-                    console.log(err);
-                }
-                res.render('userQuery', {
-                    title: '管理用户列表-查询结果'
-                    , users: users
-                    , search: _search
-                    , pageCount: totalPageNum
-                });
+    let countPromise = UserModel
+        .count(search)
+        .exec();
+
+    let usersPromise = UserModel
+        .find(search)
+        .skip((pageNum - 1) * pageSize)
+        .limit(pageSize)
+        .populate('room', 'title')
+        .exec();
+
+    Promise.all([countPromise, usersPromise])
+        .then(function ([count, users]) {
+            totalPageNum = Math.ceil(count / pageSize);
+            res.render('userQuery', {
+                title: '管理用户列表-查询结果'
+                , users: users
+                , search: _search
+                , pageCount: totalPageNum
             });
-    });
+        })
+        .catch(function (err) {
+            next(err)
+        })
 };
 
-exports.signUp = function (req, res) {
+exports.signUp = function (req, res, next) {
     let user;
     let _user = req.body.user;
     if (_user.room === '') {
         delete _user.room;
     }
-    UserModel.find({"$or": [{'name': _user.name}, {'phone': _user.phone}]}, function (err, users) {
-        if (err) {
-            console.log(err);
-        }
-        if (users.length === 0) {
-            user = new UserModel(_user);
-            user.save(function (err, user) {
-                if (err) {
-                    console.log(err)
+    UserModel
+        .find({"$or": [{'name': _user.name}, {'phone': _user.phone}]})
+        .exec()
+        .then(function (users) {
+            if (users.length === 0) {
+                user = new UserModel(_user);
+                user.save(function (err, user) {
+                    if (err) {
+                        console.log(err)
+                    }
+                    res.redirect('/admin/userdetail/' + user._id)
+                })
+            } else {
+                if (users[0].name === _user.name) {
+                    res.redirect('/admin/information/name')
+                } else if (users[0].phone == _user.phone) {
+                    res.redirect('/admin/information/phone')
                 }
-                res.redirect('/admin/userdetail/' + user._id)
-            })
-        } else {
-            if (users[0].name === _user.name) {
-                res.redirect('/admin/information/name')
-            } else if (users[0].phone == _user.phone) {
-                res.redirect('/admin/information/phone')
             }
-        }
-    });
+        })
+        .catch(function (err) {
+            next(err)
+        })
 };
 
-exports.update = function (req, res) {
+exports.update = function (req, res,next) {
     let _user = req.body.user;
     let id = _user._id;
     delete _user._id;
     UserModel
         .where('_id').ne(id)
         .or([{'name': _user.name}, {'phone': _user.phone}])
-        .exec(function (err, users) {
-            if (err) {
-                console.log(err);
-            }
+        .exec()
+        .then(function (users) {
             if (users.length === 0) {
                 UserModel.findByIdAndUpdate(id, {$set: _user}, function (err) {
                     if (err) {
@@ -213,7 +218,10 @@ exports.update = function (req, res) {
                     res.redirect('/admin/information/phone')
                 }
             }
-        });
+        })
+        .catch(function(err){
+            next(err)
+        })
 };
 
 exports.forbidden = function (req, res) {
@@ -227,7 +235,7 @@ exports.forbidden = function (req, res) {
             return UserModel.findByIdAndUpdate(_id, {$set: {forbidden}})
                 .exec()
         })
-        .then(function (user) {
+        .then(function () {
             res.json({
                 state: 'success',
                 forbidden
@@ -256,68 +264,74 @@ exports.offLine = function (id, next) {
         })
 };
 
-exports.delete = function (req, res,next) {
+exports.delete = function (req, res, next) {
     let id = req.query.id;
     let messagePromise = MessageModel
-        .deleteMany({from:id})
+        .deleteMany({from: id})
         .exec();
     let userPromise = UserModel.findByIdAndRemove(id)
         .exec();
     Promise
-        .all([messagePromise,userPromise])
-        .then(function([]){
+        .all([messagePromise, userPromise])
+        .then(function ([]) {
             res.json({
                 state: 'success'
             })
         })
-        .catch(function(err){
+        .catch(function (err) {
             next(err)
         });
 };
 
-exports.signIn = function (req, res) {
+exports.signIn = function (req, res,next) {
+    console.log('signIn');
+
     let _user = req.body;
     let name = _user.name;
     let password = _user.password;
     let roomId = _user.room;
 
-    UserModel.findOne({name: name}, function (err, user) {
-        if (err) {
-            console.log(err)
-        }
+    console.log(_user);
 
-        if (!user) {
-            return res.json({
-                state: 'fail'
-                , reason: 'no name'
-            })
-        }
-        if (user.room != roomId) {
-            return res.json({
-                state: 'fail'
-                , reason: 'wrong room'
-            })
-        }
-
-        user.comparePassword(password, function (err, isMatch) {
-            if (err) {
-                console.log(err)
-            }
-            if (isMatch) {
-                req.session.admin = user;
-                return res.json({
-                    state: 'success'
-                    , name: user.name
-                });
-            }
-            else {
-                return res.json({
-                    state: 'fail'
-                    , reason: 'password wrong'
+    UserModel
+        .findOne({name: name})
+        .exec()
+        .then(function (user) {
+            _user=user;
+            if (!user) {
+                return Promise.reject({
+                    state:'fail',
+                    reason:'no name'
                 })
             }
+            if (user.room != roomId) {
+                return Promise.resolve({
+                    state: 'fail'
+                    , reason: 'wrong room'
+                })
+            }
+
+            return user.comparePassword(password)
         })
-    })
+        .then(function (flag) {
+            console.log(flag);
+            if (flag===false) {
+                res.json({
+                    state: 'fail',
+                    reason: 'password wrong'
+                })
+            }
+            else if(flag===true){
+                req.session.admin = _user;
+                return res.json({
+                    state: 'success',
+                    name: _user.name
+                });
+            }
+        })
+        .catch(function(err){
+            next(err)
+        })
 };
 
 exports.signOut = function (req, res) {

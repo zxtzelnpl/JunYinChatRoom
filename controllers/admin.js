@@ -7,9 +7,9 @@ exports.login = function (req, res) {
     });
 };
 
-exports.welcome = function (req,res){
-    res.render('welcome',{
-        title:'欢迎页面'
+exports.welcome = function (req, res) {
+    res.render('welcome', {
+        title: '欢迎页面'
     })
 };
 
@@ -23,47 +23,42 @@ exports.adminRequired = function (req, res, next) {
     // }
 };
 
-exports.signIn = function (req, res) {
-    let _user = req.body;
-    let userPromise = new Promise(function (resolve, reject) {
-        let name = _user.name;
-        UserModel
-            .findOne({name: name})
-            .exec(function (err, user) {
-                if (err) {
-                    reject(err)
-                }
-                if (!user) {
-                    reject('无法找到向对应的用户名')
-                }
-                resolve(user)
-            })
-    });
-
-    let checkPromise = userPromise.then(function (user) {
-        return new Promise(function (resolve, reject) {
-            let password = _user.password;
-            user.comparePassword(password, function (err, isMatch) {
-                if (err) {
-                    reject(err)
-                }
-                if (!isMatch) {
-                    reject('密码错误')
-                }
-                resolve(user)
-            })
+exports.signIn = function (req, res, next) {
+    let userObj = req.body;
+    let user;
+    UserModel
+        .findOne({name: userObj.name})
+        .exec()
+        .then(function (_user) {
+            if (!_user) {
+                return Promise.reject({
+                    state: 'fail',
+                    err: '无法找到向对应的用户名'
+                });
+            }
+            user = _user;
+            return _user.comparePassword(userObj.password)
         })
-    });
+        .then(function (flag) {
 
-    checkPromise
-        .then(function (user) {
-            req.session.admin = user;
-            res.json({
-                state: 'success',
-                name: user.name
-            })
+            if (flag === true) {
+                req.session.admin = user;
+                res.json({
+                    state: 'success'
+                })
+            }
+            else{
+                return Promise.reject({
+                    state: 'fail',
+                    err: '密码错误'
+                });
+            }
         })
         .catch(function (err) {
-            Report.errJSON(res, err)
+            next(err)
         });
+};
+
+exports.test = function (req,res,next){
+    throw new Error('my mak err')
 };

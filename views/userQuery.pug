@@ -50,11 +50,11 @@ block content
                                         td: a(target="_blank", href= "/admin/userupdate/"+item._id) 修改
                                         td: button.btn.btn-danger.del(type="button", data-id=item._id) 删除
                 .row-fluid
-                    form(method="POST" action="/admin/user/query/" id="search")
+                    form(method="POST" action="/admin/userquery/" id="search")
                         each val,key in search
                             input(type="hidden" value=val name="search["+key+"]")
                     - var n=1
-                    .pagination.pull-right
+                    .pagination.pull-right#page
                         ul
                             li: a(href="javascript:void(0)") 第
                             while n <= pageCount
@@ -64,4 +64,4 @@ block content
 
 block script
     script(src="/socket.io/socket.io.js")
-    script(src="/admin/js/user-query.js")
+    script(src="/js/user-query.js")
